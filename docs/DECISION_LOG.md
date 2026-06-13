@@ -123,3 +123,24 @@ CI will catch basic tooling and source issues early, while deployment remains ma
 Follow-up:
 
 Add staging deployment after `ROBLOX_API_KEY`, `ROBLOX_UNIVERSE_ID`, and `ROBLOX_PLACE_ID` are configured safely.
+
+## D-006: Start Gameplay Architecture With Plain ModuleScript Services
+
+Date: 2026-06-13
+Status: Accepted
+
+Context:
+
+The first Phase 1 implementation needs server-owned gameplay structure, but the project does not yet justify a larger framework.
+
+Decision:
+
+Start with plain ModuleScript services under `src/server`, shared contract modules under `src/shared`, and explicit entry points through `init.server.luau` and `init.client.luau`.
+
+Tradeoffs:
+
+This keeps the prototype easy for newer Roblox developers to understand. If service count or cross-service coordination becomes hard to manage later, the project can introduce a lightweight framework intentionally.
+
+Follow-up:
+
+Keep each service small and server-authoritative. Revisit framework needs only after the core loop is playable.

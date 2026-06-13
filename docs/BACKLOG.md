@@ -36,8 +36,8 @@ Priorities:
 | ID | Priority | Status | Item |
 | --- | --- | --- | --- |
 | FTC-101 | P0 | Done | Decide whether to configure Rojo before source implementation |
-| FTC-102 | P0 | Todo | Create shared round state constants |
-| FTC-103 | P0 | Todo | Implement server round state machine skeleton |
+| FTC-102 | P0 | Done | Create shared round state constants |
+| FTC-103 | P0 | Done | Implement server round state machine skeleton |
 | FTC-104 | P0 | Todo | Implement minimum player waiting state |
 | FTC-105 | P0 | Todo | Implement circle spawn placement |
 | FTC-106 | P0 | Todo | Implement caller assignment |
@@ -78,3 +78,11 @@ Priorities:
 | FTC-403 | P2 | Todo | Add automated Roblox test runner once gameplay systems exist |
 | FTC-404 | P2 | Todo | Add dependency review process before introducing Wally packages |
 | FTC-405 | P2 | Todo | Add release checklist for tagged playtest builds |
+
+## Current Assessment
+
+As of 2026-06-13:
+
+- Foundation planning and Roblox tooling are complete.
+- The first Phase 1 implementation slice is complete with shared round contracts and a server-owned `RoundService` skeleton.
+- The next implementation target is `FTC-104`: minimum player waiting state.
