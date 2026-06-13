@@ -1,1 +1,3 @@
-print("Hello world, from server!")
+local RoundService = require(script.Parent.RoundService)
+
+RoundService.start()

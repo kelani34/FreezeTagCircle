@@ -70,6 +70,13 @@ Responsibilities:
 - Broadcast state changes.
 - Handle timeouts.
 
+Initial implementation:
+
+- `src/server/RoundService.luau` owns the current round snapshot.
+- `src/shared/GameStates.luau` defines the canonical round states and order.
+- `src/shared/Tuning.luau` defines early prototype timing constants.
+- `src/shared/Remotes.luau` reserves remote names without wiring gameplay remotes yet.
+
 ### PlayerStateService
 
 Tracks per-player gameplay state:
@@ -150,8 +157,6 @@ These files should be introduced gradually as the prototype is implemented.
 
 ## Open Technical Decisions
 
-- Whether to use a lightweight service pattern or plain ModuleScripts.
-- Whether to add automated Luau tooling early.
 - How to represent arena markers so designers can edit maps safely in Studio.
 
-Rojo and baseline Luau tooling are now adopted before meaningful source code growth. Service structure and arena authoring remain open until gameplay implementation begins.
+Rojo and baseline Luau tooling are now adopted before meaningful source code growth. Runtime systems will start as plain ModuleScripts with explicit ownership boundaries. Arena authoring remains open until spawn and center-zone implementation begins.
