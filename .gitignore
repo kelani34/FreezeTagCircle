@@ -1,0 +1,8 @@
+# Roblox Studio local lock files
+*.rbxl.lock
+*.rbxm.lock
+
+# OS/editor noise
+.DS_Store
+*.swp
+
