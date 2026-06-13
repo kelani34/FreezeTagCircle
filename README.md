@@ -30,6 +30,7 @@ Primary goals:
 - [Decision Log](docs/DECISION_LOG.md)
 - [Assumptions Log](docs/ASSUMPTIONS.md)
 - [Roblox Development Workflow](docs/ROBLOX_WORKFLOW.md)
+- [Release and Access Plan](docs/RELEASE_AND_ACCESS.md)
 
 ## Repository Structure
 
@@ -62,4 +63,3 @@ The first playable prototype should prove the core loop with the smallest useful
 9. Round resolution and reset.
 
 Anything outside that loop is secondary until the prototype is fun and understandable.
-
