@@ -71,7 +71,7 @@ selene src scripts
 
 ## Packages
 
-Wally package metadata lives in `Wally.toml`.
+Wally package metadata lives in `wally.toml`.
 
 The project currently has no runtime package dependencies. Add dependencies only when they solve a clear problem for gameplay, UI, testing, or developer workflow.
 
@@ -92,4 +92,3 @@ The workflow:
 7. Builds a Rojo `.rbxlx` artifact.
 
 CI does not publish to Roblox yet.
-

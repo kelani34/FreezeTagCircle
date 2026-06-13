@@ -46,7 +46,7 @@ Primary goals:
 ├── default.project.json   Rojo project mapping
 ├── FreezeTagCircle.rbxl   Current Roblox place file
 ├── rokit.toml             Pinned Roblox toolchain
-├── Wally.toml             Roblox package manifest
+├── wally.toml             Roblox package manifest
 ├── selene.toml            Luau static analysis config
 └── .stylua.toml           Luau formatting config
 ```
