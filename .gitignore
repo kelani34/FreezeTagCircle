@@ -6,3 +6,12 @@
 .DS_Store
 *.swp
 
+# Project place file
+/src.rbxlx
+
+# Roblox Studio lock files
+/*.rbxlx.lock
+/*.rbxl.lock
+
+
+.env*
