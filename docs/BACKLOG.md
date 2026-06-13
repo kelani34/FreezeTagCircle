@@ -23,12 +23,19 @@ Priorities:
 | FTC-003 | P0 | Done | Document open gameplay rule questions |
 | FTC-004 | P0 | Done | Define initial technical architecture |
 | FTC-005 | P0 | Done | Create roadmap, risk register, decision log, and assumptions log |
+| FTC-006 | P0 | Done | Pin project tools with Rokit |
+| FTC-007 | P0 | Done | Add Wally package manifest |
+| FTC-008 | P0 | Done | Add StyLua formatter config |
+| FTC-009 | P0 | Done | Add Selene linter config |
+| FTC-010 | P0 | Done | Add Lune local tooling script |
+| FTC-011 | P0 | Done | Add CI workflow for tooling checks and Rojo build artifact |
+| FTC-012 | P0 | Done | Document tooling workflow |
 
 ## Phase 1: Core Playable Prototype
 
 | ID | Priority | Status | Item |
 | --- | --- | --- | --- |
-| FTC-101 | P0 | Todo | Decide whether to configure Rojo before source implementation |
+| FTC-101 | P0 | Done | Decide whether to configure Rojo before source implementation |
 | FTC-102 | P0 | Todo | Create shared round state constants |
 | FTC-103 | P0 | Todo | Implement server round state machine skeleton |
 | FTC-104 | P0 | Todo | Implement minimum player waiting state |
@@ -62,3 +69,12 @@ Priorities:
 | FTC-303 | P1 | Todo | Add simple onboarding prompts |
 | FTC-304 | P1 | Todo | Add performance budget notes |
 
+## Tooling and Release Follow-Up
+
+| ID | Priority | Status | Item |
+| --- | --- | --- | --- |
+| FTC-401 | P1 | Todo | Add Roblox Open Cloud secrets and staging place identifiers to GitHub |
+| FTC-402 | P1 | Todo | Add staging publish workflow after manual artifact builds are trusted |
+| FTC-403 | P2 | Todo | Add automated Roblox test runner once gameplay systems exist |
+| FTC-404 | P2 | Todo | Add dependency review process before introducing Wally packages |
+| FTC-405 | P2 | Todo | Add release checklist for tagged playtest builds |

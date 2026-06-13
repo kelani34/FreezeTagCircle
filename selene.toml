@@ -1,0 +1,11 @@
+std = "roblox"
+exclude = [
+	"Packages/**",
+	"build/**",
+]
+
+[lints]
+multiple_statements = "deny"
+shadowing = "warn"
+unused_variable = "warn"
+

@@ -13,19 +13,32 @@ This is acceptable for early exploration, but source-controlled Luau files shoul
 1. Keep product and architecture decisions in `docs/`.
 2. Add gameplay code under `src/` once the first implementation begins.
 3. Use Roblox Studio for scene layout, arena markers, and visual iteration.
-4. Use Rojo or an equivalent sync workflow before runtime code becomes substantial.
+4. Use Rojo sync before runtime code becomes substantial.
 5. Keep server gameplay logic out of client-only scripts.
 
-## Suggested Rojo Direction
+## Rojo Direction
 
-When ready, introduce:
+Rojo is configured through `default.project.json`.
 
-- `default.project.json`
-- `src/server` mapped to `ServerScriptService`
-- `src/client` mapped to `StarterPlayerScripts`
-- `src/shared` mapped to `ReplicatedStorage`
+Current source mappings:
 
-Do this before there are many manually created scripts inside the `.rbxl`, so source control remains useful.
+- `src/server` maps to `ServerScriptService.Server`
+- `src/client` maps to `StarterPlayer.StarterPlayerScripts.Client`
+- `src/shared` maps to `ReplicatedStorage.Shared`
+
+Use:
+
+```sh
+rojo serve default.project.json
+```
+
+Build a place artifact with:
+
+```sh
+rojo build default.project.json -o build/FreezeTagCircle.rbxlx
+```
+
+The repository now uses Rokit to pin Rojo and companion tools. See `docs/TOOLING.md`.
 
 ## Roblox Multiplayer Guidance
 
@@ -52,4 +65,3 @@ Before calling a prototype stable, test:
 - Called player fails to reach center.
 - Called player reaches center but fails tag.
 - Called player tags successfully.
-

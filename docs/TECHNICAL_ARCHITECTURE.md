@@ -150,10 +150,8 @@ These files should be introduced gradually as the prototype is implemented.
 
 ## Open Technical Decisions
 
-- Whether to adopt Rojo immediately or after the first in-Studio prototype.
 - Whether to use a lightweight service pattern or plain ModuleScripts.
 - Whether to add automated Luau tooling early.
 - How to represent arena markers so designers can edit maps safely in Studio.
 
-Recommendation: adopt Rojo before meaningful source code grows, but do not block the design foundation on tool setup.
-
+Rojo and baseline Luau tooling are now adopted before meaningful source code growth. Service structure and arena authoring remain open until gameplay implementation begins.

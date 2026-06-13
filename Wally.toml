@@ -1,0 +1,20 @@
+[package]
+name = "kelani34/freezetagcircle"
+description = "Professional Roblox project infrastructure for FreezeTagCircle."
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+exclude = [
+	".github",
+	"docs",
+	"scripts",
+	"build",
+	"Packages",
+	"*.rbxl",
+	"*.rbxlx",
+	".env",
+	".env.local",
+]
+
+[dependencies]
+

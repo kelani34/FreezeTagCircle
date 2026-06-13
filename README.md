@@ -31,6 +31,7 @@ Primary goals:
 - [Assumptions Log](docs/ASSUMPTIONS.md)
 - [Roblox Development Workflow](docs/ROBLOX_WORKFLOW.md)
 - [Release and Access Plan](docs/RELEASE_AND_ACCESS.md)
+- [Tooling](docs/TOOLING.md)
 
 ## Repository Structure
 
@@ -42,11 +43,35 @@ Primary goals:
 │   ├── server/            Server-authoritative gameplay systems
 │   ├── shared/            Shared constants, types, utility modules
 │   └── tools/             Development helpers and non-runtime scripts
-├── Place1.rbxl            Current Roblox place file
-└── Place1.rbxl.lock       Roblox Studio lock file
+├── default.project.json   Rojo project mapping
+├── FreezeTagCircle.rbxl   Current Roblox place file
+├── rokit.toml             Pinned Roblox toolchain
+├── Wally.toml             Roblox package manifest
+├── selene.toml            Luau static analysis config
+└── .stylua.toml           Luau formatting config
 ```
 
 The `src/` folders are intentionally light for now. Gameplay code should be added only after the foundation docs define the rules and implementation priorities clearly enough to avoid expensive rewrites.
+
+## Development Tooling
+
+Install pinned project tools with Rokit:
+
+```sh
+rokit install
+```
+
+Common checks:
+
+```sh
+lune run scripts/tooling-doctor.luau
+wally install
+stylua --check src scripts
+selene src scripts
+rojo build default.project.json -o build/FreezeTagCircle.rbxlx
+```
+
+See [Tooling](docs/TOOLING.md) for the full workflow.
 
 ## Near-Term Build Priority
 
