@@ -82,3 +82,44 @@ Follow-up:
 
 Test whether icons/colors are clear enough during caller selection.
 
+## D-004: Pin Roblox Tooling With Rokit
+
+Date: 2026-06-13
+Status: Accepted
+
+Context:
+
+The project needs reproducible Roblox tooling before gameplay code grows. Rojo was installed globally, but Wally, Selene, StyLua, and Lune were not available on the project PATH.
+
+Decision:
+
+Use Rokit as the project toolchain manager and pin Rojo, Wally, Selene, StyLua, and Lune in `rokit.toml`.
+
+Tradeoffs:
+
+This adds a small setup step for new developers, but it avoids version drift between local machines and CI.
+
+Follow-up:
+
+Keep tool updates intentional and review any CI failures caused by tool upgrades before accepting new pinned versions.
+
+## D-005: CI Builds Artifacts But Does Not Deploy Yet
+
+Date: 2026-06-13
+Status: Accepted
+
+Context:
+
+The project needs automated quality checks, but Roblox deployment credentials and staging release rules are not finalized.
+
+Decision:
+
+Add CI for pinned tool installation, package manifest validation, formatting, static analysis, and Rojo artifact builds. Do not publish to Roblox from CI yet.
+
+Tradeoffs:
+
+CI will catch basic tooling and source issues early, while deployment remains manual until Open Cloud credentials and staging workflow are ready.
+
+Follow-up:
+
+Add staging deployment after `ROBLOX_API_KEY`, `ROBLOX_UNIVERSE_ID`, and `ROBLOX_PLACE_ID` are configured safely.

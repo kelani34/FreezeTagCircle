@@ -8,6 +8,8 @@
 
 # Project place file
 /src.rbxlx
+/build/
+/Packages/
 
 # Roblox Studio lock files
 /*.rbxlx.lock

@@ -10,13 +10,15 @@ As of 2026-06-13:
 - GitHub CLI is authenticated as `kelani34`
 - GitHub token has `repo` and `workflow` scopes
 - Rojo CLI is installed: `7.6.1`
+- Rokit is installed locally and project tools are pinned in `rokit.toml`
+- Wally, Selene, StyLua, and Lune are installed through Rokit
 - Roblox Studio is installed locally
 
 This is enough to manage branches, commits, pull requests, GitHub releases, and CI setup from the repository side.
 
-## Git Authority
+## Repository Operations
 
-Codex may manage:
+The project workflow supports:
 
 - Branch creation
 - Commits
@@ -27,12 +29,26 @@ Codex may manage:
 - GitHub releases
 - GitHub Actions workflow files
 - Version files and changelogs
+- Merge strategy and PR merge execution when checks and project state support it
 
 Preferred branch naming:
 
 ```text
-codex/<short-purpose>
+feature/<short-purpose>
+fix/<short-purpose>
+chore/<short-purpose>
+release/<version>
 ```
+
+Default operating rules:
+
+- Use feature branches for meaningful work.
+- Prefer draft PRs until validation is complete.
+- Keep `main` releasable.
+- Do not mix unrelated work in one PR.
+- Run available local checks before pushing when practical.
+- Use semantic version tags for releases.
+- Do not auto-publish to Roblox production until staging deployment is proven.
 
 Recommended release tag format:
 
@@ -51,14 +67,14 @@ Until the game is public, versions should use `0.x.y`:
 
 ## Roblox Studio Access Model
 
-Codex should not rely on manually clicking inside Roblox Studio for source changes. The durable workflow is:
+Source changes should not rely on manually clicking inside Roblox Studio. The durable workflow is:
 
-1. Codex edits source-controlled files in `src/`.
+1. Runtime code is edited in source-controlled files under `src/`.
 2. Rojo serves the project from the repo.
 3. Roblox Studio connects through the Rojo plugin.
 4. Studio remains the place for visual map/layout editing and playtesting.
 
-This gives Codex reliable control over code, documentation, release scripts, and project files while keeping Studio useful for what it does best.
+This keeps code, documentation, release scripts, and project files reviewable while keeping Studio useful for what it does best.
 
 ## Required Studio Setup
 
@@ -79,7 +95,7 @@ After that:
 
 ## Deployment Access
 
-For Codex to publish builds to Roblox without manual Studio publishing, the project needs Roblox Open Cloud credentials.
+For automated Roblox publishing without manual Studio publishing, the project needs Roblox Open Cloud credentials.
 
 Recommended setup:
 
@@ -111,24 +127,31 @@ Recommended additions:
 - `lune`: Luau scripting runtime for local automation.
 - `run-in-roblox` or an equivalent test runner later, once automated in-Studio tests are useful.
 
-Recommended first step:
+Current project setup:
 
 ```sh
-brew install rokit
+rokit install
 ```
 
-Then pin tools in `rokit.toml` so every machine and CI runner uses the same versions.
+Pinned tools:
+
+- `rojo-rbx/rojo@7.6.1`
+- `UpliftGames/wally@0.3.2`
+- `Kampfkarren/selene@0.31.0`
+- `JohnnyMorganz/StyLua@2.5.2`
+- `lune-org/lune@0.10.4`
 
 ## CI Goals
 
-The initial CI pipeline should eventually:
+The initial CI pipeline now:
 
-1. Validate project file structure.
-2. Run formatting checks.
-3. Run static analysis.
-4. Build the Roblox place from Rojo.
-5. Upload build artifacts.
-6. Optionally publish to a staging Roblox place on tags or release branches.
+1. Installs Rokit.
+2. Installs pinned tools.
+3. Validates the Wally manifest.
+4. Runs formatting checks.
+5. Runs static analysis.
+6. Builds the Roblox place from Rojo.
+7. Uploads the `.rbxlx` artifact.
 
 Do not wire production auto-publishing until staging deployment is proven.
 
@@ -150,4 +173,3 @@ feature branch -> PR -> main -> tagged build -> staging publish -> playtest -> p
 ```
 
 For the earliest prototype, manual Studio playtesting is acceptable. Automated publishing should arrive once the Rojo build is stable.
-
