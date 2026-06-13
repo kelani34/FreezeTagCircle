@@ -26,8 +26,9 @@ Quality checks:
 
 ```bash
 lune run scripts/tooling-doctor.luau
-stylua --check src scripts
-selene src scripts
+lune run scripts/test.luau
+stylua --check src scripts tests
+selene src scripts tests
 wally manifest-to-json > /dev/null
 ```
 

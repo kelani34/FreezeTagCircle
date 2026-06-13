@@ -1,0 +1,25 @@
+local Tuning = require("../../src/shared/Tuning")
+
+return {
+	{
+		name = "requires at least two players",
+		run = function(expect)
+			expect.truthy(Tuning.MinimumPlayers >= 2)
+		end,
+	},
+	{
+		name = "preserves the three-jump rule",
+		run = function(expect)
+			expect.equal(Tuning.TagJumpLimit, 3)
+		end,
+	},
+	{
+		name = "uses positive phase durations",
+		run = function(expect)
+			expect.truthy(Tuning.IntermissionSeconds > 0)
+			expect.truthy(Tuning.CallerChooseSeconds > 0)
+			expect.truthy(Tuning.RunAwaySeconds > 0)
+			expect.truthy(Tuning.TagAttemptSeconds > 0)
+		end,
+	},
+}

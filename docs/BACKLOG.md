@@ -30,6 +30,9 @@ Priorities:
 | FTC-010 | P0 | Done | Add Lune local tooling script |
 | FTC-011 | P0 | Done | Add CI workflow for tooling checks and Rojo build artifact |
 | FTC-012 | P0 | Done | Document tooling workflow |
+| FTC-013 | P0 | Done | Add headless Luau test runner and shared contract tests |
+| FTC-014 | P0 | Done | Document testing strategy |
+| FTC-015 | P0 | Done | Document dev, staging, and production environment strategy |
 
 ## Phase 1: Core Playable Prototype
 
@@ -78,12 +81,15 @@ Priorities:
 | FTC-403 | P2 | Todo | Add automated Roblox test runner once gameplay systems exist |
 | FTC-404 | P2 | Todo | Add dependency review process before introducing Wally packages |
 | FTC-405 | P2 | Todo | Add release checklist for tagged playtest builds |
+| FTC-406 | P1 | Todo | Create Roblox staging place and configure staging GitHub variables |
+| FTC-407 | P1 | Todo | Add manual staging publish workflow after Open Cloud credentials are ready |
 
 ## Current Assessment
 
 As of 2026-06-13:
 
 - Foundation planning and Roblox tooling are complete.
+- Headless Luau tests now run in CI for shared contracts.
 - The first Phase 1 implementation slice is complete with shared round contracts and a server-owned `RoundService` skeleton.
 - The minimum-player waiting gate is complete.
 - The next implementation target is `FTC-105`: circle spawn placement.
