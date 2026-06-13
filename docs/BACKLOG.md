@@ -38,7 +38,7 @@ Priorities:
 | FTC-101 | P0 | Done | Decide whether to configure Rojo before source implementation |
 | FTC-102 | P0 | Done | Create shared round state constants |
 | FTC-103 | P0 | Done | Implement server round state machine skeleton |
-| FTC-104 | P0 | Todo | Implement minimum player waiting state |
+| FTC-104 | P0 | Done | Implement minimum player waiting state |
 | FTC-105 | P0 | Todo | Implement circle spawn placement |
 | FTC-106 | P0 | Todo | Implement caller assignment |
 | FTC-107 | P0 | Todo | Implement target selection validation |
@@ -85,4 +85,5 @@ As of 2026-06-13:
 
 - Foundation planning and Roblox tooling are complete.
 - The first Phase 1 implementation slice is complete with shared round contracts and a server-owned `RoundService` skeleton.
-- The next implementation target is `FTC-104`: minimum player waiting state.
+- The minimum-player waiting gate is complete.
+- The next implementation target is `FTC-105`: circle spawn placement.
