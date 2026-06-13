@@ -73,6 +73,8 @@ Responsibilities:
 Initial implementation:
 
 - `src/server/RoundService.luau` owns the current round snapshot.
+- `RoundService` tracks active Roblox player count and prevents `WaitingForPlayers -> Setup` until `Tuning.MinimumPlayers` is met.
+- If the active player count drops below the minimum during a later state, `RoundService` fails safely back to `WaitingForPlayers` and clears round actors.
 - `src/shared/GameStates.luau` defines the canonical round states and order.
 - `src/shared/Tuning.luau` defines early prototype timing constants.
 - `src/shared/Remotes.luau` reserves remote names without wiring gameplay remotes yet.

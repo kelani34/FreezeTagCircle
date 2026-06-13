@@ -144,3 +144,24 @@ This keeps the prototype easy for newer Roblox developers to understand. If serv
 Follow-up:
 
 Keep each service small and server-authoritative. Revisit framework needs only after the core loop is playable.
+
+## D-007: Gate Round Start On Minimum Player Count
+
+Date: 2026-06-13
+Status: Accepted
+
+Context:
+
+The game needs to work in public Roblox servers where players can join or leave at any time. Starting the round loop with too few players would create broken or boring states.
+
+Decision:
+
+`RoundService` tracks active Roblox players, exposes minimum-player status in its snapshot, blocks `WaitingForPlayers -> Setup` until the configured minimum is met, and returns to `WaitingForPlayers` if the count drops too low mid-round.
+
+Tradeoffs:
+
+This does not yet auto-start rounds. That keeps the waiting gate independent from arena setup and spawn placement, which are separate Phase 1 tasks.
+
+Follow-up:
+
+Use this gate when implementing `FTC-105` and the first automatic setup transition.
