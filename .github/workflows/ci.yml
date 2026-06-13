@@ -38,11 +38,14 @@ jobs:
       - name: Validate Wally manifest
         run: wally manifest-to-json > /dev/null
 
+      - name: Run unit tests
+        run: lune run scripts/test.luau
+
       - name: Check formatting
-        run: stylua --check src scripts
+        run: stylua --check src scripts tests
 
       - name: Run static analysis
-        run: selene src scripts
+        run: selene src scripts tests
 
       - name: Build Rojo place artifact
         run: |
@@ -54,4 +57,3 @@ jobs:
         with:
           name: FreezeTagCircle-rbxlx
           path: build/FreezeTagCircle.rbxlx
-

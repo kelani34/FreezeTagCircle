@@ -165,3 +165,66 @@ This does not yet auto-start rounds. That keeps the waiting gate independent fro
 Follow-up:
 
 Use this gate when implementing `FTC-105` and the first automatic setup transition.
+
+## D-008: Add Headless Luau Tests Before More Gameplay
+
+Date: 2026-06-13
+Status: Accepted
+
+Context:
+
+The project is entering gameplay implementation, and shared contracts such as round states, remote names, and tuning constants will be referenced across server, client, and documentation.
+
+Decision:
+
+Add a small Lune-based test runner and initial shared-contract tests. Run these tests in CI before formatting, linting, and Rojo build validation.
+
+Tradeoffs:
+
+Headless tests cannot validate Roblox services or physics, but they are fast and protect contracts that should remain stable.
+
+Follow-up:
+
+Add Roblox-aware integration tests once server/client gameplay systems require Workspace, Players, characters, and remotes.
+
+## D-009: Use Staging Before Production Publishing
+
+Date: 2026-06-13
+Status: Accepted
+
+Context:
+
+The project will eventually publish builds to Roblox through Open Cloud, but production publishing should not be the first automated deployment target.
+
+Decision:
+
+Use local development and PR CI first, then add a dedicated Roblox staging place for private playtests. Production publishing remains manual or separately gated until staging publish and smoke tests are proven.
+
+Tradeoffs:
+
+This adds setup work before public release, but it lowers the risk of breaking the player-facing game and gives playtests a safe target.
+
+Follow-up:
+
+Create the staging Roblox place, configure staging IDs in GitHub variables, and add a manual staging publish workflow after Open Cloud credentials are ready.
+
+## D-010: Keep Main As The Integration Branch For Now
+
+Date: 2026-06-13
+Status: Accepted
+
+Context:
+
+The project needs disciplined branching, but adding a long-lived `develop` branch too early can create process overhead without solving a current problem.
+
+Decision:
+
+Use short-lived `feature/`, `fix/`, and `chore/` branches from the latest `main`. Keep `main` releasable and CI-backed. Add release branches or a long-lived development branch only if release preparation becomes difficult.
+
+Tradeoffs:
+
+This keeps the workflow simple and fast while the project is small. It requires consistent PR discipline and staging deployment gates before production.
+
+Follow-up:
+
+Revisit branch strategy once staging publishing exists and multiple gameplay features are in flight at the same time.

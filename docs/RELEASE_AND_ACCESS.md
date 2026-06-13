@@ -42,6 +42,7 @@ release/<version>
 
 Default operating rules:
 
+- Check out and fast-forward sync `main` before creating a new work branch.
 - Use feature branches for meaningful work.
 - Prefer draft PRs until validation is complete.
 - Keep `main` releasable.
@@ -154,6 +155,8 @@ The initial CI pipeline now:
 7. Uploads the `.rbxlx` artifact.
 
 Do not wire production auto-publishing until staging deployment is proven.
+
+Environment details live in `docs/production/ENVIRONMENTS.md`.
 
 ## Release Discipline
 

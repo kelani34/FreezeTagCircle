@@ -35,10 +35,11 @@ Add that directory to your shell PATH so `rojo`, `wally`, `selene`, `stylua`, an
 ```sh
 rokit install
 lune run scripts/tooling-doctor.luau
+lune run scripts/test.luau
 wally install
-stylua src scripts
-stylua --check src scripts
-selene src scripts
+stylua src scripts tests
+stylua --check src scripts tests
+selene src scripts tests
 rojo build default.project.json -o build/FreezeTagCircle.rbxlx
 rojo serve default.project.json
 ```
@@ -50,13 +51,13 @@ Formatting is controlled by `.stylua.toml`.
 Use:
 
 ```sh
-stylua src scripts
+stylua src scripts tests
 ```
 
 CI checks formatting with:
 
 ```sh
-stylua --check src scripts
+stylua --check src scripts tests
 ```
 
 ## Static Analysis
@@ -66,7 +67,15 @@ Selene is configured by `selene.toml` with Roblox globals enabled.
 Use:
 
 ```sh
-selene src scripts
+selene src scripts tests
+```
+
+## Unit Tests
+
+Headless Luau tests run through Lune:
+
+```sh
+lune run scripts/test.luau
 ```
 
 ## Packages
@@ -87,8 +96,9 @@ The workflow:
 2. Trusts and installs pinned tools.
 3. Prints tool versions through Lune.
 4. Validates the Wally manifest.
-5. Checks formatting.
-6. Runs Selene.
-7. Builds a Rojo `.rbxlx` artifact.
+5. Runs headless Luau unit tests.
+6. Checks formatting.
+7. Runs Selene.
+8. Builds a Rojo `.rbxlx` artifact.
 
 CI does not publish to Roblox yet.

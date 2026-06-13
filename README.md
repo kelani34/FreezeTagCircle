@@ -32,6 +32,9 @@ Primary goals:
 - [Roblox Development Workflow](docs/ROBLOX_WORKFLOW.md)
 - [Release and Access Plan](docs/RELEASE_AND_ACCESS.md)
 - [Tooling](docs/TOOLING.md)
+- [Test Strategy](docs/TEST_STRATEGY.md)
+- [Environments](docs/production/ENVIRONMENTS.md)
+- [Release Checklist](docs/production/RELEASE_CHECKLIST.md)
 
 ## Repository Structure
 
@@ -43,6 +46,7 @@ Primary goals:
 │   ├── server/            Server-authoritative gameplay systems
 │   ├── shared/            Shared constants, types, utility modules
 │   └── tools/             Development helpers and non-runtime scripts
+├── tests/                 Headless Luau tests
 ├── default.project.json   Rojo project mapping
 ├── FreezeTagCircle.rbxl   Current Roblox place file
 ├── rokit.toml             Pinned Roblox toolchain
@@ -65,9 +69,10 @@ Common checks:
 
 ```sh
 lune run scripts/tooling-doctor.luau
+lune run scripts/test.luau
 wally install
-stylua --check src scripts
-selene src scripts
+stylua --check src scripts tests
+selene src scripts tests
 rojo build default.project.json -o build/FreezeTagCircle.rbxlx
 ```
 
