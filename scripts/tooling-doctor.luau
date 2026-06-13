@@ -6,6 +6,7 @@ local tools = {
 	{ command = "selene", args = { "--version" } },
 	{ command = "stylua", args = { "--version" } },
 	{ command = "lune", args = { "--version" } },
+	{ command = "run-in-roblox", args = { "--version" } },
 }
 
 local function execTool(command: string, args: { string })

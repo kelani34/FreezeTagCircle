@@ -228,3 +228,66 @@ This keeps the workflow simple and fast while the project is small. It requires 
 Follow-up:
 
 Revisit branch strategy once staging publishing exists and multiple gameplay features are in flight at the same time.
+
+## D-011: Add Local Roblox Studio Integration Gate
+
+Date: 2026-06-13
+Status: Accepted
+
+Context:
+
+Headless Luau tests cannot validate Roblox services, Studio-built place structure, or ModuleScripts loaded from Rojo-built places.
+
+Decision:
+
+Pin `run-in-roblox` through Rokit and add a local integration smoke test that builds the Rojo place, opens it in Roblox Studio, loads shared/server modules, starts `RoundService`, and validates the minimum-player setup gate.
+
+Tradeoffs:
+
+This gives real Roblox coverage locally, but GitHub-hosted Linux runners cannot run Roblox Studio. CI keeps headless tests while Roblox integration tests become a local/staging gate.
+
+Follow-up:
+
+Evaluate TestEZ and self-hosted runner options for richer service-level Roblox integration tests.
+
+## D-012: Require Issues, Labels, And Copilot Review For PRs
+
+Date: 2026-06-13
+Status: Accepted
+
+Context:
+
+The project needs tighter GitHub process as gameplay, testing, release, and deployment work grows.
+
+Decision:
+
+Use GitHub issues for meaningful work, label PRs by type/area/priority/review needs, and request Copilot code review before merging PRs when available.
+
+Tradeoffs:
+
+This adds process overhead, but it creates clearer traceability and review discipline before the game becomes larger.
+
+Follow-up:
+
+If Copilot review cannot be requested from the CLI/API, use the GitHub UI fallback and document the attempt in the PR.
+
+## D-013: Prefer Project-Local Skills Over Unvetted Roblox Skill Installs
+
+Date: 2026-06-13
+Status: Accepted
+
+Context:
+
+No trusted Roblox-specific Codex skill was found in the official curated list, and some search results for Roblox skills were unrelated to professional development or appeared unsafe.
+
+Decision:
+
+Create a project-local `freezetagcircle-roundup` skill and avoid installing unvetted third-party Roblox skills globally.
+
+Tradeoffs:
+
+This does not add broad external skill coverage immediately, but it keeps the agent workflow source-controlled, reviewable, and specific to FreezeTagCircle.
+
+Follow-up:
+
+Revisit third-party skills only after source review and relevance checks.

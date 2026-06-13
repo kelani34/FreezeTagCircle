@@ -158,6 +158,8 @@ Do not wire production auto-publishing until staging deployment is proven.
 
 Environment details live in `docs/production/ENVIRONMENTS.md`.
 
+GitHub issue, label, PR, and Copilot review policy lives in `docs/GITHUB_WORKFLOW.md`.
+
 ## Release Discipline
 
 Every meaningful release should include:

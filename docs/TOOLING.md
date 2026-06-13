@@ -13,6 +13,7 @@ Tool versions are pinned in `rokit.toml`:
 | Selene | Luau static analysis |
 | StyLua | Luau formatting |
 | Lune | Local Luau automation |
+| run-in-roblox | Local Roblox Studio integration test runner |
 
 ## Local Setup
 
@@ -36,6 +37,7 @@ Add that directory to your shell PATH so `rojo`, `wally`, `selene`, `stylua`, an
 rokit install
 lune run scripts/tooling-doctor.luau
 lune run scripts/test.luau
+lune run scripts/integration-test.luau
 wally install
 stylua src scripts tests
 stylua --check src scripts tests
@@ -77,6 +79,16 @@ Headless Luau tests run through Lune:
 ```sh
 lune run scripts/test.luau
 ```
+
+## Roblox Integration Tests
+
+Local Roblox Studio integration smoke tests run through `run-in-roblox`:
+
+```sh
+lune run scripts/integration-test.luau
+```
+
+This command builds a temporary `.rbxlx` file, opens it through Roblox Studio, runs `tests/roblox/integration-smoke.luau`, and fails if the smoke test errors. Do not add this to GitHub-hosted Linux CI unless a Roblox-capable runner is available.
 
 ## Packages
 

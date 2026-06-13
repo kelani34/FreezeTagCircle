@@ -1,0 +1,28 @@
+name: Playtest
+description: Plan or record a Roblox Studio or multiplayer playtest.
+title: "[Playtest]: "
+labels:
+  - area:roblox
+  - needs:roblox-studio
+  - status:ready
+body:
+  - type: textarea
+    id: scenario
+    attributes:
+      label: Scenario
+      description: What should be tested?
+    validations:
+      required: true
+  - type: textarea
+    id: players
+    attributes:
+      label: Player Count
+      description: How many players or test clients are required?
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Observations, bugs, and follow-up actions.
+

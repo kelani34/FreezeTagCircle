@@ -33,6 +33,9 @@ Priorities:
 | FTC-013 | P0 | Done | Add headless Luau test runner and shared contract tests |
 | FTC-014 | P0 | Done | Document testing strategy |
 | FTC-015 | P0 | Done | Document dev, staging, and production environment strategy |
+| FTC-016 | P0 | Done | Add local Roblox Studio integration smoke-test runner |
+| FTC-017 | P0 | Done | Add GitHub issue templates, PR template, and labels |
+| FTC-018 | P0 | Done | Add project-local roundup skill and agent memory file |
 
 ## Phase 1: Core Playable Prototype
 
@@ -83,6 +86,7 @@ Priorities:
 | FTC-405 | P2 | Todo | Add release checklist for tagged playtest builds |
 | FTC-406 | P1 | Todo | Create Roblox staging place and configure staging GitHub variables |
 | FTC-407 | P1 | Todo | Add manual staging publish workflow after Open Cloud credentials are ready |
+| FTC-408 | P1 | Todo | Evaluate TestEZ for richer Roblox service-level integration specs |
 
 ## Current Assessment
 

@@ -45,7 +45,9 @@ Purpose:
 
 Status:
 
-- Planned after the first playable prototype systems exist.
+- Local smoke test runner added with `run-in-roblox`.
+- GitHub-hosted Linux CI does not run Roblox Studio integration tests.
+- Use `lune run scripts/integration-test.luau` on a machine with Roblox Studio installed.
 
 ### Manual Studio Playtests
 
@@ -69,6 +71,12 @@ lune run scripts/test.luau
 stylua --check src scripts tests
 selene src scripts tests
 rojo build default.project.json -o build/FreezeTagCircle.rbxlx
+```
+
+Local Roblox integration gate when Roblox Studio behavior changed:
+
+```sh
+lune run scripts/integration-test.luau
 ```
 
 ## Test Case Priorities
@@ -95,10 +103,9 @@ Low priority:
 
 ## Current Gaps
 
-- No automated Roblox integration tests yet.
-- No automated test coverage for `RoundService` because it currently reads Roblox services directly.
+- Roblox integration tests run locally through Studio, but not in GitHub-hosted CI.
+- `RoundService` currently has smoke coverage through Roblox Studio, but not detailed service-level scenario coverage.
 - No performance budget tests yet.
 - No staging publish smoke tests yet.
 
 These gaps are acceptable for the current phase, but they should be closed before public-server readiness.
-

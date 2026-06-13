@@ -1,0 +1,29 @@
+name: Feature
+description: Plan a new game, tooling, or workflow feature.
+title: "[Feature]: "
+labels:
+  - type:feature
+  - status:ready
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: What should be true when this is complete?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: What is included and excluded?
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation
+      description: Tests, playtest steps, or CI checks required.
+    validations:
+      required: true
+

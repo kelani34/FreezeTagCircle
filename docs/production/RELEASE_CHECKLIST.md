@@ -6,6 +6,9 @@ Use this checklist for tagged builds, staging publishes, and production releases
 
 - Branch starts from latest `main`.
 - Scope is focused.
+- GitHub issue is linked when the change is feature, gameplay, testing, release, or infrastructure work.
+- PR labels include type, area, priority, and review needs.
+- Copilot code review is requested before merge.
 - Local checks pass:
 
 ```sh
@@ -15,6 +18,12 @@ lune run scripts/test.luau
 stylua --check src scripts tests
 selene src scripts tests
 rojo build default.project.json -o build/FreezeTagCircle.rbxlx
+```
+
+- Roblox Studio integration test is run when Roblox service behavior changed:
+
+```sh
+lune run scripts/integration-test.luau
 ```
 
 - Backlog is updated.
@@ -46,4 +55,3 @@ rojo build default.project.json -o build/FreezeTagCircle.rbxlx
 - Rollback plan is known.
 - Release notes are drafted.
 - Production publish is intentional and not automatic from ordinary PR merges.
-

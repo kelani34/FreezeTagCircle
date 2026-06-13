@@ -1,0 +1,22 @@
+name: Infrastructure
+description: Track CI, testing, release, deployment, or repo process work.
+title: "[Infra]: "
+labels:
+  - type:infra
+  - status:ready
+body:
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+      description: What infrastructure capability is needed?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: What checks prove this is done?
+    validations:
+      required: true
+
