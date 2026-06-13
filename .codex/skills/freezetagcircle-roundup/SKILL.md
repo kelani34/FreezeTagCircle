@@ -69,6 +69,12 @@ Every meaningful change should have:
 - CI green before merge.
 - Review comments resolved or explicitly answered before merge.
 
+Request Copilot review with:
+
+```sh
+gh pr edit <number> --add-reviewer @copilot
+```
+
 Use squash merges for ordinary feature/chore/fix PRs and delete merged branches.
 
 ## End-Of-Session Roundup
@@ -81,4 +87,3 @@ Before final handoff:
 4. List validations run and any skipped checks.
 5. State the next backlog item.
 6. Mention open blockers, staging needs, or review follow-ups.
-

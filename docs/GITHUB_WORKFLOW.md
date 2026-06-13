@@ -69,7 +69,12 @@ Default PR flow:
 
 Before merging, request review from GitHub Copilot's pull request reviewer when available.
 
+CLI command:
+
+```sh
+gh pr edit <number> --add-reviewer @copilot
+```
+
 If Copilot review cannot be requested by CLI or GitHub API, document the failed request in the PR and use the GitHub UI as the fallback.
 
 Do not ignore Copilot review comments. Either implement the change or explain the tradeoff in the PR before merging.
-
