@@ -1,6 +1,6 @@
 ---
 name: freezetagcircle-roundup
-description: Prepare, validate, and close out FreezeTagCircle development sessions. Use when starting work in the FreezeTagCircle repo, ending a session, creating or merging PRs, updating project memory, checking docs/backlog/decisions/research/production notes, enforcing branch/issue/label/Copilot-review workflow, or running the project roundup before handing off.
+description: Prepare, validate, and close out FreezeTagCircle development sessions. Use when starting work in the FreezeTagCircle repo, ending a session, creating or merging PRs, updating project memory, checking docs/backlog/decisions/research/production notes, enforcing branch/issue/label/review workflow, or running the project roundup before handing off.
 ---
 
 # FreezeTagCircle Roundup
@@ -65,15 +65,9 @@ Every meaningful change should have:
 - A linked GitHub issue when it represents product, gameplay, testing, release, or infrastructure work.
 - Labels covering type, area, priority, and status.
 - A draft PR until validation is complete.
-- Copilot code review requested before merge.
+- Review requested when the change carries meaningful gameplay, infrastructure, release, or security risk.
 - CI green before merge.
 - Review comments resolved or explicitly answered before merge.
-
-Request Copilot review with:
-
-```sh
-gh pr edit <number> --add-reviewer @copilot
-```
 
 Use squash merges for ordinary feature/chore/fix PRs and delete merged branches.
 

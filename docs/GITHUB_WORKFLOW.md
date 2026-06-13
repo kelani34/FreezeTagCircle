@@ -40,7 +40,7 @@ Use at least one label from each relevant group:
 - Area: `area:roblox`, `area:gameplay`, `area:ci`, `area:release`, `area:docs`
 - Priority: `priority:p0`, `priority:p1`, `priority:p2`
 - Status: `status:ready`, `status:blocked`
-- Review or environment needs: `needs:copilot-review`, `needs:roblox-studio`
+- Review or environment needs: `needs:review`, `needs:roblox-studio`
 
 ## Pull Requests
 
@@ -59,22 +59,14 @@ Default PR flow:
 3. Link the issue.
 4. Run local validation.
 5. Wait for CI.
-6. Request Copilot code review.
+6. Request review when the change carries meaningful gameplay, infrastructure, release, or security risk.
 7. Address or explicitly respond to review feedback.
 8. Mark ready.
 9. Squash merge when green and scoped.
 10. Delete the branch.
 
-## Copilot Review Gate
+## Review Gate
 
-Before merging, request review from GitHub Copilot's pull request reviewer when available.
+Before merging higher-risk work, request review from a maintainer or appropriate reviewer.
 
-CLI command:
-
-```sh
-gh pr edit <number> --add-reviewer @copilot
-```
-
-If Copilot review cannot be requested by CLI or GitHub API, document the failed request in the PR and use the GitHub UI as the fallback.
-
-Do not ignore Copilot review comments. Either implement the change or explain the tradeoff in the PR before merging.
+Do not ignore review comments. Either implement the change or explain the tradeoff in the PR before merging.

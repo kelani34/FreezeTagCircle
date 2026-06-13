@@ -8,7 +8,7 @@ Use this checklist for tagged builds, staging publishes, and production releases
 - Scope is focused.
 - GitHub issue is linked when the change is feature, gameplay, testing, release, or infrastructure work.
 - PR labels include type, area, priority, and review needs.
-- Copilot code review is requested before merge.
+- Review is requested when the change carries meaningful gameplay, infrastructure, release, or security risk.
 - Local checks pass:
 
 ```sh

@@ -13,7 +13,8 @@ Expected labels:
 - `type:*`
 - `area:*`
 - `priority:*`
-- `needs:copilot-review`
+- `needs:review` when review is required before merge
+- `needs:roblox-studio` when Studio validation is required
 
 ## Validation
 
@@ -28,11 +29,10 @@ Expected labels:
 
 ## Review Gate
 
-- [ ] Copilot code review requested before merge
+- [ ] Review requested when risk warrants it
 - [ ] Review comments addressed or intentionally documented
 - [ ] CI green before merge
 
 ## Notes
 
 - 
-

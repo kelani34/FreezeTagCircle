@@ -250,7 +250,7 @@ Follow-up:
 
 Evaluate TestEZ and self-hosted runner options for richer service-level Roblox integration tests.
 
-## D-012: Require Issues, Labels, And Copilot Review For PRs
+## D-012: Require Issues, Labels, And Review Discipline For PRs
 
 Date: 2026-06-13
 Status: Accepted
@@ -261,7 +261,7 @@ The project needs tighter GitHub process as gameplay, testing, release, and depl
 
 Decision:
 
-Use GitHub issues for meaningful work, label PRs by type/area/priority/review needs, and request Copilot code review before merging PRs when available.
+Use GitHub issues for meaningful work, label PRs by type/area/priority/review needs, and request review before merging work with meaningful gameplay, infrastructure, release, or security risk.
 
 Tradeoffs:
 
@@ -269,7 +269,7 @@ This adds process overhead, but it creates clearer traceability and review disci
 
 Follow-up:
 
-If Copilot review cannot be requested from the CLI/API, use the GitHub UI fallback and document the attempt in the PR.
+For low-risk repository hygiene, document why review is not required in the PR notes.
 
 ## D-013: Prefer Project-Local Skills Over Unvetted Roblox Skill Installs
 

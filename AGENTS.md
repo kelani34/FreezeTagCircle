@@ -13,7 +13,7 @@ FreezeTagCircle is a Roblox multiplayer game in Phase 1 prototype development.
 - Use conventional commits.
 - Keep PRs focused and reviewable.
 - Use draft PRs until validation is complete.
-- Request Copilot code review before merging PRs.
+- Request review when the change carries meaningful gameplay, infrastructure, release, or security risk.
 - Resolve or explicitly answer review comments before merge.
 - Squash merge ordinary PRs and delete merged branches.
 
@@ -57,4 +57,3 @@ Update these docs whenever the work changes their domain:
 ## Current Next Target
 
 The next gameplay target is `FTC-105`: circle spawn placement.
-
