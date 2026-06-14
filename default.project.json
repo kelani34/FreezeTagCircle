@@ -8,6 +8,9 @@
         "RoundStateChanged": {
           "$className": "RemoteEvent"
         },
+        "StopFeedback": {
+          "$className": "RemoteEvent"
+        },
         "RequestRoundSnapshot": {
           "$className": "RemoteFunction"
         },

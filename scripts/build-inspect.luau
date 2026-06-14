@@ -29,6 +29,10 @@ local checks = {
 		pattern = '<Item class="RemoteFunction"',
 	},
 	{
+		name = "stop feedback remote event is included",
+		pattern = '<string name="Name">StopFeedback</string>',
+	},
+	{
 		name = "round debug status value is included",
 		pattern = '<string name="Name">RoundDebugStatus</string>',
 	},

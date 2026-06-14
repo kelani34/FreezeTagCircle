@@ -13,7 +13,9 @@ local snapshotConnection: RBXScriptConnection? = nil
 local remoteFolder: Folder? = nil
 local roundDebugStatus: StringValue? = nil
 local roundStateChanged: RemoteEvent? = nil
+local stopFeedback: RemoteEvent? = nil
 local requestRoundSnapshot: RemoteFunction? = nil
+local lastStopFeedbackRoundNumber: number? = nil
 
 local function getOrCreateChild(parent: Instance, className: string, name: string): Instance
 	local existing = parent:FindFirstChild(name)
@@ -35,6 +37,8 @@ local function ensureRemotes()
 	remoteFolder = getOrCreateChild(ReplicatedStorage, "Folder", Remotes.FolderName) :: Folder
 	roundStateChanged =
 		getOrCreateChild(remoteFolder, "RemoteEvent", Remotes.RoundStateChanged) :: RemoteEvent
+	stopFeedback =
+		getOrCreateChild(remoteFolder, "RemoteEvent", Remotes.StopFeedback) :: RemoteEvent
 	roundDebugStatus =
 		getOrCreateChild(remoteFolder, "StringValue", Remotes.RoundDebugStatus) :: StringValue
 	requestRoundSnapshot = getOrCreateChild(
@@ -42,6 +46,18 @@ local function ensureRemotes()
 		"RemoteFunction",
 		Remotes.RequestRoundSnapshot
 	) :: RemoteFunction
+end
+
+local function fireStopFeedback(snapshot: RoundService.RoundSnapshot)
+	ensureRemotes()
+
+	local feedbackRemote = stopFeedback :: RemoteEvent
+	feedbackRemote:FireAllClients({
+		roundNumber = snapshot.roundNumber,
+		calledUserId = snapshot.calledUserId,
+		frozenUserIds = snapshot.frozenUserIds,
+		serverTime = os.clock(),
+	})
 end
 
 local function updateDebugStatus(snapshot: RoundService.RoundSnapshot?)
@@ -91,6 +107,14 @@ function RoundReplicationService.start()
 
 	snapshotConnection = RoundService.onSnapshotChanged(function(snapshot)
 		RoundReplicationService.broadcastSnapshot(snapshot)
+
+		if
+			snapshot.state == "StopFrozen"
+			and snapshot.roundNumber ~= lastStopFeedbackRoundNumber
+		then
+			lastStopFeedbackRoundNumber = snapshot.roundNumber
+			fireStopFeedback(snapshot)
+		end
 	end)
 
 	playerAddedConnection = Players.PlayerAdded:Connect(function(player)
@@ -119,6 +143,7 @@ end
 
 function RoundReplicationService.stop()
 	started = false
+	lastStopFeedbackRoundNumber = nil
 
 	if playerAddedConnection then
 		playerAddedConnection:Disconnect()

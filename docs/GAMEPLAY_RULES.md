@@ -73,6 +73,7 @@ These are provisional recommendations for prototype testing:
 - Caller chooses from active players through a simple server-validated choice UI.
 - Caller target selection is accepted only when the requester is the current caller, the target is active, and no target has already been locked.
 - STOP triggers automatically when the called player enters the center zone.
+- STOP feedback is triggered by the server when the round enters `StopFrozen`; clients render a short overlay and audio cue from that live event.
 - Frozen players are anchored by server-authoritative movement restriction, with a clear visual freeze effect.
 - The called player has three jump actions and a short time limit.
 - Tagging uses server-validated proximity, not trusting client touch events alone.

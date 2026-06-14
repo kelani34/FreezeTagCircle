@@ -4,6 +4,7 @@ local Remotes = {
 	RoundStateChanged = "RoundStateChanged",
 	RequestRoundSnapshot = "RequestRoundSnapshot",
 	RequestTargetSelection = "RequestTargetSelection",
+	StopFeedback = "StopFeedback",
 	SubmitTargetSelection = "SubmitTargetSelection",
 }
 
