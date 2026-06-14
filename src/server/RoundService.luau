@@ -63,6 +63,12 @@ export type ResetRoundResult = {
 	snapshot: RoundSnapshot,
 }
 
+export type ResolveAttempt = {
+	accepted: boolean,
+	reason: "NotTagAttempt"?,
+	snapshot: RoundSnapshot,
+}
+
 type TransitionOptions = {
 	durationSeconds: number?,
 	activePlayerCount: number?,
@@ -582,6 +588,30 @@ function RoundService.attemptTag(requestingUserId: unknown, targetUserId: unknow
 	}
 end
 
+function RoundService.resolveTagAttemptWithoutTag(): ResolveAttempt
+	if currentSnapshot.state ~= GameStates.RoundStates.TagAttempt then
+		return {
+			accepted = false,
+			reason = "NotTagAttempt",
+			snapshot = RoundService.getSnapshot(),
+		}
+	end
+
+	currentSnapshot = makeSnapshot(GameStates.RoundStates.Resolve, {
+		activePlayerCount = getActivePlayerCount(),
+		taggedUserId = nil,
+		tagSucceeded = false,
+		tagDistance = nil,
+	})
+	publishSnapshotChanged()
+
+	return {
+		accepted = true,
+		reason = nil,
+		snapshot = RoundService.getSnapshot(),
+	}
+end
+
 function RoundService.resetRound(): ResetRoundResult
 	if currentSnapshot.state ~= GameStates.RoundStates.Resolve then
 		return {
@@ -635,7 +665,9 @@ function RoundService.checkCalledPlayerAtCenter(): CenterCheckResult
 	local centerReach = ArenaService.getPlayerCenterReach(currentSnapshot.calledUserId)
 
 	if centerReach.reached then
-		RoundService.transitionTo(GameStates.RoundStates.StopFrozen)
+		RoundService.transitionTo(GameStates.RoundStates.StopFrozen, {
+			durationSeconds = Tuning.StopFrozenSeconds,
+		})
 	end
 
 	return {

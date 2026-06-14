@@ -23,6 +23,19 @@ end
 
 return {
 	{
+		name = "selects an automatic non-caller target deterministically",
+		run = function(expect)
+			expect.equal(TargetSelection.selectAutomaticTargetUserId({ 300, 100, 200 }, 200), 100)
+		end,
+	},
+	{
+		name = "returns nil when automatic target cannot be selected",
+		run = function(expect)
+			expect.equal(TargetSelection.selectAutomaticTargetUserId({ 100 }, 100), nil)
+			expect.equal(TargetSelection.selectAutomaticTargetUserId({ 100 }, nil), nil)
+		end,
+	},
+	{
 		name = "accepts an active non-caller target from the caller",
 		run = function(expect)
 			local result = validate()

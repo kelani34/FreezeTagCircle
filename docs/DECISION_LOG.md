@@ -501,3 +501,24 @@ This gives broad deterministic coverage for the policy but does not replace true
 Follow-up:
 
 Use FTC-408/FTC-403 to evaluate and add a Roblox service-level runner for multi-client lifecycle scenarios.
+
+## D-024: Add A Conservative Automatic Driver For First Playable
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+The server-owned systems can validate the core loop, but a player opening Studio should not need manual server console calls to advance phases.
+
+Decision:
+
+Add `RoundDriverService` as first-playable scaffolding. It starts rounds when enough players are present, auto-selects a deterministic target until caller UI exists, advances timed phases, checks center reach, polls proximity tags, resolves by timeout, and resets through `RoundService`.
+
+Tradeoffs:
+
+Automatic target selection is less social than caller choice, and proximity polling is less expressive than final tag interaction design. This is acceptable for the first testable build because it proves the loop can run end-to-end while preserving server authority.
+
+Follow-up:
+
+Replace automatic target selection with caller UI, add richer STOP feedback, tune timers/radii through playtests, and add service-level tests for timed multi-player round flow.

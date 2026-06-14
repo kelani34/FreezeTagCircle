@@ -6,7 +6,9 @@ local Tuning = {
 	IntermissionSeconds = 8,
 	CallerChooseSeconds = 10,
 	RunAwaySeconds = 8,
+	StopFrozenSeconds = 1,
 	TagAttemptSeconds = 12,
+	ResolveSeconds = 3,
 	TagJumpLimit = 3,
 	TagRadius = 6,
 }

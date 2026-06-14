@@ -50,6 +50,26 @@ local function reject(reason: FailureReason): ValidationResult
 	}
 end
 
+function TargetSelection.selectAutomaticTargetUserId(
+	activeUserIds: { number },
+	callerUserId: number?
+): number?
+	if not isWholeNumber(callerUserId) then
+		return nil
+	end
+
+	local sortedUserIds = table.clone(activeUserIds)
+	table.sort(sortedUserIds)
+
+	for _, activeUserId in sortedUserIds do
+		if activeUserId ~= callerUserId then
+			return activeUserId
+		end
+	end
+
+	return nil
+end
+
 function TargetSelection.validate(options: ValidationOptions): ValidationResult
 	if not options.isCallerChoosing then
 		return reject("NotCallerChoosing")
