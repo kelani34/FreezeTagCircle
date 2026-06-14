@@ -49,6 +49,14 @@ local checks = {
 		pattern = '<string name="Name">CenterStopPad</string>',
 	},
 	{
+		name = "waiting room lobby is included",
+		pattern = '<string name="Name">Lobby</string>',
+	},
+	{
+		name = "waiting room spawn pad is included",
+		pattern = '<string name="Name">LobbySpawnPad</string>',
+	},
+	{
 		name = "generated circular arena folder is included",
 		pattern = '<string name="Name">GeneratedCircleArena</string>',
 	},

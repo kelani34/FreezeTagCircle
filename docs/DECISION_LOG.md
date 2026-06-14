@@ -711,3 +711,24 @@ Runtime-generated visuals require Roblox smoke coverage because the generated pa
 Follow-up:
 
 Add the physical waiting room and lobby-to-circle flow next so players begin outside the playground before being moved into circle slots.
+
+## D-034: Use A Physical Lobby With Automatic Public-Server Start
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+The game had a waiting state but no physical waiting room. That made joining, late joining, and between-round state feel ambiguous because players could appear directly on or near the playground.
+
+Decision:
+
+Add a physical lobby outside the circle and keep automatic start after minimum players. Waiting, respawned, and late-joining players are placed in the lobby. Setup moves eligible players to circle slots. Current-round participant-sensitive logic uses setup placements so late joiners do not affect the active round until the next setup.
+
+Tradeoffs:
+
+Automatic start is better for public servers, but it gives private groups less control. A manual start pad/button can be added later for private/custom modes once the base loop is readable.
+
+Follow-up:
+
+Playtest 2+ clients in Studio to verify lobby spawn, setup teleport, and late-join waiting behavior before polishing STOP feedback.

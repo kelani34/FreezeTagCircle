@@ -49,6 +49,7 @@ Client-owned systems:
 World-owned instances:
 
 - Circle arena
+- Waiting room lobby
 - Spawn markers
 - Center trigger zone
 - Boundary markers
@@ -58,6 +59,7 @@ Initial implementation:
 
 - `default.project.json` owns the prototype arena under `Workspace.Arena` so the Studio playtest build is readable without manual place edits.
 - The static arena includes a grass floor, a visible red center STOP pad, and a small STOP beacon.
+- `default.project.json` also owns a physical `Workspace.Lobby` outside the circle with a lobby floor, spawn pad, and walkway toward the playground.
 - `src/server/ArenaVisualService.luau` generates the circular boundary, preview/player slot pads, and outer run-away markers at runtime from shared tuning and spawn math.
 - These are prototype readability assets, not final art. They are intentionally built from anchored Parts so Rojo, CI build inspection, and Studio runtime smoke checks stay predictable.
 
@@ -155,12 +157,24 @@ Handles map-specific placement and zones:
 Initial implementation:
 
 - `src/server/ArenaService.luau` owns Roblox-specific placement behavior.
+- `ArenaService.placePlayersInLobby` owns deterministic lobby placement for waiting, late-join, reset, and respawn cases.
 - Player spawn assignment is deterministic by ascending `UserId`, which makes setup stable even if `Players:GetPlayers()` order changes.
 - Loaded characters are pivoted to circle slots facing the arena center.
 - Missing characters still receive spawn placement records, but are marked as not placed so later lifecycle work can decide how to recover.
 - Center-zone detection uses character pivots rather than trusting client-reported position or requiring a specific humanoid root part.
 - First-playable tuning uses `Tuning.CircleSpawnRadius = 40`, `Tuning.CenterZoneRadius = 10`, and `Tuning.TagRadius = 8`; visible start pads and center geometry are kept aligned with those values in `default.project.json`.
 - `src/shared/ArenaVisuals.luau` defines the generated circular boundary, preview slot count, and run-away marker layout so visible arena math can be tested headlessly.
+- Late joiners are connected players, but once setup has created round placements, participant-sensitive operations use the placement user IDs rather than every connected player.
+
+### Lobby Flow
+
+The first public-server flow is automatic:
+
+- Players spawn or respawn in the physical waiting room.
+- The automatic driver starts setup when the minimum player count is met.
+- Setup moves eligible players to circle slots.
+- Late joiners stay in the lobby until the next setup.
+- After a completed round, reset returns through `WaitingForPlayers`, which places players back in the lobby before the next automatic setup.
 
 ### ArenaVisualService
 

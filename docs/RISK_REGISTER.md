@@ -14,3 +14,4 @@
 | R-010 | Project becomes hard to maintain if code remains only in `.rbxl` | High | Medium | Move runtime code into source-controlled Luau files through Rojo | Open |
 | R-011 | Playtest build looks like an empty baseplate even when the round loop works | High | High | Add a readable prototype arena before deeper balance work | Mitigated |
 | R-012 | The arena reads as a square box instead of a playground circle | High | Medium | Generate circular boundary and player slots from shared circle math | Mitigated |
+| R-013 | Late joiners are mistaken for active round participants | High | Medium | Keep late joiners in the lobby and use setup placements as the current participant set | Mitigated |

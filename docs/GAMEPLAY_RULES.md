@@ -4,6 +4,10 @@
 
 - Players begin positioned around a large circle.
 - The circle is divided into evenly spaced player slots based on the active round player count.
+- Players join in a waiting room outside the playground circle.
+- When enough players are present, the server automatically starts the next round countdown.
+- At setup, eligible players are moved from the waiting room to their circle slots.
+- Late joiners remain in the waiting room until the next round setup.
 - Each player has an identity. The original playground version often used country names.
 - One player is the caller.
 - The caller selects another player.
@@ -73,6 +77,7 @@ These are provisional recommendations for prototype testing:
 - The called player has three jump actions and a short time limit.
 - Tagging uses server-validated proximity, not trusting client touch events alone.
 - No elimination in the first prototype. Use points and quick round resets to keep everyone playing.
+- Use automatic start after minimum players for public-server friendliness. A manual start button is reserved for later private/custom modes.
 
 ## First Playable Tuning
 
