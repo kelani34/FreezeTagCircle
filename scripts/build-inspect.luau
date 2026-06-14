@@ -33,6 +33,34 @@ local checks = {
 		pattern = '<string name="Name">RoundDebugStatus</string>',
 	},
 	{
+		name = "readable arena folder is included",
+		pattern = '<string name="Name">Arena</string>',
+	},
+	{
+		name = "readable arena floor is included",
+		pattern = '<string name="Name">ArenaFloor</string>',
+	},
+	{
+		name = "center stop pad is included",
+		pattern = '<string name="Name">CenterStopPad</string>',
+	},
+	{
+		name = "circle boundary is included",
+		pattern = '<string name="Name">BoundaryNorth</string>',
+	},
+	{
+		name = "circle marker ring is included",
+		pattern = '<string name="Name">CircleMarkerNorthEast</string>',
+	},
+	{
+		name = "spawn start pads are included",
+		pattern = '<string name="Name">StartPadNorthEast</string>',
+	},
+	{
+		name = "outer run markers are included",
+		pattern = '<string name="Name">RunMarkerNorth</string>',
+	},
+	{
 		name = "server entry is a Script",
 		pattern = '<Item class="Script"',
 	},
