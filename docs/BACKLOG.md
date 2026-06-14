@@ -98,7 +98,7 @@ Foundation governance work is tracked by [#5](https://github.com/kelani34/Freeze
 
 | ID | Priority | Status | Item |
 | --- | --- | --- | --- |
-| FTC-201 | P1 | Todo | Tune arena radius, center radius, and tag radius |
+| FTC-201 | P1 | Done | Tune arena radius, center radius, and tag radius |
 | FTC-202 | P1 | Todo | Add clear STOP feedback |
 | FTC-203 | P1 | Todo | Add tag attempt timer |
 | FTC-204 | P1 | Todo | Prevent caller target spam or repeated targeting abuse |
@@ -148,4 +148,5 @@ As of 2026-06-14:
 - GitHub issues now exist for every remaining backlog item.
 - The tagged playtest release checklist exists in `docs/production/RELEASE_CHECKLIST.md`.
 - Phase 1 core systems are implemented and the first-playable arena now has a visible floor, center STOP pad, circular boundary markers, spawn pads, outer run markers, and simple spectator framing.
-- The next implementation target is `FTC-201`: tune arena radius, center radius, and tag radius against real playtest observations.
+- The first playable tuning pass uses a 40-stud start circle, 10-stud center zone, and 8-stud tag radius.
+- The next implementation target is `FTC-202`: add clear STOP feedback.

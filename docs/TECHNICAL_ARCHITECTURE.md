@@ -158,6 +158,7 @@ Initial implementation:
 - Loaded characters are pivoted to circle slots facing the arena center.
 - Missing characters still receive spawn placement records, but are marked as not placed so later lifecycle work can decide how to recover.
 - Center-zone detection uses character pivots rather than trusting client-reported position or requiring a specific humanoid root part.
+- First-playable tuning uses `Tuning.CircleSpawnRadius = 40`, `Tuning.CenterZoneRadius = 10`, and `Tuning.TagRadius = 8`; visible start pads and center geometry are kept aligned with those values in `default.project.json`.
 
 ### MovementControlService
 

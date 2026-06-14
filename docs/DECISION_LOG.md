@@ -669,3 +669,24 @@ The arena is visually functional rather than final-quality. The place file becom
 Follow-up:
 
 Use FTC-201 to tune the gameplay measurements in this arena, then replace or augment the prototype geometry with authored art once the loop feels good.
+
+## D-032: Use Compact First-Playable Arena Measurements
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+The readable prototype arena gave us a real playtest surface. The previous 48-stud spawn radius made the first playable feel too spread out for a fast playground-inspired loop, especially before stronger STOP, frozen, and result feedback exist.
+
+Decision:
+
+Set the first playable start circle to 40 studs, center STOP zone to 10 studs, and server tag radius to 8 studs. Update visible start pads and perimeter markers so the map communicates the same geometry the server uses.
+
+Tradeoffs:
+
+This makes early rounds more compact and forgiving, which may make tags too easy with only two players. That is acceptable for first playable because it keeps the loop moving and gives better feedback data.
+
+Follow-up:
+
+Use manual 2-player and 4-player Studio playtests to record average round length and tag success rate, then retune alongside STOP feedback and visible frozen effects.

@@ -1,7 +1,8 @@
 local CircleSpawns = require("../../src/shared/CircleSpawns")
+local Tuning = require("../../src/shared/Tuning")
 
-local RADIUS = 48
-local HEIGHT = 4
+local RADIUS = Tuning.CircleSpawnRadius
+local HEIGHT = Tuning.CircleSpawnHeight
 
 return {
 	{
