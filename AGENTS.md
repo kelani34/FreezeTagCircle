@@ -56,4 +56,4 @@ Update these docs whenever the work changes their domain:
 
 ## Current Next Target
 
-The next gameplay target is `FTC-106`: caller assignment.
+The next gameplay target is `FTC-107`: target selection validation.

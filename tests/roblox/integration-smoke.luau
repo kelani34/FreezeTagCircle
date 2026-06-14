@@ -12,6 +12,7 @@ local server = ServerScriptService:WaitForChild("Server", 5)
 assert(server, "ServerScriptService.Server should exist")
 
 local ArenaService = require(server:WaitForChild("ArenaService", 5))
+local CallerSelection = require(shared:WaitForChild("CallerSelection", 5))
 local CircleSpawns = require(shared:WaitForChild("CircleSpawns", 5))
 local GameStates = require(shared:WaitForChild("GameStates", 5))
 local Remotes = require(shared:WaitForChild("Remotes", 5))
@@ -37,6 +38,7 @@ local assignments = CircleSpawns.assignSlotsToUserIds(
 	Tuning.CircleSpawnHeight
 )
 assertEqual(assignments[1].userId, 100, "Deterministic spawn assignment")
+assertEqual(CallerSelection.selectCallerUserId({ 200, 100 }, 1), 100, "Deterministic caller")
 
 RoundService.start()
 
