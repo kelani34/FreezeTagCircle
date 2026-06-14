@@ -26,6 +26,7 @@ Current coverage:
 - `GameStates`
 - `JumpTracker`
 - `Remotes`
+- `TagService`
 - `TargetSelection`
 - `Tuning`
 
@@ -98,6 +99,7 @@ Highest priority:
 - Center-zone checks use server-side position and tuning.
 - Freeze behavior snapshots and restores server-side humanoid movement state.
 - Jump tracking accepts only the called player during `TagAttempt` and never exceeds the configured limit.
+- Tag validation accepts only active frozen targets inside server-measured tag radius during `TagAttempt`.
 - Spawn placement determinism.
 - Tag validation rules.
 
@@ -120,6 +122,7 @@ Low priority:
 - Roblox integration tests run locally through Studio, but not in GitHub-hosted CI.
 - `RoundService` currently has smoke coverage through Roblox Studio, but not detailed service-level scenario coverage.
 - Movement freeze lifecycle has smoke loading coverage; richer humanoid lifecycle assertions should be added once Roblox service-level tests exist.
+- Tag validation has headless rule coverage and Studio smoke loading coverage; character-distance success paths need richer multi-character Roblox tests.
 - No performance budget tests yet.
 - No staging publish smoke tests yet.
 

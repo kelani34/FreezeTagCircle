@@ -20,12 +20,14 @@ local JumpTracker = require(server:WaitForChild("JumpTracker", 5))
 local MovementControlService = require(server:WaitForChild("MovementControlService", 5))
 local Remotes = require(shared:WaitForChild("Remotes", 5))
 local RoundService = require(server:WaitForChild("RoundService", 5))
+local TagService = require(server:WaitForChild("TagService", 5))
 local TargetSelection = require(server:WaitForChild("TargetSelection", 5))
 local Tuning = require(shared:WaitForChild("Tuning", 5))
 
 assertEqual(GameStates.DefaultRoundState, GameStates.RoundStates.WaitingForPlayers, "Default state")
 assertEqual(Remotes.FolderName, "FreezeTagCircleRemotes", "Remote folder name")
 assertEqual(Tuning.TagJumpLimit, 3, "Jump limit")
+assertEqual(Tuning.TagRadius > 0, true, "Tag radius")
 assertEqual(
 	Tuning.CircleSpawnRadius > Tuning.CenterZoneRadius,
 	true,
@@ -47,6 +49,19 @@ assertEqual(CenterZone.isWithinRadius(0, 0, Tuning.CenterZoneRadius), true, "Cen
 assertEqual(ArenaService.isPositionInCenterZone(Vector3.new(0, 0, 0)), true, "Arena center zone")
 assertEqual(JumpTracker.getRemainingJumps(1, Tuning.TagJumpLimit), 2, "Remaining jumps")
 assertEqual(#MovementControlService.getFrozenUserIds(), 0, "No frozen users at smoke start")
+
+local tagValidation = TagService.validate({
+	isTagAttempt = true,
+	isExpired = false,
+	activeUserIds = { 100, 200 },
+	frozenUserIds = { 200 },
+	calledUserId = 100,
+	requestingUserId = 100,
+	targetUserId = 200,
+	distance = Tuning.TagRadius,
+	tagRadius = Tuning.TagRadius,
+})
+assertEqual(tagValidation.accepted, true, "Valid tag selection")
 
 local targetValidation = TargetSelection.validate({
 	isCallerChoosing = true,

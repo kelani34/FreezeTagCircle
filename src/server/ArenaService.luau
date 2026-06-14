@@ -24,6 +24,13 @@ export type CenterReachResult = {
 	reason: "NoPlayer" | "NoCharacter" | "OutsideCenter" | nil,
 }
 
+export type PlayerDistanceResult = {
+	sourceUserId: number,
+	targetUserId: number,
+	distance: number?,
+	reason: "NoSourcePlayer" | "NoTargetPlayer" | "NoSourceCharacter" | "NoTargetCharacter" | nil,
+}
+
 local ArenaService = {}
 
 local function getPlayers(players: { Player }?): { Player }
@@ -38,6 +45,16 @@ local function getUserIds(players: { Player }): { number }
 	end
 
 	return userIds
+end
+
+local function getPlayerByUserId(userId: number, players: { Player }): Player?
+	for _, player in players do
+		if player.UserId == userId then
+			return player
+		end
+	end
+
+	return nil
 end
 
 local function copyPlacement(
@@ -70,14 +87,7 @@ end
 
 function ArenaService.getPlayerCenterReach(userId: number, players: { Player }?): CenterReachResult
 	local selectedPlayers = getPlayers(players)
-	local selectedPlayer = nil
-
-	for _, player in selectedPlayers do
-		if player.UserId == userId then
-			selectedPlayer = player
-			break
-		end
-	end
+	local selectedPlayer = getPlayerByUserId(userId, selectedPlayers)
 
 	if selectedPlayer == nil then
 		return {
@@ -107,6 +117,64 @@ function ArenaService.getPlayerCenterReach(userId: number, players: { Player }?)
 		reached = distance <= Tuning.CenterZoneRadius,
 		distance = distance,
 		reason = if distance <= Tuning.CenterZoneRadius then nil else "OutsideCenter",
+	}
+end
+
+function ArenaService.getDistanceBetweenPlayers(
+	sourceUserId: number,
+	targetUserId: number,
+	players: { Player }?
+): PlayerDistanceResult
+	local selectedPlayers = getPlayers(players)
+	local sourcePlayer = getPlayerByUserId(sourceUserId, selectedPlayers)
+
+	if sourcePlayer == nil then
+		return {
+			sourceUserId = sourceUserId,
+			targetUserId = targetUserId,
+			distance = nil,
+			reason = "NoSourcePlayer",
+		}
+	end
+
+	local targetPlayer = getPlayerByUserId(targetUserId, selectedPlayers)
+
+	if targetPlayer == nil then
+		return {
+			sourceUserId = sourceUserId,
+			targetUserId = targetUserId,
+			distance = nil,
+			reason = "NoTargetPlayer",
+		}
+	end
+
+	local sourceCharacter = sourcePlayer.Character
+
+	if sourceCharacter == nil then
+		return {
+			sourceUserId = sourceUserId,
+			targetUserId = targetUserId,
+			distance = nil,
+			reason = "NoSourceCharacter",
+		}
+	end
+
+	local targetCharacter = targetPlayer.Character
+
+	if targetCharacter == nil then
+		return {
+			sourceUserId = sourceUserId,
+			targetUserId = targetUserId,
+			distance = nil,
+			reason = "NoTargetCharacter",
+		}
+	end
+
+	return {
+		sourceUserId = sourceUserId,
+		targetUserId = targetUserId,
+		distance = (sourceCharacter:GetPivot().Position - targetCharacter:GetPivot().Position).Magnitude,
+		reason = nil,
 	}
 end
 
