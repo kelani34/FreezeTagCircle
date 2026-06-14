@@ -438,3 +438,24 @@ This validates server truth but still depends on simple character pivot distance
 Follow-up:
 
 Use playtests and FTC-201 tuning work to decide whether tag radius, capsule checks, or Studio-authored hitbox helpers are needed.
+
+## D-021: Reset Completed Rounds Through A Single Cleanup Path
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+Repeated rounds can leak old caller, target, frozen, jump, or tag-result state if cleanup is split across several call sites.
+
+Decision:
+
+Add `RoundService.resetRound` as the completed-round reset entry point. It only accepts `Resolve`, restores movement, clears round actors/results through the existing snapshot cleanup path, and then uses `GameStates.getPostResetState` to choose `Setup` or `WaitingForPlayers` based on active player count.
+
+Tradeoffs:
+
+The helper is conservative and does not reset from arbitrary mid-round states. Mid-round player-count failure still uses the existing fail-safe waiting path.
+
+Follow-up:
+
+FTC-114 should add broader join/leave/reset scenario coverage once richer Roblox service-level tests are introduced.

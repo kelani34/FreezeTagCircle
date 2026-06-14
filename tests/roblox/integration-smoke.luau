@@ -85,6 +85,10 @@ assertEqual(#snapshot.frozenUserIds, 0, "Waiting state has no frozen users")
 assertEqual(snapshot.jumpsRemaining, Tuning.TagJumpLimit, "Waiting state has full jump budget")
 assertEqual(RoundService.canTransitionTo(GameStates.RoundStates.Setup), false, "Setup gate")
 
+local resetResult = RoundService.resetRound()
+assertEqual(resetResult.accepted, false, "Waiting state cannot reset as completed round")
+assertEqual(resetResult.reason, "NotResolve", "Waiting reset rejection reason")
+
 RoundService.stop()
 
 print("Roblox integration smoke test passed")

@@ -57,6 +57,12 @@ export type TagAttempt = {
 	snapshot: RoundSnapshot,
 }
 
+export type ResetRoundResult = {
+	accepted: boolean,
+	reason: "NotResolve"?,
+	snapshot: RoundSnapshot,
+}
+
 type TransitionOptions = {
 	durationSeconds: number?,
 	activePlayerCount: number?,
@@ -373,7 +379,7 @@ end
 function RoundService.canTransitionTo(nextState: GameStates.RoundState): boolean
 	if
 		started
-		and currentSnapshot.state == GameStates.RoundStates.WaitingForPlayers
+		and (currentSnapshot.state == GameStates.RoundStates.WaitingForPlayers or currentSnapshot.state == GameStates.RoundStates.Reset)
 		and nextState == GameStates.RoundStates.Setup
 	then
 		updateActivePlayerCount(getActivePlayerCount())
@@ -386,8 +392,10 @@ function RoundService.canTransitionTo(nextState: GameStates.RoundState): boolean
 	end
 
 	if
-		currentSnapshot.state == GameStates.RoundStates.WaitingForPlayers
-		and nextState == GameStates.RoundStates.Setup
+		(
+			currentSnapshot.state == GameStates.RoundStates.WaitingForPlayers
+			or currentSnapshot.state == GameStates.RoundStates.Reset
+		) and nextState == GameStates.RoundStates.Setup
 	then
 		return currentSnapshot.hasMinimumPlayers
 	end
@@ -551,6 +559,37 @@ function RoundService.attemptTag(requestingUserId: unknown, targetUserId: unknow
 		accepted = result.accepted,
 		reason = result.reason,
 		distance = result.distance,
+		snapshot = RoundService.getSnapshot(),
+	}
+end
+
+function RoundService.resetRound(): ResetRoundResult
+	if currentSnapshot.state ~= GameStates.RoundStates.Resolve then
+		return {
+			accepted = false,
+			reason = "NotResolve",
+			snapshot = RoundService.getSnapshot(),
+		}
+	end
+
+	local activePlayerCount = refreshActivePlayerCount()
+
+	if currentSnapshot.state == GameStates.RoundStates.Resolve then
+		RoundService.transitionTo(GameStates.RoundStates.Reset, {
+			activePlayerCount = activePlayerCount,
+		})
+	end
+
+	if currentSnapshot.state == GameStates.RoundStates.Reset then
+		local postResetState =
+			GameStates.getPostResetState(currentSnapshot.activePlayerCount, Tuning.MinimumPlayers)
+
+		RoundService.transitionTo(postResetState)
+	end
+
+	return {
+		accepted = true,
+		reason = nil,
 		snapshot = RoundService.getSnapshot(),
 	}
 end

@@ -52,4 +52,13 @@ function GameStates.getNextRoundState(state: RoundState): RoundState?
 	return NextRoundState[state]
 end
 
+function GameStates.getPostResetState(activePlayerCount: number, minimumPlayers: number): RoundState
+	assert(activePlayerCount >= 0, "activePlayerCount must be non-negative")
+	assert(minimumPlayers >= 1, "minimumPlayers must be positive")
+
+	return if activePlayerCount >= minimumPlayers
+		then RoundStates.Setup
+		else RoundStates.WaitingForPlayers
+end
+
 return table.freeze(GameStates)

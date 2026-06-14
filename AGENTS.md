@@ -56,4 +56,4 @@ Update these docs whenever the work changes their domain:
 
 ## Current Next Target
 
-The next gameplay target is `FTC-112`: round reset.
+The next gameplay target is `FTC-113`: basic client UI prompts.
