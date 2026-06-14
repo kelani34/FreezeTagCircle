@@ -85,6 +85,7 @@ Initial implementation:
 - During `TagAttempt`, `RoundService.attemptTag` validates active/frozen actors, timer state, and server-measured distance before resolving a successful tag.
 - `RoundService.resetRound` moves completed rounds through cleanup and then into either `Setup` or `WaitingForPlayers` based on active player count.
 - `RoundService` restores frozen movement when returning to waiting/reset states or when the service stops.
+- `RoundService.onSnapshotChanged` lets replication systems observe authoritative state changes.
 - `src/shared/CallerSelection.luau` defines deterministic round-robin caller selection over sorted active user IDs.
 - `src/shared/CenterZone.luau` defines pure center-zone distance checks.
 - `src/server/JumpTracker.luau` defines pure server-side jump count validation.
@@ -92,9 +93,19 @@ Initial implementation:
 - `src/server/TargetSelection.luau` defines pure server-side target validation rules.
 - `src/shared/GameStates.luau` defines the canonical round states and order.
 - `GameStates.getPostResetState` defines the repeated-round decision after cleanup.
+- `src/shared/RoundPrompts.luau` maps round snapshots to client-facing prompt text.
 - `src/shared/Tuning.luau` defines early prototype timing and arena measurement constants.
 - `src/shared/CircleSpawns.luau` defines pure spawn-slot math so deterministic placement can be tested headlessly.
-- `src/shared/Remotes.luau` reserves remote names without wiring gameplay remotes yet.
+- `src/shared/Remotes.luau` defines remote names used by server/client replication and intent flows.
+
+### RoundReplicationService
+
+Replicates server-owned snapshots to clients:
+
+- Creates the `FreezeTagCircleRemotes` folder.
+- Publishes `RoundStateChanged` events when `RoundService` changes.
+- Answers `RequestRoundSnapshot` for late joiners and newly started clients.
+- Does not accept gameplay outcomes from clients.
 
 ### PlayerStateService
 
@@ -192,6 +203,15 @@ Round reset cleanup is owned by `RoundService`:
 - Re-check active player count.
 - Continue to `Setup` when enough players remain.
 - Fall back to `WaitingForPlayers` when the server no longer has enough players.
+
+### RoundHud
+
+Renders the first playable prompt panel:
+
+- Requests the current snapshot on startup.
+- Listens for `RoundStateChanged`.
+- Uses `RoundPrompts` so UI copy is derived from round state rather than duplicated client rules.
+- Displays waiting, caller, run, STOP, jump, resolve, and reset prompts.
 
 ## Networking Rules
 

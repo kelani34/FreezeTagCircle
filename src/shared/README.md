@@ -11,4 +11,5 @@ Current modules:
 - `CircleSpawns.luau`: pure circle slot and deterministic user-id assignment helpers.
 - `GameStates.luau`: round state names and small helpers.
 - `Remotes.luau`: remote object names used by server/client code.
+- `RoundPrompts.luau`: maps server-owned round snapshots to client prompt copy.
 - `Tuning.luau`: prototype tuning constants.

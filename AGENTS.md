@@ -56,4 +56,4 @@ Update these docs whenever the work changes their domain:
 
 ## Current Next Target
 
-The next gameplay target is `FTC-113`: basic client UI prompts.
+The next gameplay target is `FTC-114`: join/leave/reset tests across round states.

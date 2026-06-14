@@ -1,1 +1,3 @@
--- Client systems will be initialized here as they are introduced.
+local RoundHud = require(script.Parent.RoundHud)
+
+RoundHud.start()
