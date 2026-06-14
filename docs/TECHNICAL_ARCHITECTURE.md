@@ -80,6 +80,8 @@ Initial implementation:
 - If the caller leaves during `CallerChoosing` and enough players remain, `RoundService` reassigns the caller from the remaining active players.
 - `RoundService.selectTarget` validates caller target choices on the server, records `calledUserId` only for accepted selections, and blocks `CallerChoosing -> RunAway` until a valid active target is locked.
 - `RoundService.checkCalledPlayerAtCenter` uses `ArenaService` to check the called player's character position during `RunAway` and advances to `StopFrozen` when the center zone is reached.
+- When entering `StopFrozen`, `RoundService` asks `MovementControlService` to freeze every active player except the called player and stores `frozenUserIds` in the snapshot.
+- `RoundService` restores frozen movement when returning to waiting/reset states or when the service stops.
 - `src/shared/CallerSelection.luau` defines deterministic round-robin caller selection over sorted active user IDs.
 - `src/shared/CenterZone.luau` defines pure center-zone distance checks.
 - `src/server/TargetSelection.luau` defines pure server-side target validation rules.
@@ -124,6 +126,13 @@ Applies server-approved movement restrictions:
 - Freeze movement.
 - Restore movement.
 - Track jump counts during tag attempts.
+
+Initial implementation:
+
+- `src/server/MovementControlService.luau` snapshots humanoid `WalkSpeed`, `JumpPower`, `JumpHeight`, and `AutoRotate`.
+- Frozen players are set to zero movement and rotation disabled.
+- The called player is excluded from runner freeze so they remain controllable for the tag attempt path.
+- Movement is restored on reset, waiting fallback, or service shutdown.
 
 ### TagService
 

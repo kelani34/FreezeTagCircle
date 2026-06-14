@@ -5,6 +5,7 @@ local Shared = ReplicatedStorage:WaitForChild("Shared")
 local ArenaService = require(script.Parent.ArenaService)
 local CallerSelection = require(Shared.CallerSelection)
 local GameStates = require(Shared.GameStates)
+local MovementControlService = require(script.Parent.MovementControlService)
 local TargetSelection = require(script.Parent.TargetSelection)
 local Tuning = require(Shared.Tuning)
 
@@ -19,6 +20,7 @@ export type RoundSnapshot = {
 	callerUserId: number?,
 	calledUserId: number?,
 	spawnPlacements: { ArenaService.PlayerSpawnPlacement },
+	frozenUserIds: { number },
 }
 
 export type TargetSelectionAttempt = {
@@ -40,6 +42,7 @@ type TransitionOptions = {
 	callerUserId: number?,
 	calledUserId: number?,
 	spawnPlacements: { ArenaService.PlayerSpawnPlacement }?,
+	frozenUserIds: { number }?,
 	clearActors: boolean?,
 }
 
@@ -90,6 +93,7 @@ local currentSnapshot: RoundSnapshot = {
 	callerUserId = nil,
 	calledUserId = nil,
 	spawnPlacements = {},
+	frozenUserIds = {},
 }
 
 local started = false
@@ -138,9 +142,17 @@ local function copySpawnPlacements(placements: { ArenaService.PlayerSpawnPlaceme
 	return copiedPlacements
 end
 
+local function copyUserIds(userIds: { number })
+	local copiedUserIds = table.clone(userIds)
+	table.sort(copiedUserIds)
+
+	return copiedUserIds
+end
+
 local function copySnapshot(snapshot: RoundSnapshot): RoundSnapshot
 	local copiedSnapshot = table.clone(snapshot)
 	copiedSnapshot.spawnPlacements = copySpawnPlacements(snapshot.spawnPlacements)
+	copiedSnapshot.frozenUserIds = copyUserIds(snapshot.frozenUserIds)
 
 	return copiedSnapshot
 end
@@ -178,6 +190,12 @@ local function makeSnapshot(
 				options.spawnPlacements
 			)
 			else copySpawnPlacements(currentSnapshot.spawnPlacements),
+		frozenUserIds = if shouldClearActors
+			then {}
+			elseif options and options.frozenUserIds ~= nil then copyUserIds(
+				options.frozenUserIds
+			)
+			else copyUserIds(currentSnapshot.frozenUserIds),
 	}
 end
 
@@ -209,6 +227,8 @@ local function updateCallerForActivePlayers(activePlayers: { Player })
 end
 
 local function moveToWaitingForPlayers(activePlayerCount: number)
+	MovementControlService.restoreAll()
+
 	currentSnapshot = makeSnapshot(GameStates.RoundStates.WaitingForPlayers, {
 		activePlayerCount = activePlayerCount,
 		clearActors = true,
@@ -272,6 +292,7 @@ end
 function RoundService.stop()
 	started = false
 	disconnectPlayerSignals()
+	MovementControlService.restoreAll()
 	currentSnapshot = makeSnapshot(GameStates.RoundStates.WaitingForPlayers, {
 		activePlayerCount = getActivePlayerCount(),
 		clearActors = true,
@@ -354,6 +375,20 @@ function RoundService.transitionTo(
 			getUserIds(activePlayers),
 			currentSnapshot.roundNumber
 		)
+	elseif nextState == GameStates.RoundStates.StopFrozen then
+		local activePlayers = Players:GetPlayers()
+
+		options = table.clone(options or {})
+		options.activePlayerCount = #activePlayers
+		options.frozenUserIds =
+			MovementControlService.freezePlayersExcept(currentSnapshot.calledUserId, activePlayers)
+	elseif
+		nextState == GameStates.RoundStates.Reset
+		or nextState == GameStates.RoundStates.WaitingForPlayers
+	then
+		MovementControlService.restoreAll()
+		options = table.clone(options or {})
+		options.frozenUserIds = {}
 	end
 
 	currentSnapshot = makeSnapshot(nextState, options)

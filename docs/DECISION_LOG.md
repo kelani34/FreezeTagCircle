@@ -375,3 +375,24 @@ Polling/checking from RoundService is simpler than adding a physical trigger par
 Follow-up:
 
 When arena authoring is revisited, decide whether center detection should move to explicit Workspace trigger instances.
+
+## D-018: Freeze Runners With Server-Owned Humanoid Snapshots
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+STOP should freeze runners without freezing the called player who needs to jump/tag. The server must own movement restrictions so clients cannot bypass the freeze by ignoring UI.
+
+Decision:
+
+Add `MovementControlService` to snapshot humanoid movement values before freezing, set movement to zero for all active players except the called player, and restore snapshots on reset, waiting fallback, or service stop. `RoundService` stores frozen user IDs in snapshots for later UI and debugging.
+
+Tradeoffs:
+
+This uses humanoid property control rather than anchoring characters. It is less visually absolute than anchoring, but safer for early movement/physics testing and easier to restore without leaving characters stuck.
+
+Follow-up:
+
+Add a visible frozen effect in `FTC-205` and revisit whether certain edge cases need anchoring or constraints.
