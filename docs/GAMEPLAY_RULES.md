@@ -73,6 +73,23 @@ These are provisional recommendations for prototype testing:
 - Tagging uses server-validated proximity, not trusting client touch events alone.
 - No elimination in the first prototype. Use points and quick round resets to keep everyone playing.
 
+## First Playable Tuning
+
+Initial playable measurements:
+
+- Start circle radius: 40 studs.
+- Center STOP radius: 10 studs.
+- Tag radius: 8 studs.
+- Called player jump limit: 3 jumps.
+- Tag attempt duration: 12 seconds.
+
+Rationale:
+
+- A 40-stud circle keeps the center run short enough that runners get distance without leaving the action space.
+- A 10-stud center gives the called player a forgiving STOP trigger while still requiring them to commit to the middle.
+- An 8-stud tag radius gives server-side validation enough tolerance for early playtests and Roblox character/network variance.
+- The values are intentionally easy to change in `src/shared/Tuning.luau` after Studio playtests.
+
 ## Prototype Success Criteria
 
 The rule set is good enough to continue if:

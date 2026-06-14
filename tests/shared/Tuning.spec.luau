@@ -40,4 +40,20 @@ return {
 			expect.truthy(Tuning.CircleSpawnRadius > Tuning.CenterZoneRadius)
 		end,
 	},
+	{
+		name = "uses first playable arena tuning values",
+		run = function(expect)
+			expect.equal(Tuning.CircleSpawnRadius, 40)
+			expect.equal(Tuning.CenterZoneRadius, 10)
+			expect.equal(Tuning.TagRadius, 8)
+		end,
+	},
+	{
+		name = "keeps center and tag ranges readable against spawn radius",
+		run = function(expect)
+			expect.truthy(Tuning.CenterZoneRadius >= Tuning.CircleSpawnRadius / 4)
+			expect.truthy(Tuning.TagRadius >= Tuning.CenterZoneRadius - 2)
+			expect.truthy(Tuning.TagRadius <= Tuning.CenterZoneRadius)
+		end,
+	},
 }

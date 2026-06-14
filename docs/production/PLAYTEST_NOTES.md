@@ -73,6 +73,43 @@ Decisions or follow-up tasks:
 
 - Rebuild/open the place in Studio and verify the new arena is visible from multiple client windows.
 
+## 2026-06-14 First Playable Tuning Pass
+
+Date: 2026-06-14
+Build: feature/tune-first-playable-arena
+Players: Automated checks only
+Round Count: Automated checks only
+
+What players understood quickly:
+
+- Pending manual multiplayer playtest.
+
+What confused players:
+
+- Pending manual multiplayer playtest.
+
+Best moment:
+
+- Server tuning and visible arena markers now agree: players spawn on a 40-stud circle, STOP uses a 10-stud center zone, and tags validate at 8 studs.
+
+Worst moment:
+
+- Tag success rate and average round length still need a real multi-client Studio playtest.
+
+Balance notes:
+
+- Expected center run from the start circle is roughly short enough to keep STOP dramatic without letting runners vanish from the arena.
+- Keep watching whether the called player succeeds too often with 12 seconds and 8-stud tag radius.
+
+Bugs:
+
+- None known from automated validation.
+
+Decisions or follow-up tasks:
+
+- Test 2-player and 4-player Studio sessions and record average round length plus rough tag success rate.
+- Continue with FTC-202 for stronger STOP feedback before deeper balance changes.
+
 ## Template
 
 ```text

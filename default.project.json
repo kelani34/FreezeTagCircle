@@ -2,7 +2,6 @@
   "name": "FreezeTagCircle",
   "tree": {
     "$className": "DataModel",
-
     "ReplicatedStorage": {
       "FreezeTagCircleRemotes": {
         "$className": "Folder",
@@ -23,13 +22,11 @@
         "$path": "src/shared"
       }
     },
-
     "ServerScriptService": {
       "Server": {
         "$path": "src/server"
       }
     },
-
     "StarterPlayer": {
       "StarterPlayerScripts": {
         "Client": {
@@ -37,7 +34,6 @@
         }
       }
     },
-
     "Workspace": {
       "$properties": {
         "FilteringEnabled": true
@@ -106,9 +102,9 @@
               0
             ],
             "Size": [
-              18,
+              20,
               1,
-              18
+              20
             ],
             "Transparency": 0.1
           }
@@ -151,10 +147,10 @@
             "Position": [
               0,
               0.45,
-              -64
+              -56
             ],
             "Size": [
-              128,
+              112,
               0.8,
               2
             ],
@@ -173,14 +169,14 @@
             ],
             "Material": "Neon",
             "Position": [
-              64,
+              56,
               0.45,
               0
             ],
             "Size": [
               2,
               0.8,
-              128
+              112
             ],
             "Transparency": 0.2
           }
@@ -199,10 +195,10 @@
             "Position": [
               0,
               0.45,
-              64
+              56
             ],
             "Size": [
-              128,
+              112,
               0.8,
               2
             ],
@@ -221,14 +217,14 @@
             ],
             "Material": "Neon",
             "Position": [
-              -64,
+              -56,
               0.45,
               0
             ],
             "Size": [
               2,
               0.8,
-              128
+              112
             ],
             "Transparency": 0.2
           }
@@ -247,7 +243,7 @@
             "Position": [
               0,
               1.5,
-              -64
+              -56
             ],
             "Size": [
               4,
@@ -269,9 +265,9 @@
             ],
             "Material": "Neon",
             "Position": [
-              24,
+              21,
               1.5,
-              -59
+              -52
             ],
             "Size": [
               4,
@@ -293,9 +289,9 @@
             ],
             "Material": "Neon",
             "Position": [
-              45,
+              40,
               1.5,
-              -45
+              -40
             ],
             "Size": [
               4,
@@ -317,9 +313,9 @@
             ],
             "Material": "Neon",
             "Position": [
-              59,
+              52,
               1.5,
-              -24
+              -21
             ],
             "Size": [
               4,
@@ -341,7 +337,7 @@
             ],
             "Material": "Neon",
             "Position": [
-              64,
+              56,
               1.5,
               0
             ],
@@ -365,9 +361,9 @@
             ],
             "Material": "Neon",
             "Position": [
-              59,
+              52,
               1.5,
-              24
+              21
             ],
             "Size": [
               4,
@@ -389,9 +385,9 @@
             ],
             "Material": "Neon",
             "Position": [
-              45,
+              40,
               1.5,
-              45
+              40
             ],
             "Size": [
               4,
@@ -413,9 +409,9 @@
             ],
             "Material": "Neon",
             "Position": [
-              24,
+              21,
               1.5,
-              59
+              52
             ],
             "Size": [
               4,
@@ -439,7 +435,7 @@
             "Position": [
               0,
               1.5,
-              64
+              56
             ],
             "Size": [
               4,
@@ -461,9 +457,9 @@
             ],
             "Material": "Neon",
             "Position": [
-              -24,
+              -21,
               1.5,
-              59
+              52
             ],
             "Size": [
               4,
@@ -485,9 +481,9 @@
             ],
             "Material": "Neon",
             "Position": [
-              -45,
+              -40,
               1.5,
-              45
+              40
             ],
             "Size": [
               4,
@@ -509,9 +505,9 @@
             ],
             "Material": "Neon",
             "Position": [
-              -59,
+              -52,
               1.5,
-              24
+              21
             ],
             "Size": [
               4,
@@ -533,7 +529,7 @@
             ],
             "Material": "Neon",
             "Position": [
-              -64,
+              -56,
               1.5,
               0
             ],
@@ -557,9 +553,9 @@
             ],
             "Material": "Neon",
             "Position": [
-              -59,
+              -52,
               1.5,
-              -24
+              -21
             ],
             "Size": [
               4,
@@ -581,9 +577,9 @@
             ],
             "Material": "Neon",
             "Position": [
-              -45,
+              -40,
               1.5,
-              -45
+              -40
             ],
             "Size": [
               4,
@@ -605,9 +601,9 @@
             ],
             "Material": "Neon",
             "Position": [
-              -24,
+              -21,
               1.5,
-              -59
+              -52
             ],
             "Size": [
               4,
@@ -631,7 +627,7 @@
             "Position": [
               0,
               0.6,
-              -48
+              -40
             ],
             "Size": [
               10,
@@ -653,9 +649,9 @@
             ],
             "Material": "Neon",
             "Position": [
-              34,
+              28,
               0.6,
-              -34
+              -28
             ],
             "Size": [
               10,
@@ -677,7 +673,7 @@
             ],
             "Material": "Neon",
             "Position": [
-              48,
+              40,
               0.6,
               0
             ],
@@ -701,9 +697,9 @@
             ],
             "Material": "Neon",
             "Position": [
-              34,
+              28,
               0.6,
-              34
+              28
             ],
             "Size": [
               10,
@@ -727,7 +723,7 @@
             "Position": [
               0,
               0.6,
-              48
+              40
             ],
             "Size": [
               10,
@@ -749,9 +745,9 @@
             ],
             "Material": "Neon",
             "Position": [
-              -34,
+              -28,
               0.6,
-              34
+              28
             ],
             "Size": [
               10,
@@ -773,7 +769,7 @@
             ],
             "Material": "Neon",
             "Position": [
-              -48,
+              -40,
               0.6,
               0
             ],
@@ -797,9 +793,9 @@
             ],
             "Material": "Neon",
             "Position": [
-              -34,
+              -28,
               0.6,
-              -34
+              -28
             ],
             "Size": [
               10,
@@ -823,7 +819,7 @@
             "Position": [
               0,
               0.55,
-              -82
+              -72
             ],
             "Size": [
               14,
@@ -845,7 +841,7 @@
             ],
             "Material": "Neon",
             "Position": [
-              82,
+              72,
               0.55,
               0
             ],
@@ -871,7 +867,7 @@
             "Position": [
               0,
               0.55,
-              82
+              72
             ],
             "Size": [
               14,
@@ -893,7 +889,7 @@
             ],
             "Material": "Neon",
             "Position": [
-              -82,
+              -72,
               0.55,
               0
             ],
@@ -919,7 +915,7 @@
             "Position": [
               0,
               2,
-              -104
+              -96
             ],
             "Size": [
               96,
@@ -942,7 +938,7 @@
             "Position": [
               0,
               2,
-              104
+              96
             ],
             "Size": [
               96,
@@ -963,7 +959,7 @@
             ],
             "Material": "Concrete",
             "Position": [
-              104,
+              96,
               2,
               0
             ],
@@ -986,7 +982,7 @@
             ],
             "Material": "Concrete",
             "Position": [
-              -104,
+              -96,
               2,
               0
             ],
