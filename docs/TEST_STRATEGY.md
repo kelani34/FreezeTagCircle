@@ -95,6 +95,7 @@ Highest priority:
 - Caller assignment determinism and reassignment when needed.
 - Target selection accepts only the current caller and active non-caller targets.
 - Center-zone checks use server-side position and tuning.
+- Freeze behavior snapshots and restores server-side humanoid movement state.
 - Spawn placement determinism.
 - Tag validation rules.
 
@@ -116,6 +117,7 @@ Low priority:
 
 - Roblox integration tests run locally through Studio, but not in GitHub-hosted CI.
 - `RoundService` currently has smoke coverage through Roblox Studio, but not detailed service-level scenario coverage.
+- Movement freeze lifecycle has smoke loading coverage; richer humanoid lifecycle assertions should be added once Roblox service-level tests exist.
 - No performance budget tests yet.
 - No staging publish smoke tests yet.
 
