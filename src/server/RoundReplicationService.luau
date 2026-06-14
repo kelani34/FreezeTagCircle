@@ -78,7 +78,12 @@ function RoundReplicationService.start()
 		end)
 	end)
 
-	RoundReplicationService.broadcastSnapshot()
+	local snapshot = RoundService.refreshActivePlayerCount()
+	RoundReplicationService.broadcastSnapshot(snapshot)
+
+	for _, player in Players:GetPlayers() do
+		RoundReplicationService.sendSnapshot(player, snapshot)
+	end
 end
 
 function RoundReplicationService.stop()

@@ -99,9 +99,15 @@ RoundDriverService.start()
 RoundDriverService.start()
 
 local snapshot = RoundService.getSnapshot()
+local refreshedSnapshot = RoundService.refreshActivePlayerCount()
 local remoteFolder = ReplicatedStorage:WaitForChild(Remotes.FolderName, 5)
 
 assertEqual(snapshot.state, GameStates.RoundStates.WaitingForPlayers, "RoundService start state")
+assertEqual(
+	refreshedSnapshot.state,
+	GameStates.RoundStates.WaitingForPlayers,
+	"Refresh keeps waiting state"
+)
 assertEqual(RoundDriverService.isRunning(), true, "Round driver running")
 assert(remoteFolder, "Remote folder should exist")
 assert(remoteFolder:WaitForChild(Remotes.RoundStateChanged, 5), "Round state event should exist")

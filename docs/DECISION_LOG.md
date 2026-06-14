@@ -523,6 +523,27 @@ Follow-up:
 
 Add richer client-side Roblox tests once the project adopts a service-level or client-capable Studio test harness.
 
+## D-026: Refresh Player Count In The Round Driver
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+Roblox Studio local-server tests can create players before every gameplay service has finished connecting signals and broadcasting snapshots. A cached waiting snapshot can therefore say one player is present even when the `Players` service contains multiple clients.
+
+Decision:
+
+Make `RoundDriverService` refresh `RoundService` player count every tick, make `RoundReplicationService` refresh and send snapshots to existing players on startup, and make `RoundHud` retry snapshot requests briefly after startup.
+
+Tradeoffs:
+
+Refreshing each driver tick is simple and reliable for the prototype. If player counts or server load become meaningful later, this can be replaced with a more event-driven dirty-state model.
+
+Follow-up:
+
+Add a multi-client Studio test harness so local-server join timing is covered automatically rather than only through smoke tests and manual playtests.
+
 ## D-024: Add A Conservative Automatic Driver For First Playable
 
 Date: 2026-06-14

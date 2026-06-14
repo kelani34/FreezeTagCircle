@@ -133,13 +133,27 @@ function RoundHud.start()
 		renderPrompt(screenGui, snapshot)
 	end)
 
-	local ok, snapshot = pcall(function()
-		return requestRoundSnapshot:InvokeServer()
-	end)
+	task.spawn(function()
+		for _ = 1, 10 do
+			if not started then
+				return
+			end
 
-	if ok and snapshot ~= nil then
-		renderPrompt(screenGui, snapshot)
-	end
+			local ok, snapshot = pcall(function()
+				return requestRoundSnapshot:InvokeServer()
+			end)
+
+			if ok and snapshot ~= nil then
+				renderPrompt(screenGui, snapshot)
+
+				if snapshot.state ~= "WaitingForPlayers" then
+					return
+				end
+			end
+
+			task.wait(0.5)
+		end
+	end)
 end
 
 function RoundHud.stop()
