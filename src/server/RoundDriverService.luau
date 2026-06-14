@@ -72,10 +72,10 @@ local function attemptProximityTag(snapshot: RoundService.RoundSnapshot): boolea
 end
 
 local function step()
-	local snapshot = RoundService.getSnapshot()
+	local snapshot = RoundService.refreshActivePlayerCount()
 
 	if snapshot.state == GameStates.RoundStates.WaitingForPlayers then
-		if RoundService.hasMinimumPlayers() then
+		if snapshot.hasMinimumPlayers then
 			transitionIfAllowed(GameStates.RoundStates.Setup, Tuning.IntermissionSeconds)
 		end
 	elseif snapshot.state == GameStates.RoundStates.Setup then
