@@ -627,3 +627,24 @@ This follows Rojo's built place shape directly. If the source layout changes lat
 Follow-up:
 
 Keep build-shape checks for both client and server entry scripts until richer Roblox runtime tests can catch these startup failures automatically.
+
+## D-030: Treat Arena Readability As A First-Playable Gate
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+After the server startup fix, two local Studio clients could join the same session, but the place still appeared to be mostly an empty baseplate. This confirmed that technical round-loop readiness is not the same as player-facing playability.
+
+Decision:
+
+Add FTC-116 as a P0 first-playable item: build a readable prototype arena with a visible circle, clear start positions, an obvious center STOP zone, and enough environmental framing for players to understand the action space.
+
+Tradeoffs:
+
+This delays deeper balance tuning, but tuning radius and timers against an unreadable map would produce weak playtest data.
+
+Follow-up:
+
+Implement FTC-116 before FTC-201, then tune arena radius, center radius, tag radius, and phase timing using the readable arena.

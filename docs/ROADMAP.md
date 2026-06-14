@@ -29,6 +29,7 @@ Deliverables:
 
 - Minimum player lobby.
 - Circle spawn placement.
+- Readable prototype arena with visible circle, start positions, and center STOP zone.
 - Caller assignment.
 - Target selection.
 - Center run.
@@ -42,6 +43,7 @@ Exit criteria:
 - 2-8 players can complete repeated rounds.
 - Round state does not break when players join, leave, reset, or die.
 - The loop is understandable without developer explanation.
+- The arena communicates where players start, where the center is, and where the round action is happening.
 
 ## Phase 2: Fun and Fairness Pass
 
@@ -111,4 +113,3 @@ Deliverables:
 Exit criteria:
 
 - The game is understandable, stable, moderated, and presentable.
-

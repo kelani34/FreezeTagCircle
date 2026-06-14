@@ -12,4 +12,4 @@
 | R-008 | Identity system creates moderation/localization issues | Medium | Medium | Start with display names plus icons/colors instead of country names | Open |
 | R-009 | Rounds become repetitive | Medium | Medium | Add map variants and cosmetic progression only after core loop succeeds | Open |
 | R-010 | Project becomes hard to maintain if code remains only in `.rbxl` | High | Medium | Move runtime code into source-controlled Luau files through Rojo | Open |
-
+| R-011 | Playtest build looks like an empty baseplate even when the round loop works | High | High | Add a readable prototype arena before deeper balance work | Open |
