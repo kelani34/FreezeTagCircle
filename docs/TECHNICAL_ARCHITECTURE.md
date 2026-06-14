@@ -75,8 +75,10 @@ Initial implementation:
 - `src/server/RoundService.luau` owns the current round snapshot.
 - `RoundService` tracks active Roblox player count and prevents `WaitingForPlayers -> Setup` until `Tuning.MinimumPlayers` is met.
 - If the active player count drops below the minimum during a later state, `RoundService` fails safely back to `WaitingForPlayers` and clears round actors.
+- When transitioning into `Setup`, `RoundService` asks `ArenaService` to place active players around the circle and stores the resulting spawn placements in the round snapshot.
 - `src/shared/GameStates.luau` defines the canonical round states and order.
-- `src/shared/Tuning.luau` defines early prototype timing constants.
+- `src/shared/Tuning.luau` defines early prototype timing and arena measurement constants.
+- `src/shared/CircleSpawns.luau` defines pure spawn-slot math so deterministic placement can be tested headlessly.
 - `src/shared/Remotes.luau` reserves remote names without wiring gameplay remotes yet.
 
 ### PlayerStateService
@@ -99,6 +101,13 @@ Handles map-specific placement and zones:
 - Center zone detection.
 - Safe reset positions.
 - Map tuning values.
+
+Initial implementation:
+
+- `src/server/ArenaService.luau` owns Roblox-specific placement behavior.
+- Player spawn assignment is deterministic by ascending `UserId`, which makes setup stable even if `Players:GetPlayers()` order changes.
+- Loaded characters are pivoted to circle slots facing the arena center.
+- Missing characters still receive spawn placement records, but are marked as not placed so later lifecycle work can decide how to recover.
 
 ### MovementControlService
 
@@ -160,5 +169,6 @@ These files should be introduced gradually as the prototype is implemented.
 ## Open Technical Decisions
 
 - How to represent arena markers so designers can edit maps safely in Studio.
+- Whether future arenas should use Studio-authored spawn markers, procedural slots, or a hybrid.
 
 Rojo and baseline Luau tooling are now adopted before meaningful source code growth. Runtime systems will start as plain ModuleScripts with explicit ownership boundaries. Arena authoring remains open until spawn and center-zone implementation begins.

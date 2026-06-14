@@ -2,6 +2,7 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
+local ArenaService = require(script.Parent.ArenaService)
 local GameStates = require(Shared.GameStates)
 local Tuning = require(Shared.Tuning)
 
@@ -15,6 +16,7 @@ export type RoundSnapshot = {
 	hasMinimumPlayers: boolean,
 	callerUserId: number?,
 	calledUserId: number?,
+	spawnPlacements: { ArenaService.PlayerSpawnPlacement },
 }
 
 type TransitionOptions = {
@@ -22,6 +24,7 @@ type TransitionOptions = {
 	activePlayerCount: number?,
 	callerUserId: number?,
 	calledUserId: number?,
+	spawnPlacements: { ArenaService.PlayerSpawnPlacement }?,
 	clearActors: boolean?,
 }
 
@@ -71,6 +74,7 @@ local currentSnapshot: RoundSnapshot = {
 	hasMinimumPlayers = false,
 	callerUserId = nil,
 	calledUserId = nil,
+	spawnPlacements = {},
 }
 
 local started = false
@@ -83,6 +87,23 @@ end
 
 local function hasMinimumPlayers(activePlayerCount: number): boolean
 	return activePlayerCount >= Tuning.MinimumPlayers
+end
+
+local function copySpawnPlacements(placements: { ArenaService.PlayerSpawnPlacement })
+	local copiedPlacements = {}
+
+	for index, placement in placements do
+		copiedPlacements[index] = table.clone(placement)
+	end
+
+	return copiedPlacements
+end
+
+local function copySnapshot(snapshot: RoundSnapshot): RoundSnapshot
+	local copiedSnapshot = table.clone(snapshot)
+	copiedSnapshot.spawnPlacements = copySpawnPlacements(snapshot.spawnPlacements)
+
+	return copiedSnapshot
 end
 
 local function makeSnapshot(
@@ -112,6 +133,12 @@ local function makeSnapshot(
 			then nil
 			elseif options and options.calledUserId ~= nil then options.calledUserId
 			else currentSnapshot.calledUserId,
+		spawnPlacements = if shouldClearActors
+			then {}
+			elseif options and options.spawnPlacements ~= nil then copySpawnPlacements(
+				options.spawnPlacements
+			)
+			else copySpawnPlacements(currentSnapshot.spawnPlacements),
 	}
 end
 
@@ -194,7 +221,7 @@ function RoundService.isStarted(): boolean
 end
 
 function RoundService.getSnapshot(): RoundSnapshot
-	return table.clone(currentSnapshot)
+	return copySnapshot(currentSnapshot)
 end
 
 function RoundService.hasMinimumPlayers(): boolean
@@ -243,6 +270,11 @@ function RoundService.transitionTo(
 	)
 
 	if nextState == GameStates.RoundStates.Setup then
+		local activePlayers = Players:GetPlayers()
+
+		options = table.clone(options or {})
+		options.activePlayerCount = #activePlayers
+		options.spawnPlacements = ArenaService.placePlayersAroundCircle(activePlayers)
 		currentSnapshot.roundNumber += 1
 	end
 
