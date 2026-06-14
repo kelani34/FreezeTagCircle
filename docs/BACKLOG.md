@@ -30,6 +30,7 @@ Foundation governance work is tracked by [#5](https://github.com/kelani34/Freeze
 | FTC-112 | [#16](https://github.com/kelani34/FreezeTagCircle/issues/16) |
 | FTC-113 | [#17](https://github.com/kelani34/FreezeTagCircle/issues/17) |
 | FTC-114 | [#18](https://github.com/kelani34/FreezeTagCircle/issues/18) |
+| FTC-115 | [#44](https://github.com/kelani34/FreezeTagCircle/issues/44) |
 | FTC-201 | [#19](https://github.com/kelani34/FreezeTagCircle/issues/19) |
 | FTC-202 | [#20](https://github.com/kelani34/FreezeTagCircle/issues/20) |
 | FTC-203 | [#21](https://github.com/kelani34/FreezeTagCircle/issues/21) |
@@ -89,6 +90,7 @@ Foundation governance work is tracked by [#5](https://github.com/kelani34/Freeze
 | FTC-112 | P0 | Done | Implement round reset |
 | FTC-113 | P0 | Done | Add basic client UI prompts |
 | FTC-114 | P0 | Done | Test join/leave/reset during every round state |
+| FTC-115 | P0 | Done | Add first-playable automatic round driver |
 
 ## Phase 2: Fun and Fairness
 
@@ -140,6 +142,7 @@ As of 2026-06-14:
 - Round reset is implemented with cleanup for actors, frozen state, jump budget, tag results, and post-reset setup/waiting decisions.
 - Basic client prompts are implemented from server-owned round snapshots with late-join snapshot requests.
 - Join/leave/reset lifecycle coverage is implemented through headless fallback-policy tests and Roblox Studio smoke checks for cleanup-safe missing-player paths.
+- A first-playable automatic round driver is implemented so Studio sessions can advance through setup, target selection, run-away, STOP, tag attempt, resolve, and reset without manual server console transitions.
 - GitHub issues now exist for every remaining backlog item.
 - The tagged playtest release checklist exists in `docs/production/RELEASE_CHECKLIST.md`.
 - Phase 1 core playable prototype work is complete. The next implementation target is `FTC-201`: tune arena radius, center radius, and tag radius.

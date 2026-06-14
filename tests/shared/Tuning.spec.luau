@@ -26,7 +26,9 @@ return {
 			expect.truthy(Tuning.IntermissionSeconds > 0)
 			expect.truthy(Tuning.CallerChooseSeconds > 0)
 			expect.truthy(Tuning.RunAwaySeconds > 0)
+			expect.truthy(Tuning.StopFrozenSeconds > 0)
 			expect.truthy(Tuning.TagAttemptSeconds > 0)
+			expect.truthy(Tuning.ResolveSeconds > 0)
 		end,
 	},
 	{

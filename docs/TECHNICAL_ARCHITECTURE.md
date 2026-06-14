@@ -14,6 +14,7 @@
 
 Server-owned systems:
 
+- Automatic first-playable round driver
 - Round state machine
 - Player lifecycle
 - Spawn placement
@@ -108,6 +109,20 @@ Replicates server-owned snapshots to clients:
 - Publishes `RoundStateChanged` events when `RoundService` changes.
 - Answers `RequestRoundSnapshot` for late joiners and newly started clients.
 - Does not accept gameplay outcomes from clients.
+
+### RoundDriverService
+
+Runs the first-playable automatic loop:
+
+- Starts setup when enough players are present.
+- Advances timed phases without manual server console transitions.
+- Selects a deterministic automatic target until caller UI exists.
+- Polls center reach during `RunAway`.
+- Polls server-side proximity tags during `TagAttempt`.
+- Resolves by timeout when no tag is recorded.
+- Resets through `RoundService.resetRound`.
+
+This is intentionally conservative scaffolding for local playtests. It should remain server-owned and easy to replace as richer caller controls, timers, and feedback are added.
 
 ### PlayerStateService
 
