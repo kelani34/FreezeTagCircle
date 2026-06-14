@@ -606,3 +606,24 @@ The arena markers are prototype geometry, not final art. The debug line is inten
 Follow-up:
 
 Replace prototype markers with authored arena assets and keep a developer-only diagnostics toggle for future multiplayer debugging.
+
+## D-029: Require Server Modules From The Built Script Children
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+Rojo maps `src/server/init.server.luau` to a `Script` named `Server` and nests sibling server modules as children of that script. Requiring `script.Parent.RoundService` therefore looks in `ServerScriptService` and fails at runtime.
+
+Decision:
+
+Use `script:WaitForChild(...)` in the server entry script for child modules and extend build inspection to verify the built server entry requires `RoundService` from the script child path.
+
+Tradeoffs:
+
+This follows Rojo's built place shape directly. If the source layout changes later, the build inspection check will need to change with it.
+
+Follow-up:
+
+Keep build-shape checks for both client and server entry scripts until richer Roblox runtime tests can catch these startup failures automatically.
