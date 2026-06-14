@@ -12,6 +12,7 @@ local RoundDriverService = {}
 local StepSeconds = 0.25
 
 local running = false
+local playerAddedConnection: RBXScriptConnection? = nil
 
 local function isExpired(snapshot: RoundService.RoundSnapshot): boolean
 	return snapshot.stateEndsAt ~= nil and os.clock() >= snapshot.stateEndsAt
@@ -119,10 +120,24 @@ function RoundDriverService.start()
 	end
 
 	running = true
+	playerAddedConnection = Players.PlayerAdded:Connect(function()
+		task.defer(function()
+			local ok, err = pcall(step)
+
+			if not ok then
+				warn(`RoundDriverService player-added step failed: {err}`)
+			end
+		end)
+	end)
 
 	task.spawn(function()
 		while running do
-			step()
+			local ok, err = pcall(step)
+
+			if not ok then
+				warn(`RoundDriverService step failed: {err}`)
+			end
+
 			task.wait(StepSeconds)
 		end
 	end)
@@ -130,6 +145,11 @@ end
 
 function RoundDriverService.stop()
 	running = false
+
+	if playerAddedConnection then
+		playerAddedConnection:Disconnect()
+		playerAddedConnection = nil
+	end
 end
 
 function RoundDriverService.isRunning(): boolean

@@ -21,6 +21,14 @@ local checks = {
 		pattern = '<string name="Name">RoundHud</string>',
 	},
 	{
+		name = "remotes folder is included",
+		pattern = '<string name="Name">FreezeTagCircleRemotes</string>',
+	},
+	{
+		name = "snapshot request remote function is included",
+		pattern = '<Item class="RemoteFunction"',
+	},
+	{
 		name = "server entry is a Script",
 		pattern = '<Item class="Script"',
 	},

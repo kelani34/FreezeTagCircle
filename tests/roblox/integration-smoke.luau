@@ -110,8 +110,16 @@ assertEqual(
 )
 assertEqual(RoundDriverService.isRunning(), true, "Round driver running")
 assert(remoteFolder, "Remote folder should exist")
-assert(remoteFolder:WaitForChild(Remotes.RoundStateChanged, 5), "Round state event should exist")
-assert(remoteFolder:WaitForChild(Remotes.RequestRoundSnapshot, 5), "Snapshot function should exist")
+assertEqual(
+	remoteFolder:WaitForChild(Remotes.RoundStateChanged, 5).ClassName,
+	"RemoteEvent",
+	"Round state event should exist"
+)
+assertEqual(
+	remoteFolder:WaitForChild(Remotes.RequestRoundSnapshot, 5).ClassName,
+	"RemoteFunction",
+	"Snapshot function should exist"
+)
 assertEqual(snapshot.minimumPlayers, Tuning.MinimumPlayers, "Snapshot minimum player count")
 assertEqual(snapshot.hasMinimumPlayers, false, "Empty Studio test place should not meet minimum")
 assertEqual(#snapshot.spawnPlacements, 0, "Waiting state has no spawn placements")

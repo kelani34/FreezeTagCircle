@@ -4,6 +4,15 @@
     "$className": "DataModel",
 
     "ReplicatedStorage": {
+      "FreezeTagCircleRemotes": {
+        "$className": "Folder",
+        "RoundStateChanged": {
+          "$className": "RemoteEvent"
+        },
+        "RequestRoundSnapshot": {
+          "$className": "RemoteFunction"
+        }
+      },
       "Shared": {
         "$path": "src/shared"
       }
