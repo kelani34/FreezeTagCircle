@@ -21,6 +21,7 @@ lune run scripts/test.luau
 Current coverage:
 
 - `CallerSelection`
+- `CenterZone`
 - `CircleSpawns`
 - `GameStates`
 - `Remotes`
@@ -49,7 +50,7 @@ Purpose:
 Status:
 
 - Local smoke test runner added with `run-in-roblox`.
-- Smoke coverage now loads `ArenaService`, validates arena spawn tuning, and checks deterministic spawn, caller assignment, and target validation helpers inside Roblox Studio.
+- Smoke coverage now loads `ArenaService`, validates arena spawn/center tuning, and checks deterministic spawn, caller assignment, target validation, and center-zone helpers inside Roblox Studio.
 - GitHub-hosted Linux CI does not run Roblox Studio integration tests.
 - Use `lune run scripts/integration-test.luau` on a machine with Roblox Studio installed.
 
@@ -93,6 +94,7 @@ Highest priority:
 - Server rejection of invalid client intent.
 - Caller assignment determinism and reassignment when needed.
 - Target selection accepts only the current caller and active non-caller targets.
+- Center-zone checks use server-side position and tuning.
 - Spawn placement determinism.
 - Tag validation rules.
 
