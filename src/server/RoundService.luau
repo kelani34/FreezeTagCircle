@@ -307,8 +307,11 @@ local function refreshActivePlayerCount(): number
 
 	if
 		started
-		and currentSnapshot.state ~= GameStates.RoundStates.WaitingForPlayers
-		and not hasMinimumPlayers(activePlayerCount)
+		and GameStates.shouldFallbackToWaiting(
+			currentSnapshot.state,
+			activePlayerCount,
+			Tuning.MinimumPlayers
+		)
 	then
 		moveToWaitingForPlayers(activePlayerCount)
 	else

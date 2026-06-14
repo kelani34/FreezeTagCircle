@@ -480,3 +480,24 @@ The first HUD is intentionally simple and uses user IDs instead of richer displa
 Follow-up:
 
 Add richer player labels, target selection controls, and visual STOP/frozen effects after the core playable loop is stable.
+
+## D-023: Test Lifecycle Fallback Policy Headlessly First
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+Player join/leave behavior depends on Roblox `Players`, characters, and networking, which are hard to simulate fully in the current headless Lune runner.
+
+Decision:
+
+Move the minimum-player fallback rule into `GameStates.shouldFallbackToWaiting` and cover it across every round state in headless tests. Keep Roblox Studio smoke coverage for module loading, missing-player safety paths, idempotent replication startup, and invalid reset rejection.
+
+Tradeoffs:
+
+This gives broad deterministic coverage for the policy but does not replace true multi-client Roblox tests. Detailed character lifecycle and real client join/leave scenarios still need a richer Roblox test harness.
+
+Follow-up:
+
+Use FTC-408/FTC-403 to evaluate and add a Roblox service-level runner for multi-client lifecycle scenarios.

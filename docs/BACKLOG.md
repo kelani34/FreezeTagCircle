@@ -88,7 +88,7 @@ Foundation governance work is tracked by [#5](https://github.com/kelani34/Freeze
 | FTC-111 | P0 | Done | Implement server-side tag validation |
 | FTC-112 | P0 | Done | Implement round reset |
 | FTC-113 | P0 | Done | Add basic client UI prompts |
-| FTC-114 | P0 | Todo | Test join/leave/reset during every round state |
+| FTC-114 | P0 | Done | Test join/leave/reset during every round state |
 
 ## Phase 2: Fun and Fairness
 
@@ -139,6 +139,7 @@ As of 2026-06-14:
 - Server-side tag validation is implemented with active/frozen actor checks, timing checks, and server-measured character distance.
 - Round reset is implemented with cleanup for actors, frozen state, jump budget, tag results, and post-reset setup/waiting decisions.
 - Basic client prompts are implemented from server-owned round snapshots with late-join snapshot requests.
+- Join/leave/reset lifecycle coverage is implemented through headless fallback-policy tests and Roblox Studio smoke checks for cleanup-safe missing-player paths.
 - GitHub issues now exist for every remaining backlog item.
 - The tagged playtest release checklist exists in `docs/production/RELEASE_CHECKLIST.md`.
-- The next implementation target is `FTC-114`: join/leave/reset tests across round states.
+- Phase 1 core playable prototype work is complete. The next implementation target is `FTC-201`: tune arena radius, center radius, and tag radius.

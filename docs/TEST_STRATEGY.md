@@ -124,8 +124,10 @@ Low priority:
 
 - Roblox integration tests run locally through Studio, but not in GitHub-hosted CI.
 - `RoundService` currently has smoke coverage through Roblox Studio, including invalid reset rejection and round replication remote creation, but not detailed multi-player service-level scenario coverage.
+- Join/leave fallback policy is covered headlessly across every round state.
 - Movement freeze lifecycle has smoke loading coverage; richer humanoid lifecycle assertions should be added once Roblox service-level tests exist.
 - Tag validation has headless rule coverage and Studio smoke loading coverage; character-distance success paths need richer multi-character Roblox tests.
+- Full multi-player join/leave/reset simulation still needs a Roblox service-level test harness or controlled Studio test place with fake clients.
 - No performance budget tests yet.
 - No staging publish smoke tests yet.
 

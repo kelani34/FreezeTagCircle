@@ -50,6 +50,16 @@ assertEqual(assignments[1].userId, 100, "Deterministic spawn assignment")
 assertEqual(CallerSelection.selectCallerUserId({ 200, 100 }, 1), 100, "Deterministic caller")
 assertEqual(CenterZone.isWithinRadius(0, 0, Tuning.CenterZoneRadius), true, "Center zone origin")
 assertEqual(ArenaService.isPositionInCenterZone(Vector3.new(0, 0, 0)), true, "Arena center zone")
+assertEqual(
+	ArenaService.getPlayerCenterReach(123456789).reason,
+	"NoPlayer",
+	"Missing center player"
+)
+assertEqual(
+	ArenaService.getDistanceBetweenPlayers(123456789, 987654321).reason,
+	"NoSourcePlayer",
+	"Missing distance source player"
+)
 assertEqual(JumpTracker.getRemainingJumps(1, Tuning.TagJumpLimit), 2, "Remaining jumps")
 assertEqual(#MovementControlService.getFrozenUserIds(), 0, "No frozen users at smoke start")
 assertEqual(
@@ -83,6 +93,7 @@ assertEqual(targetValidation.accepted, true, "Valid target selection")
 
 RoundService.start()
 RoundReplicationService.start()
+RoundReplicationService.start()
 
 local snapshot = RoundService.getSnapshot()
 local remoteFolder = ReplicatedStorage:WaitForChild(Remotes.FolderName, 5)
@@ -101,8 +112,14 @@ assertEqual(RoundService.canTransitionTo(GameStates.RoundStates.Setup), false, "
 local resetResult = RoundService.resetRound()
 assertEqual(resetResult.accepted, false, "Waiting state cannot reset as completed round")
 assertEqual(resetResult.reason, "NotResolve", "Waiting reset rejection reason")
+assertEqual(
+	RoundService.refreshActivePlayerCount().state,
+	GameStates.RoundStates.WaitingForPlayers,
+	"Refresh state"
+)
 
 RoundService.stop()
+RoundReplicationService.stop()
 RoundReplicationService.stop()
 
 print("Roblox integration smoke test passed")
