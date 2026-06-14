@@ -12,6 +12,8 @@ local server = ServerScriptService:WaitForChild("Server", 5)
 assert(server, "ServerScriptService.Server should exist")
 
 local ArenaService = require(server:WaitForChild("ArenaService", 5))
+local ArenaVisualService = require(server:WaitForChild("ArenaVisualService", 5))
+local ArenaVisuals = require(shared:WaitForChild("ArenaVisuals", 5))
 local CallerSelection = require(shared:WaitForChild("CallerSelection", 5))
 local CenterZone = require(shared:WaitForChild("CenterZone", 5))
 local CircleSpawns = require(shared:WaitForChild("CircleSpawns", 5))
@@ -93,6 +95,7 @@ local targetValidation = TargetSelection.validate({
 assertEqual(targetValidation.accepted, true, "Valid target selection")
 
 RoundService.start()
+ArenaVisualService.start()
 RoundReplicationService.start()
 RoundReplicationService.start()
 RoundDriverService.start()
@@ -109,6 +112,7 @@ assertEqual(
 	"Refresh keeps waiting state"
 )
 assertEqual(RoundDriverService.isRunning(), true, "Round driver running")
+assertEqual(ArenaVisualService.isStarted(), true, "Arena visual service running")
 assert(remoteFolder, "Remote folder should exist")
 assertEqual(
 	remoteFolder:WaitForChild(Remotes.RoundStateChanged, 5).ClassName,
@@ -127,6 +131,30 @@ assertEqual(#snapshot.frozenUserIds, 0, "Waiting state has no frozen users")
 assertEqual(snapshot.jumpsRemaining, Tuning.TagJumpLimit, "Waiting state has full jump budget")
 assertEqual(RoundService.canTransitionTo(GameStates.RoundStates.Setup), false, "Setup gate")
 
+local arena = workspace:WaitForChild("Arena", 5)
+assert(arena, "Arena folder should exist")
+
+local generatedArena = arena:WaitForChild("GeneratedCircleArena", 5)
+local circleBoundary = generatedArena:WaitForChild("CircleBoundary", 5)
+local playerSlots = generatedArena:WaitForChild("PlayerCircleSlots", 5)
+local runAwayMarkers = generatedArena:WaitForChild("RunAwayMarkers", 5)
+
+assertEqual(
+	#circleBoundary:GetChildren(),
+	ArenaVisuals.RingMarkerCount,
+	"Generated circular boundary marker count"
+)
+assertEqual(
+	#playerSlots:GetChildren(),
+	ArenaVisuals.PreviewSlotCount,
+	"Generated preview player slot count"
+)
+assertEqual(
+	#runAwayMarkers:GetChildren(),
+	ArenaVisuals.RunMarkerCount,
+	"Generated run-away marker count"
+)
+
 local resetResult = RoundService.resetRound()
 assertEqual(resetResult.accepted, false, "Waiting state cannot reset as completed round")
 assertEqual(resetResult.reason, "NotResolve", "Waiting reset rejection reason")
@@ -137,6 +165,7 @@ assertEqual(
 )
 
 RoundService.stop()
+ArenaVisualService.stop()
 RoundDriverService.stop()
 RoundDriverService.stop()
 RoundReplicationService.stop()
