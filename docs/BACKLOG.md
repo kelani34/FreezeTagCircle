@@ -103,7 +103,7 @@ Foundation governance work is tracked by [#5](https://github.com/kelani34/Freeze
 | ID | Priority | Status | Item |
 | --- | --- | --- | --- |
 | FTC-201 | P1 | Done | Tune arena radius, center radius, and tag radius |
-| FTC-202 | P1 | Todo | Add clear STOP feedback |
+| FTC-202 | P1 | Done | Add clear STOP feedback |
 | FTC-203 | P1 | Todo | Add tag attempt timer |
 | FTC-204 | P1 | Todo | Prevent caller target spam or repeated targeting abuse |
 | FTC-205 | P1 | Todo | Add visible frozen state effect |
@@ -154,4 +154,5 @@ As of 2026-06-14:
 - Phase 1 core systems are implemented and the first-playable arena now has a visible floor, center STOP pad, generated circular boundary, generated player slot pads, and generated run-away markers.
 - The first playable tuning pass uses a 40-stud start circle, 10-stud center zone, and 8-stud tag radius.
 - Players now have a physical lobby outside the playground; waiting/late-join characters are placed there and setup moves eligible players into circle slots.
-- The next implementation target is `FTC-202`: add clear STOP feedback.
+- STOP feedback now uses a server-triggered remote event with a client overlay and audio cue.
+- The next implementation target is `FTC-205`: add visible frozen state effect.

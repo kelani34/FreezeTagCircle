@@ -15,3 +15,4 @@
 | R-011 | Playtest build looks like an empty baseplate even when the round loop works | High | High | Add a readable prototype arena before deeper balance work | Mitigated |
 | R-012 | The arena reads as a square box instead of a playground circle | High | Medium | Generate circular boundary and player slots from shared circle math | Mitigated |
 | R-013 | Late joiners are mistaken for active round participants | High | Medium | Keep late joiners in the lobby and use setup placements as the current participant set | Mitigated |
+| R-014 | STOP happens silently and players miss the freeze moment | High | Medium | Fire a server-owned STOP feedback event with client overlay and audio cue | Mitigated |

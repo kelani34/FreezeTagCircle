@@ -129,6 +129,11 @@ assertEqual(
 	"Round state event should exist"
 )
 assertEqual(
+	remoteFolder:WaitForChild(Remotes.StopFeedback, 5).ClassName,
+	"RemoteEvent",
+	"STOP feedback event should exist"
+)
+assertEqual(
 	remoteFolder:WaitForChild(Remotes.RequestRoundSnapshot, 5).ClassName,
 	"RemoteFunction",
 	"Snapshot function should exist"

@@ -732,3 +732,24 @@ Automatic start is better for public servers, but it gives private groups less c
 Follow-up:
 
 Playtest 2+ clients in Studio to verify lobby spawn, setup teleport, and late-join waiting behavior before polishing STOP feedback.
+
+## D-035: Trigger STOP Feedback From A Live Server Event
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+The STOP moment was technically represented by the `StopFrozen` state, but players needed a dramatic and unambiguous cue. Deriving the effect only from snapshots would risk stale feedback for late joiners.
+
+Decision:
+
+Add a dedicated `StopFeedback` RemoteEvent fired by `RoundReplicationService` when the authoritative snapshot enters `StopFrozen`. `RoundHud` listens for that live event and plays a short overlay/audio pulse.
+
+Tradeoffs:
+
+This adds one more remote, but it keeps transient feedback separate from durable round state. The client effect is prototype-quality and can be replaced with final UI/audio later without changing round authority.
+
+Follow-up:
+
+Playtest the timing and intensity in Studio, then add visible frozen character effects in FTC-205.

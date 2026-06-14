@@ -33,6 +33,7 @@ Shared modules and remotes:
 - Remote event names
 - Shared tuning values
 - UI-facing state snapshots
+- Server-triggered STOP feedback event
 
 ### StarterPlayerScripts
 
@@ -117,6 +118,7 @@ Replicates server-owned snapshots to clients:
 - Creates the `FreezeTagCircleRemotes` folder.
 - Publishes `RoundStateChanged` events when `RoundService` changes.
 - Answers `RequestRoundSnapshot` for late joiners and newly started clients.
+- Fires `StopFeedback` only when a live snapshot enters `StopFrozen`; late joiners request snapshots but do not receive stale STOP effects.
 - Does not accept gameplay outcomes from clients.
 
 ### RoundDriverService
@@ -184,6 +186,15 @@ Generates source-controlled prototype visuals at runtime:
 - Builds preview slots for the waiting/playtest view.
 - Rebuilds player slot pads from `RoundService` spawn placements when a round enters setup.
 - Keeps visual slots aligned with `CircleSpawns` instead of hand-authored square markers.
+
+### Client STOP Feedback
+
+`RoundHud` listens to the server-owned `StopFeedback` RemoteEvent:
+
+- Shows a short full-screen STOP pulse.
+- Plays a short audio cue.
+- Cleans up the effect locally after the pulse.
+- Does not infer STOP from late snapshot requests, which prevents stale feedback for late joiners.
 
 ### MovementControlService
 

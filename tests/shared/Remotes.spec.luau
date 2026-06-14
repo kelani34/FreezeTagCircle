@@ -28,4 +28,10 @@ return {
 			expect.equal(Remotes.RoundDebugStatus, "RoundDebugStatus")
 		end,
 	},
+	{
+		name = "includes server-triggered stop feedback event",
+		run = function(expect)
+			expect.equal(Remotes.StopFeedback, "StopFeedback")
+		end,
+	},
 }

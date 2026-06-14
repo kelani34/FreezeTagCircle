@@ -182,6 +182,43 @@ Decisions or follow-up tasks:
 - Confirm a late-joining client remains in the lobby until the next round.
 - Continue with FTC-202 for STOP feedback.
 
+## 2026-06-14 STOP Feedback Pass
+
+Date: 2026-06-14
+Build: feature/stop-feedback
+Players: Automated checks only
+Round Count: Automated checks only
+
+What players understood quickly:
+
+- Pending manual Studio validation.
+
+What confused players:
+
+- Pending manual Studio validation.
+
+Best moment:
+
+- STOP is now a server-triggered moment with a client overlay and audio cue rather than only a quiet state/prompt change.
+
+Worst moment:
+
+- The effect is still prototype UI/audio and should be judged in Studio for intensity, timing, and annoyance.
+
+Balance notes:
+
+- The STOP pulse is intentionally short so it does not block the three-jump tag attempt.
+
+Bugs:
+
+- None known from automated validation.
+
+Decisions or follow-up tasks:
+
+- Verify 2+ clients see the STOP pulse when the called player reaches center.
+- Verify late joiners do not see stale STOP effects from snapshot requests.
+- Continue with FTC-205 for visible frozen state effects on player characters.
+
 ## Template
 
 ```text
