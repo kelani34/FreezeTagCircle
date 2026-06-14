@@ -312,3 +312,24 @@ This adds one shared helper and one server service, but keeps math covered by fa
 Follow-up:
 
 When center-zone detection begins, decide whether arenas remain procedural or move to Studio-authored markers for designer control.
+
+## D-015: Use Deterministic Round-Robin Caller Assignment
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+The prototype needs server-owned caller assignment before target selection can exist. The first version should be easy to test, predictable in snapshots, and fair enough for early play without introducing scoring or winner-based rotation yet.
+
+Decision:
+
+Use `src/shared/CallerSelection.luau` to select callers by sorting active `UserId` values and rotating by `roundNumber`. `RoundService` assigns `callerUserId` when entering `CallerChoosing`, keeps the current caller stable while they remain active, and reassigns during `CallerChoosing` if that caller leaves while enough players remain.
+
+Tradeoffs:
+
+Round-robin selection is less dramatic than winner-based caller transfer, but it is deterministic, simple to validate, and avoids accidentally rewarding or punishing players before the result rules are settled.
+
+Follow-up:
+
+Revisit caller rotation after target selection, tag resolution, and scoring exist.

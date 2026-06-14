@@ -3,6 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
 local ArenaService = require(script.Parent.ArenaService)
+local CallerSelection = require(Shared.CallerSelection)
 local GameStates = require(Shared.GameStates)
 local Tuning = require(Shared.Tuning)
 
@@ -85,6 +86,16 @@ local function getActivePlayerCount(): number
 	return #Players:GetPlayers()
 end
 
+local function getUserIds(players: { Player }): { number }
+	local userIds = {}
+
+	for index, player in players do
+		userIds[index] = player.UserId
+	end
+
+	return userIds
+end
+
 local function hasMinimumPlayers(activePlayerCount: number): boolean
 	return activePlayerCount >= Tuning.MinimumPlayers
 end
@@ -148,6 +159,21 @@ local function updateActivePlayerCount(activePlayerCount: number)
 	currentSnapshot.hasMinimumPlayers = hasMinimumPlayers(activePlayerCount)
 end
 
+local function updateCallerForActivePlayers(activePlayers: { Player })
+	local activeUserIds = getUserIds(activePlayers)
+
+	if CallerSelection.isUserIdActive(activeUserIds, currentSnapshot.callerUserId) then
+		return
+	end
+
+	if currentSnapshot.state == GameStates.RoundStates.CallerChoosing then
+		currentSnapshot.callerUserId =
+			CallerSelection.selectCallerUserId(activeUserIds, currentSnapshot.roundNumber)
+	else
+		currentSnapshot.callerUserId = nil
+	end
+end
+
 local function moveToWaitingForPlayers(activePlayerCount: number)
 	currentSnapshot = makeSnapshot(GameStates.RoundStates.WaitingForPlayers, {
 		activePlayerCount = activePlayerCount,
@@ -156,7 +182,8 @@ local function moveToWaitingForPlayers(activePlayerCount: number)
 end
 
 local function refreshActivePlayerCount(): number
-	local activePlayerCount = getActivePlayerCount()
+	local activePlayers = Players:GetPlayers()
+	local activePlayerCount = #activePlayers
 
 	if
 		started
@@ -166,6 +193,7 @@ local function refreshActivePlayerCount(): number
 		moveToWaitingForPlayers(activePlayerCount)
 	else
 		updateActivePlayerCount(activePlayerCount)
+		updateCallerForActivePlayers(activePlayers)
 	end
 
 	return activePlayerCount
@@ -276,6 +304,15 @@ function RoundService.transitionTo(
 		options.activePlayerCount = #activePlayers
 		options.spawnPlacements = ArenaService.placePlayersAroundCircle(activePlayers)
 		currentSnapshot.roundNumber += 1
+	elseif nextState == GameStates.RoundStates.CallerChoosing then
+		local activePlayers = Players:GetPlayers()
+
+		options = table.clone(options or {})
+		options.activePlayerCount = #activePlayers
+		options.callerUserId = CallerSelection.selectCallerUserId(
+			getUserIds(activePlayers),
+			currentSnapshot.roundNumber
+		)
 	end
 
 	currentSnapshot = makeSnapshot(nextState, options)

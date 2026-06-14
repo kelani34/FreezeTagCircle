@@ -18,7 +18,8 @@
 
 ### Caller Selection
 
-- Is the first caller random, vote-based, winner-based, or lobby-owner-based?
+- For the first prototype, caller assignment is server-owned round-robin selection over active players.
+- Later playtests should decide whether caller rotation should become random, winner-based, or score-based.
 - Does the caller physically stand somewhere special?
 - Can the caller choose themselves?
 - Can a caller repeatedly target the same player?
@@ -63,6 +64,7 @@
 These are provisional recommendations for prototype testing:
 
 - Caller is selected by round logic, not by vote.
+- Initial caller rotation uses deterministic round-robin selection so the behavior is testable and fair enough for early play.
 - Caller chooses from active players through a simple server-validated choice UI.
 - STOP triggers automatically when the called player enters the center zone.
 - Frozen players are anchored by server-authoritative movement restriction, with a clear visual freeze effect.
@@ -79,4 +81,3 @@ The rule set is good enough to continue if:
 - Frozen players are not waiting too long.
 - The called player has meaningful but not guaranteed tagging chances.
 - Round outcomes feel fair enough that players want another round.
-
