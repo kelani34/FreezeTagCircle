@@ -40,4 +40,33 @@ return {
 			expect.equal(GameStates.getNextRoundState(GameStates.RoundStates.Reset), nil)
 		end,
 	},
+	{
+		name = "chooses post-reset setup when enough players remain",
+		run = function(expect)
+			for _ = 1, 3 do
+				expect.equal(GameStates.getPostResetState(2, 2), GameStates.RoundStates.Setup)
+			end
+		end,
+	},
+	{
+		name = "chooses post-reset waiting when too few players remain",
+		run = function(expect)
+			expect.equal(
+				GameStates.getPostResetState(1, 2),
+				GameStates.RoundStates.WaitingForPlayers
+			)
+		end,
+	},
+	{
+		name = "rejects invalid post-reset counts",
+		run = function(expect)
+			expect.errors(function()
+				GameStates.getPostResetState(-1, 2)
+			end)
+
+			expect.errors(function()
+				GameStates.getPostResetState(2, 0)
+			end)
+		end,
+	},
 }

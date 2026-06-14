@@ -83,6 +83,7 @@ Initial implementation:
 - When entering `StopFrozen`, `RoundService` asks `MovementControlService` to freeze every active player except the called player and stores `frozenUserIds` in the snapshot.
 - When entering `TagAttempt`, `RoundService` resets the called player's jump budget and records accepted called-player jumps through `JumpTracker`.
 - During `TagAttempt`, `RoundService.attemptTag` validates active/frozen actors, timer state, and server-measured distance before resolving a successful tag.
+- `RoundService.resetRound` moves completed rounds through cleanup and then into either `Setup` or `WaitingForPlayers` based on active player count.
 - `RoundService` restores frozen movement when returning to waiting/reset states or when the service stops.
 - `src/shared/CallerSelection.luau` defines deterministic round-robin caller selection over sorted active user IDs.
 - `src/shared/CenterZone.luau` defines pure center-zone distance checks.
@@ -90,6 +91,7 @@ Initial implementation:
 - `src/server/TagService.luau` defines pure server-side tag validation rules.
 - `src/server/TargetSelection.luau` defines pure server-side target validation rules.
 - `src/shared/GameStates.luau` defines the canonical round states and order.
+- `GameStates.getPostResetState` defines the repeated-round decision after cleanup.
 - `src/shared/Tuning.luau` defines early prototype timing and arena measurement constants.
 - `src/shared/CircleSpawns.luau` defines pure spawn-slot math so deterministic placement can be tested headlessly.
 - `src/shared/Remotes.luau` reserves remote names without wiring gameplay remotes yet.
@@ -180,6 +182,16 @@ Keeps lightweight round/session scoring:
 - Points for successful tags.
 - Points or streaks for escaping.
 - Round results.
+
+### Reset Policy
+
+Round reset cleanup is owned by `RoundService`:
+
+- Restore frozen movement.
+- Clear caller, target, spawn placements, frozen user IDs, jump counts, and tag result fields.
+- Re-check active player count.
+- Continue to `Setup` when enough players remain.
+- Fall back to `WaitingForPlayers` when the server no longer has enough players.
 
 ## Networking Rules
 
