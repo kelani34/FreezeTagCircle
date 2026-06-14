@@ -8,6 +8,7 @@ local RoundPrompts = require(Shared.RoundPrompts)
 local RoundHud = {}
 
 local started = false
+local debugConnection: RBXScriptConnection? = nil
 local connection: RBXScriptConnection? = nil
 
 local function createLabel(parent: Instance, name: string, textSize: number): TextLabel
@@ -87,15 +88,31 @@ local function getOrCreateHud(playerGui: PlayerGui): ScreenGui
 	detail.LayoutOrder = 3
 	detail.TextColor3 = Color3.fromRGB(190, 199, 210)
 
+	local debugStatus = createLabel(panel, "DebugStatus", 12)
+	debugStatus.LayoutOrder = 4
+	debugStatus.TextColor3 = Color3.fromRGB(142, 154, 170)
+
 	return screenGui
 end
 
-local function getRemotes(): (RemoteEvent, RemoteFunction)
+local function getRemotes(): (RemoteEvent, RemoteFunction, StringValue)
 	local remoteFolder = ReplicatedStorage:WaitForChild(Remotes.FolderName, 10)
 	assert(remoteFolder ~= nil, "FreezeTagCircle remotes did not load")
 
 	return remoteFolder:WaitForChild(Remotes.RoundStateChanged) :: RemoteEvent,
-		remoteFolder:WaitForChild(Remotes.RequestRoundSnapshot) :: RemoteFunction
+		remoteFolder:WaitForChild(Remotes.RequestRoundSnapshot) :: RemoteFunction,
+		remoteFolder:WaitForChild(Remotes.RoundDebugStatus) :: StringValue
+end
+
+local function getLocalPlayerCount(): number
+	return #Players:GetPlayers()
+end
+
+local function setDebugStatus(screenGui: ScreenGui, text: string)
+	local panel = screenGui:WaitForChild("PromptPanel")
+	local debugStatus = panel:WaitForChild("DebugStatus") :: TextLabel
+
+	debugStatus.Text = `Local players {getLocalPlayerCount()} | {text}`
 end
 
 local function renderPrompt(screenGui: ScreenGui, snapshot)
@@ -109,6 +126,10 @@ local function renderPrompt(screenGui: ScreenGui, snapshot)
 	title.Text = prompt.title
 	body.Text = prompt.body
 	detail.Text = prompt.detail
+	setDebugStatus(
+		screenGui,
+		`Snapshot {snapshot.state} | players {snapshot.activePlayerCount or "?"}/{snapshot.minimumPlayers or "?"}`
+	)
 end
 
 function RoundHud.start()
@@ -124,11 +145,11 @@ function RoundHud.start()
 
 	renderPrompt(screenGui, {
 		state = "WaitingForPlayers",
-		activePlayerCount = 1,
+		activePlayerCount = getLocalPlayerCount(),
 		minimumPlayers = 2,
 	})
 
-	local ok, roundStateChanged, requestRoundSnapshot = pcall(getRemotes)
+	local ok, roundStateChanged, requestRoundSnapshot, roundDebugStatus = pcall(getRemotes)
 
 	if not ok then
 		renderPrompt(screenGui, {
@@ -137,6 +158,11 @@ function RoundHud.start()
 		warn(roundStateChanged)
 		return
 	end
+
+	setDebugStatus(screenGui, roundDebugStatus.Value)
+	debugConnection = roundDebugStatus:GetPropertyChangedSignal("Value"):Connect(function()
+		setDebugStatus(screenGui, roundDebugStatus.Value)
+	end)
 
 	connection = roundStateChanged.OnClientEvent:Connect(function(snapshot)
 		renderPrompt(screenGui, snapshot)
@@ -171,6 +197,11 @@ function RoundHud.stop()
 	if connection then
 		connection:Disconnect()
 		connection = nil
+	end
+
+	if debugConnection then
+		debugConnection:Disconnect()
+		debugConnection = nil
 	end
 end
 

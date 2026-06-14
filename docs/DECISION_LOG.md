@@ -585,3 +585,24 @@ Automatic target selection is less social than caller choice, and proximity poll
 Follow-up:
 
 Replace automatic target selection with caller UI, add richer STOP feedback, tune timers/radii through playtests, and add service-level tests for timed multi-player round flow.
+
+## D-028: Add Visible Arena And In-Game Runtime Diagnostics
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+An empty baseplate makes FreezeTagCircle hard to evaluate and gives no visual indication of the circle, center, or server state. Repeated local-server screenshots showed fallback UI, but not whether the server saw the same player count.
+
+Decision:
+
+Add basic arena markers directly to the Rojo place, including a red center STOP pad and blue circle markers. Add `RoundDebugStatus` as a replicated `StringValue` and show local/server diagnostic text in the HUD so playtest screenshots reveal whether snapshots are arriving and what player count the server sees.
+
+Tradeoffs:
+
+The arena markers are prototype geometry, not final art. The debug line is intentionally visible during development and should be hidden or moved to a debug mode before public release.
+
+Follow-up:
+
+Replace prototype markers with authored arena assets and keep a developer-only diagnostics toggle for future multiplayer debugging.
