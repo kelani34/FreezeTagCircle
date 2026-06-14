@@ -145,6 +145,43 @@ Decisions or follow-up tasks:
 
 - Continue with FTC-118 for the waiting room and lobby-to-circle flow.
 
+## 2026-06-14 Waiting Room And Entry Flow
+
+Date: 2026-06-14
+Build: feature/waiting-room-entry-flow
+Players: Automated checks only
+Round Count: Automated checks only
+
+What players understood quickly:
+
+- Pending manual Studio validation.
+
+What confused players:
+
+- Pending manual Studio validation.
+
+Best moment:
+
+- The game now has a separate physical lobby and server placement helpers for moving players from waiting room to circle slots.
+
+Worst moment:
+
+- The lobby has prototype geometry only and still needs visual polish after gameplay flow is proven.
+
+Balance notes:
+
+- Automatic start remains the default public-server flow. A manual start button should wait for private/custom modes.
+
+Bugs:
+
+- None known from automated validation.
+
+Decisions or follow-up tasks:
+
+- Test with 2+ Studio clients and confirm players start in the lobby, then move to circle slots on setup.
+- Confirm a late-joining client remains in the lobby until the next round.
+- Continue with FTC-202 for STOP feedback.
+
 ## Template
 
 ```text

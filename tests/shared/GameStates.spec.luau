@@ -41,10 +41,13 @@ return {
 		end,
 	},
 	{
-		name = "chooses post-reset setup when enough players remain",
+		name = "chooses post-reset waiting so players return to the lobby",
 		run = function(expect)
 			for _ = 1, 3 do
-				expect.equal(GameStates.getPostResetState(2, 2), GameStates.RoundStates.Setup)
+				expect.equal(
+					GameStates.getPostResetState(2, 2),
+					GameStates.RoundStates.WaitingForPlayers
+				)
 			end
 		end,
 	},

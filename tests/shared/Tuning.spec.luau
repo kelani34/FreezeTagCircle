@@ -41,6 +41,14 @@ return {
 		end,
 	},
 	{
+		name = "places the lobby outside the active playground circle",
+		run = function(expect)
+			expect.truthy(Tuning.LobbySpawnHeight > 0)
+			expect.truthy(Tuning.LobbySpawnSpacing > 0)
+			expect.truthy(math.abs(Tuning.LobbyCenterZ) > Tuning.CircleSpawnRadius * 2)
+		end,
+	},
+	{
 		name = "uses first playable arena tuning values",
 		run = function(expect)
 			expect.equal(Tuning.CircleSpawnRadius, 40)

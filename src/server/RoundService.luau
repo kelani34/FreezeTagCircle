@@ -143,6 +143,7 @@ local currentSnapshot: RoundSnapshot = {
 local started = false
 local playerAddedConnection: RBXScriptConnection? = nil
 local playerRemovingConnection: RBXScriptConnection? = nil
+local characterAddedConnections: { [Player]: RBXScriptConnection } = {}
 
 local function getActivePlayerCount(): number
 	return #Players:GetPlayers()
@@ -170,6 +171,34 @@ local function isUserIdActive(activeUserIds: { number }, userId: number?): boole
 	end
 
 	return false
+end
+
+local function getRoundParticipantUserIds(): { number }
+	local userIds = {}
+
+	for index, placement in currentSnapshot.spawnPlacements do
+		userIds[index] = placement.userId
+	end
+
+	return userIds
+end
+
+local function getRoundPlayers(players: { Player }): { Player }
+	local participantUserIds = getRoundParticipantUserIds()
+
+	if #participantUserIds == 0 then
+		return players
+	end
+
+	local roundPlayers = {}
+
+	for _, player in players do
+		if isUserIdActive(participantUserIds, player.UserId) then
+			table.insert(roundPlayers, player)
+		end
+	end
+
+	return roundPlayers
 end
 
 local function hasMinimumPlayers(activePlayerCount: number): boolean
@@ -299,6 +328,7 @@ end
 
 local function moveToWaitingForPlayers(activePlayerCount: number)
 	MovementControlService.restoreAll()
+	ArenaService.placePlayersInLobby()
 
 	currentSnapshot = makeSnapshot(GameStates.RoundStates.WaitingForPlayers, {
 		activePlayerCount = activePlayerCount,
@@ -310,22 +340,47 @@ end
 local function refreshActivePlayerCount(): number
 	local activePlayers = Players:GetPlayers()
 	local activePlayerCount = #activePlayers
+	local roundPlayers = getRoundPlayers(activePlayers)
+	local fallbackPlayerCount = if #currentSnapshot.spawnPlacements > 0
+		then #roundPlayers
+		else activePlayerCount
 
 	if
 		started
 		and GameStates.shouldFallbackToWaiting(
 			currentSnapshot.state,
-			activePlayerCount,
+			fallbackPlayerCount,
 			Tuning.MinimumPlayers
 		)
 	then
 		moveToWaitingForPlayers(activePlayerCount)
 	else
 		updateActivePlayerCount(activePlayerCount)
-		updateCallerForActivePlayers(activePlayers)
+		updateCallerForActivePlayers(roundPlayers)
 	end
 
 	return activePlayerCount
+end
+
+local function disconnectCharacterSignal(player: Player)
+	local connection = characterAddedConnections[player]
+
+	if connection then
+		connection:Disconnect()
+		characterAddedConnections[player] = nil
+	end
+end
+
+local function connectCharacterSignal(player: Player)
+	if characterAddedConnections[player] then
+		return
+	end
+
+	characterAddedConnections[player] = player.CharacterAdded:Connect(function()
+		task.defer(function()
+			ArenaService.placePlayerInLobby(player)
+		end)
+	end)
 end
 
 local function disconnectPlayerSignals()
@@ -338,6 +393,10 @@ local function disconnectPlayerSignals()
 		playerRemovingConnection:Disconnect()
 		playerRemovingConnection = nil
 	end
+
+	for player in characterAddedConnections do
+		disconnectCharacterSignal(player)
+	end
 end
 
 local function connectPlayerSignals()
@@ -345,11 +404,18 @@ local function connectPlayerSignals()
 		return
 	end
 
-	playerAddedConnection = Players.PlayerAdded:Connect(function()
+	for _, player in Players:GetPlayers() do
+		connectCharacterSignal(player)
+	end
+
+	playerAddedConnection = Players.PlayerAdded:Connect(function(player)
+		connectCharacterSignal(player)
+		ArenaService.placePlayerInLobby(player)
 		refreshActivePlayerCount()
 	end)
 
-	playerRemovingConnection = Players.PlayerRemoving:Connect(function()
+	playerRemovingConnection = Players.PlayerRemoving:Connect(function(player)
+		disconnectCharacterSignal(player)
 		task.defer(refreshActivePlayerCount)
 	end)
 end
@@ -368,6 +434,7 @@ function RoundService.stop()
 	started = false
 	disconnectPlayerSignals()
 	MovementControlService.restoreAll()
+	ArenaService.placePlayersInLobby()
 	currentSnapshot = makeSnapshot(GameStates.RoundStates.WaitingForPlayers, {
 		activePlayerCount = getActivePlayerCount(),
 		clearActors = true,
@@ -425,7 +492,10 @@ function RoundService.canTransitionTo(nextState: GameStates.RoundState): boolean
 		currentSnapshot.state == GameStates.RoundStates.CallerChoosing
 		and nextState == GameStates.RoundStates.RunAway
 	then
-		return isUserIdActive(getUserIds(Players:GetPlayers()), currentSnapshot.calledUserId)
+		return isUserIdActive(
+			getUserIds(getRoundPlayers(Players:GetPlayers())),
+			currentSnapshot.calledUserId
+		)
 	end
 
 	return true
@@ -449,7 +519,7 @@ function RoundService.transitionTo(
 		options.spawnPlacements = ArenaService.placePlayersAroundCircle(activePlayers)
 		currentSnapshot.roundNumber += 1
 	elseif nextState == GameStates.RoundStates.CallerChoosing then
-		local activePlayers = Players:GetPlayers()
+		local activePlayers = getRoundPlayers(Players:GetPlayers())
 
 		options = table.clone(options or {})
 		options.activePlayerCount = #activePlayers
@@ -458,7 +528,7 @@ function RoundService.transitionTo(
 			currentSnapshot.roundNumber
 		)
 	elseif nextState == GameStates.RoundStates.StopFrozen then
-		local activePlayers = Players:GetPlayers()
+		local activePlayers = getRoundPlayers(Players:GetPlayers())
 
 		options = table.clone(options or {})
 		options.activePlayerCount = #activePlayers
@@ -475,6 +545,7 @@ function RoundService.transitionTo(
 		or nextState == GameStates.RoundStates.WaitingForPlayers
 	then
 		MovementControlService.restoreAll()
+		ArenaService.placePlayersInLobby()
 		options = table.clone(options or {})
 		options.clearActors = true
 		options.frozenUserIds = {}
@@ -496,7 +567,7 @@ function RoundService.canSelectTarget(
 ): TargetSelection.ValidationResult
 	return TargetSelection.validate({
 		isCallerChoosing = currentSnapshot.state == GameStates.RoundStates.CallerChoosing,
-		activeUserIds = getUserIds(Players:GetPlayers()),
+		activeUserIds = getUserIds(getRoundPlayers(Players:GetPlayers())),
 		callerUserId = currentSnapshot.callerUserId,
 		requestingUserId = requestingUserId,
 		targetUserId = targetUserId,
@@ -545,7 +616,7 @@ function RoundService.recordCalledPlayerJump(requestingUserId: unknown): JumpAtt
 end
 
 function RoundService.attemptTag(requestingUserId: unknown, targetUserId: unknown): TagAttempt
-	local activePlayers = Players:GetPlayers()
+	local activePlayers = getRoundPlayers(Players:GetPlayers())
 	local activeUserIds = getUserIds(activePlayers)
 	local distanceResult = nil
 

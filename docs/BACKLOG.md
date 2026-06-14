@@ -96,7 +96,7 @@ Foundation governance work is tracked by [#5](https://github.com/kelani34/Freeze
 | FTC-115 | P0 | Done | Add first-playable automatic round driver |
 | FTC-116 | P0 | Done | Build readable prototype arena for first playable testing |
 | FTC-117 | P0 | Done | Replace square prototype framing with true circular playground arena |
-| FTC-118 | P0 | Todo | Add physical waiting room and round entry flow |
+| FTC-118 | P0 | Done | Add physical waiting room and round entry flow |
 
 ## Phase 2: Fun and Fairness
 
@@ -153,4 +153,5 @@ As of 2026-06-14:
 - The tagged playtest release checklist exists in `docs/production/RELEASE_CHECKLIST.md`.
 - Phase 1 core systems are implemented and the first-playable arena now has a visible floor, center STOP pad, generated circular boundary, generated player slot pads, and generated run-away markers.
 - The first playable tuning pass uses a 40-stud start circle, 10-stud center zone, and 8-stud tag radius.
-- The next implementation target is `FTC-118`: add physical waiting room and round entry flow.
+- Players now have a physical lobby outside the playground; waiting/late-join characters are placed there and setup moves eligible players into circle slots.
+- The next implementation target is `FTC-202`: add clear STOP feedback.

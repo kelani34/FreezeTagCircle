@@ -44,6 +44,15 @@ local slots = ArenaService.calculateSpawnSlotsForCount(4)
 assertEqual(#slots, 4, "Arena spawn slot count")
 assertEqual(slots[1].radius, Tuning.CircleSpawnRadius, "Arena spawn slot radius")
 
+local lobbyPosition = ArenaService.getLobbyPosition(1, 1)
+assertEqual(lobbyPosition.Z, Tuning.LobbyCenterZ, "Lobby position z")
+assertEqual(lobbyPosition.Y, Tuning.LobbySpawnHeight, "Lobby position y")
+assertEqual(
+	math.abs(lobbyPosition.Z) > Tuning.CircleSpawnRadius,
+	true,
+	"Lobby is outside active playground circle"
+)
+
 local assignments = CircleSpawns.assignSlotsToUserIds(
 	{ 200, 100 },
 	Tuning.CircleSpawnRadius,
@@ -133,6 +142,10 @@ assertEqual(RoundService.canTransitionTo(GameStates.RoundStates.Setup), false, "
 
 local arena = workspace:WaitForChild("Arena", 5)
 assert(arena, "Arena folder should exist")
+
+local lobby = workspace:WaitForChild("Lobby", 5)
+assert(lobby, "Lobby folder should exist")
+assert(lobby:WaitForChild("LobbySpawnPad", 5), "Lobby spawn pad should exist")
 
 local generatedArena = arena:WaitForChild("GeneratedCircleArena", 5)
 local circleBoundary = generatedArena:WaitForChild("CircleBoundary", 5)
