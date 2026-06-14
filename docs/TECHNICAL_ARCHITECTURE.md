@@ -82,10 +82,12 @@ Initial implementation:
 - `RoundService.checkCalledPlayerAtCenter` uses `ArenaService` to check the called player's character position during `RunAway` and advances to `StopFrozen` when the center zone is reached.
 - When entering `StopFrozen`, `RoundService` asks `MovementControlService` to freeze every active player except the called player and stores `frozenUserIds` in the snapshot.
 - When entering `TagAttempt`, `RoundService` resets the called player's jump budget and records accepted called-player jumps through `JumpTracker`.
+- During `TagAttempt`, `RoundService.attemptTag` validates active/frozen actors, timer state, and server-measured distance before resolving a successful tag.
 - `RoundService` restores frozen movement when returning to waiting/reset states or when the service stops.
 - `src/shared/CallerSelection.luau` defines deterministic round-robin caller selection over sorted active user IDs.
 - `src/shared/CenterZone.luau` defines pure center-zone distance checks.
 - `src/server/JumpTracker.luau` defines pure server-side jump count validation.
+- `src/server/TagService.luau` defines pure server-side tag validation rules.
 - `src/server/TargetSelection.luau` defines pure server-side target validation rules.
 - `src/shared/GameStates.luau` defines the canonical round states and order.
 - `src/shared/Tuning.luau` defines early prototype timing and arena measurement constants.
@@ -149,9 +151,17 @@ Counts the called player's tag-attempt jumps:
 Validates tag attempts:
 
 - Uses server-side distance checks.
-- Applies cooldowns.
-- Ignores invalid players.
-- Resolves success or failure.
+- Requires the round to be in `TagAttempt`.
+- Rejects late attempts after the tag timer expires.
+- Requires the requesting player to be the called player.
+- Requires an active frozen target.
+- Uses `Tuning.TagRadius` for distance validation.
+
+Initial implementation:
+
+- `src/server/TagService.luau` is a pure validator for tag attempt rules.
+- `ArenaService.getDistanceBetweenPlayers` measures character pivot distance on the server.
+- `RoundService.attemptTag` records successful tag result fields in the round snapshot and advances to `Resolve`.
 
 ### TargetSelection
 

@@ -7,6 +7,7 @@ local CallerSelection = require(Shared.CallerSelection)
 local GameStates = require(Shared.GameStates)
 local JumpTracker = require(script.Parent.JumpTracker)
 local MovementControlService = require(script.Parent.MovementControlService)
+local TagService = require(script.Parent.TagService)
 local TargetSelection = require(script.Parent.TargetSelection)
 local Tuning = require(Shared.Tuning)
 
@@ -25,6 +26,9 @@ export type RoundSnapshot = {
 	jumpLimit: number,
 	jumpsUsed: number,
 	jumpsRemaining: number,
+	taggedUserId: number?,
+	tagSucceeded: boolean?,
+	tagDistance: number?,
 }
 
 export type TargetSelectionAttempt = {
@@ -46,6 +50,13 @@ export type JumpAttempt = {
 	snapshot: RoundSnapshot,
 }
 
+export type TagAttempt = {
+	accepted: boolean,
+	reason: TagService.FailureReason?,
+	distance: number?,
+	snapshot: RoundSnapshot,
+}
+
 type TransitionOptions = {
 	durationSeconds: number?,
 	activePlayerCount: number?,
@@ -54,6 +65,9 @@ type TransitionOptions = {
 	spawnPlacements: { ArenaService.PlayerSpawnPlacement }?,
 	frozenUserIds: { number }?,
 	jumpsUsed: number?,
+	taggedUserId: number?,
+	tagSucceeded: boolean?,
+	tagDistance: number?,
 	clearActors: boolean?,
 }
 
@@ -108,6 +122,9 @@ local currentSnapshot: RoundSnapshot = {
 	jumpLimit = Tuning.TagJumpLimit,
 	jumpsUsed = 0,
 	jumpsRemaining = Tuning.TagJumpLimit,
+	taggedUserId = nil,
+	tagSucceeded = nil,
+	tagDistance = nil,
 }
 
 local started = false
@@ -185,6 +202,18 @@ local function makeSnapshot(
 		then 0
 		elseif options and options.jumpsUsed ~= nil then options.jumpsUsed
 		else currentSnapshot.jumpsUsed
+	local taggedUserId = if shouldClearActors
+		then nil
+		elseif options and options.taggedUserId ~= nil then options.taggedUserId
+		else currentSnapshot.taggedUserId
+	local tagSucceeded = if shouldClearActors
+		then nil
+		elseif options and options.tagSucceeded ~= nil then options.tagSucceeded
+		else currentSnapshot.tagSucceeded
+	local tagDistance = if shouldClearActors
+		then nil
+		elseif options and options.tagDistance ~= nil then options.tagDistance
+		else currentSnapshot.tagDistance
 
 	return {
 		state = state,
@@ -217,6 +246,9 @@ local function makeSnapshot(
 		jumpLimit = Tuning.TagJumpLimit,
 		jumpsUsed = jumpsUsed,
 		jumpsRemaining = JumpTracker.getRemainingJumps(jumpsUsed, Tuning.TagJumpLimit),
+		taggedUserId = taggedUserId,
+		tagSucceeded = tagSucceeded,
+		tagDistance = tagDistance,
 	}
 end
 
@@ -406,14 +438,21 @@ function RoundService.transitionTo(
 	elseif nextState == GameStates.RoundStates.TagAttempt then
 		options = table.clone(options or {})
 		options.jumpsUsed = 0
+		options.taggedUserId = nil
+		options.tagSucceeded = nil
+		options.tagDistance = nil
 	elseif
 		nextState == GameStates.RoundStates.Reset
 		or nextState == GameStates.RoundStates.WaitingForPlayers
 	then
 		MovementControlService.restoreAll()
 		options = table.clone(options or {})
+		options.clearActors = true
 		options.frozenUserIds = {}
 		options.jumpsUsed = 0
+		options.taggedUserId = nil
+		options.tagSucceeded = nil
+		options.tagDistance = nil
 	end
 
 	currentSnapshot = makeSnapshot(nextState, options)
@@ -469,6 +508,49 @@ function RoundService.recordCalledPlayerJump(requestingUserId: unknown): JumpAtt
 	return {
 		accepted = result.accepted,
 		reason = result.reason,
+		snapshot = RoundService.getSnapshot(),
+	}
+end
+
+function RoundService.attemptTag(requestingUserId: unknown, targetUserId: unknown): TagAttempt
+	local activePlayers = Players:GetPlayers()
+	local activeUserIds = getUserIds(activePlayers)
+	local distanceResult = nil
+
+	if currentSnapshot.calledUserId ~= nil and typeof(targetUserId) == "number" then
+		distanceResult = ArenaService.getDistanceBetweenPlayers(
+			currentSnapshot.calledUserId,
+			targetUserId,
+			activePlayers
+		)
+	end
+
+	local distance = if distanceResult then distanceResult.distance else nil
+	local result = TagService.validate({
+		isTagAttempt = currentSnapshot.state == GameStates.RoundStates.TagAttempt,
+		isExpired = currentSnapshot.stateEndsAt ~= nil and os.clock() > currentSnapshot.stateEndsAt,
+		activeUserIds = activeUserIds,
+		frozenUserIds = currentSnapshot.frozenUserIds,
+		calledUserId = currentSnapshot.calledUserId,
+		requestingUserId = requestingUserId,
+		targetUserId = targetUserId,
+		distance = distance,
+		tagRadius = Tuning.TagRadius,
+	})
+
+	if result.accepted then
+		currentSnapshot = makeSnapshot(GameStates.RoundStates.Resolve, {
+			activePlayerCount = #activePlayers,
+			taggedUserId = result.targetUserId,
+			tagSucceeded = true,
+			tagDistance = result.distance,
+		})
+	end
+
+	return {
+		accepted = result.accepted,
+		reason = result.reason,
+		distance = result.distance,
 		snapshot = RoundService.getSnapshot(),
 	}
 end

@@ -14,6 +14,13 @@ return {
 		end,
 	},
 	{
+		name = "uses a positive tag radius",
+		run = function(expect)
+			expect.truthy(Tuning.TagRadius > 0)
+			expect.truthy(Tuning.TagRadius < Tuning.CircleSpawnRadius)
+		end,
+	},
+	{
 		name = "uses positive phase durations",
 		run = function(expect)
 			expect.truthy(Tuning.IntermissionSeconds > 0)

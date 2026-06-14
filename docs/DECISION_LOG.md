@@ -417,3 +417,24 @@ This does not yet observe physical Humanoid jump events or client input remotes.
 Follow-up:
 
 Wire Roblox jump input/events to `RoundService.recordCalledPlayerJump` when client remotes or character lifecycle handling are implemented.
+
+## D-020: Validate Tags With Server-Measured Distance
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+The tag attempt decides the outcome of the core loop, so clients must not be able to claim a tag, target an unfrozen player, or submit late/out-of-range attempts.
+
+Decision:
+
+Add `TagService` as a pure validator and have `RoundService.attemptTag` combine round state, active player IDs, frozen player IDs, the tag timer, and `ArenaService.getDistanceBetweenPlayers`. Successful tags advance the round to `Resolve` and store the tagged user and measured distance in the snapshot.
+
+Tradeoffs:
+
+This validates server truth but still depends on simple character pivot distance rather than detailed hitboxes. That is good enough for the first playable prototype and keeps tuning centralized through `Tuning.TagRadius`.
+
+Follow-up:
+
+Use playtests and FTC-201 tuning work to decide whether tag radius, capsule checks, or Studio-authored hitbox helpers are needed.

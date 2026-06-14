@@ -5,6 +5,7 @@ local specs = {
 	{ name = "GameStates", load = require("../tests/shared/GameStates.spec") },
 	{ name = "JumpTracker", load = require("../tests/server/JumpTracker.spec") },
 	{ name = "Remotes", load = require("../tests/shared/Remotes.spec") },
+	{ name = "TagService", load = require("../tests/server/TagService.spec") },
 	{ name = "TargetSelection", load = require("../tests/server/TargetSelection.spec") },
 	{ name = "Tuning", load = require("../tests/shared/Tuning.spec") },
 }

@@ -8,6 +8,7 @@ local Tuning = {
 	RunAwaySeconds = 8,
 	TagAttemptSeconds = 12,
 	TagJumpLimit = 3,
+	TagRadius = 6,
 }
 
 return table.freeze(Tuning)
