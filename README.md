@@ -33,6 +33,7 @@ Primary goals:
 - [Release and Access Plan](docs/RELEASE_AND_ACCESS.md)
 - [Tooling](docs/TOOLING.md)
 - [Test Strategy](docs/TEST_STRATEGY.md)
+- [GitHub Workflow](docs/GITHUB_WORKFLOW.md)
 - [Environments](docs/production/ENVIRONMENTS.md)
 - [Release Checklist](docs/production/RELEASE_CHECKLIST.md)
 
@@ -47,6 +48,7 @@ Primary goals:
 │   ├── shared/            Shared constants, types, utility modules
 │   └── tools/             Development helpers and non-runtime scripts
 ├── tests/                 Headless Luau tests
+├── AGENTS.md              Project memory and agent operating rules
 ├── default.project.json   Rojo project mapping
 ├── FreezeTagCircle.rbxl   Current Roblox place file
 ├── rokit.toml             Pinned Roblox toolchain

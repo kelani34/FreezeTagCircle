@@ -27,7 +27,7 @@ jobs:
 
       - name: Trust pinned tools
         run: |
-          rokit trust rojo-rbx/rojo UpliftGames/wally Kampfkarren/selene JohnnyMorganz/StyLua lune-org/lune
+          rokit trust rojo-rbx/rojo UpliftGames/wally Kampfkarren/selene JohnnyMorganz/StyLua lune-org/lune rojo-rbx/run-in-roblox
 
       - name: Install pinned tools
         run: rokit install

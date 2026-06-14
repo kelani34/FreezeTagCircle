@@ -1,0 +1,4 @@
+interface:
+  display_name: "FreezeTagCircle Roundup"
+  short_description: "End-of-session project governance checklist"
+  default_prompt: "Use $freezetagcircle-roundup to prepare, validate, and close out a FreezeTagCircle work session."
