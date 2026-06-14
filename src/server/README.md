@@ -8,3 +8,4 @@ Current modules:
 
 - `ArenaService.luau`: calculates server-owned circle spawn assignments and pivots loaded characters into their setup slots.
 - `RoundService.luau`: owns round snapshots, minimum-player gating, legal state transitions, setup spawn placement, and caller assignment.
+- `TargetSelection.luau`: validates caller target choices before `RoundService` records a called player.

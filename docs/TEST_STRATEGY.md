@@ -24,6 +24,7 @@ Current coverage:
 - `CircleSpawns`
 - `GameStates`
 - `Remotes`
+- `TargetSelection`
 - `Tuning`
 
 ### Server Service Tests
@@ -48,7 +49,7 @@ Purpose:
 Status:
 
 - Local smoke test runner added with `run-in-roblox`.
-- Smoke coverage now loads `ArenaService`, validates arena spawn tuning, and checks deterministic spawn and caller assignment helpers inside Roblox Studio.
+- Smoke coverage now loads `ArenaService`, validates arena spawn tuning, and checks deterministic spawn, caller assignment, and target validation helpers inside Roblox Studio.
 - GitHub-hosted Linux CI does not run Roblox Studio integration tests.
 - Use `lune run scripts/integration-test.luau` on a machine with Roblox Studio installed.
 
@@ -91,6 +92,7 @@ Highest priority:
 - Player join/leave during every round state.
 - Server rejection of invalid client intent.
 - Caller assignment determinism and reassignment when needed.
+- Target selection accepts only the current caller and active non-caller targets.
 - Spawn placement determinism.
 - Tag validation rules.
 
@@ -98,6 +100,7 @@ Medium priority:
 
 - Tuning values remain within playable ranges.
 - Caller rotation remains deterministic for a given active-player set and round number.
+- Repeated target selections stay rejected until later anti-spam tuning changes the rule.
 - Circle spawn slots remain deterministic and evenly distributed.
 - Remotes are named consistently.
 - UI state snapshots remain backward compatible.

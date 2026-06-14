@@ -333,3 +333,24 @@ Round-robin selection is less dramatic than winner-based caller transfer, but it
 Follow-up:
 
 Revisit caller rotation after target selection, tag resolution, and scoring exist.
+
+## D-016: Lock One Server-Validated Target Per CallerChoosing Phase
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+The caller needs to select another player before the round can move into the run-away phase. Public-server safety requires that the client never gets to declare the target as final truth.
+
+Decision:
+
+Add `src/server/TargetSelection.luau` as a pure server-owned validation helper. `RoundService.selectTarget` accepts target selections only during `CallerChoosing`, only from the current caller, only for active non-caller players, and only when no target is already locked. `CallerChoosing -> RunAway` is blocked until `calledUserId` is set to an active player.
+
+Tradeoffs:
+
+Locking the first valid target keeps the prototype simple and blocks target spam. It also means target changes are not supported yet, which is acceptable until caller UI and anti-spam tuning exist.
+
+Follow-up:
+
+Revisit target-change or cooldown behavior in `FTC-204` after the basic caller UI and run-away phase are playable.

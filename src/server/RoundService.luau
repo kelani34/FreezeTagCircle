@@ -5,6 +5,7 @@ local Shared = ReplicatedStorage:WaitForChild("Shared")
 local ArenaService = require(script.Parent.ArenaService)
 local CallerSelection = require(Shared.CallerSelection)
 local GameStates = require(Shared.GameStates)
+local TargetSelection = require(script.Parent.TargetSelection)
 local Tuning = require(Shared.Tuning)
 
 export type RoundSnapshot = {
@@ -18,6 +19,12 @@ export type RoundSnapshot = {
 	callerUserId: number?,
 	calledUserId: number?,
 	spawnPlacements: { ArenaService.PlayerSpawnPlacement },
+}
+
+export type TargetSelectionAttempt = {
+	accepted: boolean,
+	reason: TargetSelection.FailureReason?,
+	snapshot: RoundSnapshot,
 }
 
 type TransitionOptions = {
@@ -96,6 +103,20 @@ local function getUserIds(players: { Player }): { number }
 	return userIds
 end
 
+local function isUserIdActive(activeUserIds: { number }, userId: number?): boolean
+	if userId == nil then
+		return false
+	end
+
+	for _, activeUserId in activeUserIds do
+		if activeUserId == userId then
+			return true
+		end
+	end
+
+	return false
+end
+
 local function hasMinimumPlayers(activePlayerCount: number): boolean
 	return activePlayerCount >= Tuning.MinimumPlayers
 end
@@ -162,7 +183,11 @@ end
 local function updateCallerForActivePlayers(activePlayers: { Player })
 	local activeUserIds = getUserIds(activePlayers)
 
-	if CallerSelection.isUserIdActive(activeUserIds, currentSnapshot.callerUserId) then
+	if not isUserIdActive(activeUserIds, currentSnapshot.calledUserId) then
+		currentSnapshot.calledUserId = nil
+	end
+
+	if isUserIdActive(activeUserIds, currentSnapshot.callerUserId) then
 		return
 	end
 
@@ -172,6 +197,8 @@ local function updateCallerForActivePlayers(activePlayers: { Player })
 	else
 		currentSnapshot.callerUserId = nil
 	end
+
+	currentSnapshot.calledUserId = nil
 end
 
 local function moveToWaitingForPlayers(activePlayerCount: number)
@@ -284,6 +311,13 @@ function RoundService.canTransitionTo(nextState: GameStates.RoundState): boolean
 		return currentSnapshot.hasMinimumPlayers
 	end
 
+	if
+		currentSnapshot.state == GameStates.RoundStates.CallerChoosing
+		and nextState == GameStates.RoundStates.RunAway
+	then
+		return isUserIdActive(getUserIds(Players:GetPlayers()), currentSnapshot.calledUserId)
+	end
+
 	return true
 end
 
@@ -318,6 +352,37 @@ function RoundService.transitionTo(
 	currentSnapshot = makeSnapshot(nextState, options)
 
 	return RoundService.getSnapshot()
+end
+
+function RoundService.canSelectTarget(
+	requestingUserId: unknown,
+	targetUserId: unknown
+): TargetSelection.ValidationResult
+	return TargetSelection.validate({
+		isCallerChoosing = currentSnapshot.state == GameStates.RoundStates.CallerChoosing,
+		activeUserIds = getUserIds(Players:GetPlayers()),
+		callerUserId = currentSnapshot.callerUserId,
+		requestingUserId = requestingUserId,
+		targetUserId = targetUserId,
+		currentTargetUserId = currentSnapshot.calledUserId,
+	})
+end
+
+function RoundService.selectTarget(
+	requestingUserId: unknown,
+	targetUserId: unknown
+): TargetSelectionAttempt
+	local result = RoundService.canSelectTarget(requestingUserId, targetUserId)
+
+	if result.accepted then
+		currentSnapshot.calledUserId = result.targetUserId
+	end
+
+	return {
+		accepted = result.accepted,
+		reason = result.reason,
+		snapshot = RoundService.getSnapshot(),
+	}
 end
 
 return table.freeze(RoundService)
