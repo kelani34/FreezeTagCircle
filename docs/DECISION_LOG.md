@@ -396,3 +396,24 @@ This uses humanoid property control rather than anchoring characters. It is less
 Follow-up:
 
 Add a visible frozen effect in `FTC-205` and revisit whether certain edge cases need anchoring or constraints.
+
+## D-019: Count Tag-Attempt Jumps On The Server
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+The called player gets exactly three jumps after STOP. Public Roblox clients cannot be trusted to declare that a jump should count, when the phase is active, or whether the limit is exhausted.
+
+Decision:
+
+Add `JumpTracker` as a pure server validation helper and keep `jumpsUsed`, `jumpsRemaining`, and `jumpLimit` in `RoundService` snapshots. `RoundService.recordCalledPlayerJump` accepts jump intent only from the called player during `TagAttempt` and resets the counter between rounds and cleanup states.
+
+Tradeoffs:
+
+This does not yet observe physical Humanoid jump events or client input remotes. It creates the authoritative contract first so remotes and Studio integration can be added without changing the rules.
+
+Follow-up:
+
+Wire Roblox jump input/events to `RoundService.recordCalledPlayerJump` when client remotes or character lifecycle handling are implemented.

@@ -24,6 +24,7 @@ Current coverage:
 - `CenterZone`
 - `CircleSpawns`
 - `GameStates`
+- `JumpTracker`
 - `Remotes`
 - `TargetSelection`
 - `Tuning`
@@ -96,6 +97,7 @@ Highest priority:
 - Target selection accepts only the current caller and active non-caller targets.
 - Center-zone checks use server-side position and tuning.
 - Freeze behavior snapshots and restores server-side humanoid movement state.
+- Jump tracking accepts only the called player during `TagAttempt` and never exceeds the configured limit.
 - Spawn placement determinism.
 - Tag validation rules.
 
