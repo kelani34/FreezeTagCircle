@@ -36,6 +36,10 @@ local checks = {
 		name = "server entry is a Script",
 		pattern = '<Item class="Script"',
 	},
+	{
+		name = "server entry requires child RoundService module",
+		pattern = 'require(script:WaitForChild("RoundService"))',
+	},
 }
 
 for _, check in checks do

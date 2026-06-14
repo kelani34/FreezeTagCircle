@@ -1,6 +1,6 @@
-local RoundDriverService = require(script.Parent.RoundDriverService)
-local RoundReplicationService = require(script.Parent.RoundReplicationService)
-local RoundService = require(script.Parent.RoundService)
+local RoundDriverService = require(script:WaitForChild("RoundDriverService"))
+local RoundReplicationService = require(script:WaitForChild("RoundReplicationService"))
+local RoundService = require(script:WaitForChild("RoundService"))
 
 RoundService.start()
 RoundReplicationService.start()
