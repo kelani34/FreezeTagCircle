@@ -79,7 +79,9 @@ Initial implementation:
 - When transitioning into `CallerChoosing`, `RoundService` assigns a caller and exposes `callerUserId` in the round snapshot.
 - If the caller leaves during `CallerChoosing` and enough players remain, `RoundService` reassigns the caller from the remaining active players.
 - `RoundService.selectTarget` validates caller target choices on the server, records `calledUserId` only for accepted selections, and blocks `CallerChoosing -> RunAway` until a valid active target is locked.
+- `RoundService.checkCalledPlayerAtCenter` uses `ArenaService` to check the called player's character position during `RunAway` and advances to `StopFrozen` when the center zone is reached.
 - `src/shared/CallerSelection.luau` defines deterministic round-robin caller selection over sorted active user IDs.
+- `src/shared/CenterZone.luau` defines pure center-zone distance checks.
 - `src/server/TargetSelection.luau` defines pure server-side target validation rules.
 - `src/shared/GameStates.luau` defines the canonical round states and order.
 - `src/shared/Tuning.luau` defines early prototype timing and arena measurement constants.
@@ -113,6 +115,7 @@ Initial implementation:
 - Player spawn assignment is deterministic by ascending `UserId`, which makes setup stable even if `Players:GetPlayers()` order changes.
 - Loaded characters are pivoted to circle slots facing the arena center.
 - Missing characters still receive spawn placement records, but are marked as not placed so later lifecycle work can decide how to recover.
+- Center-zone detection uses character pivots rather than trusting client-reported position or requiring a specific humanoid root part.
 
 ### MovementControlService
 

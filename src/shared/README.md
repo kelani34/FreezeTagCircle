@@ -7,6 +7,7 @@ Keep shared modules small and stable. If a module changes gameplay truth, it pro
 Current modules:
 
 - `CallerSelection.luau`: pure deterministic caller rotation helpers.
+- `CenterZone.luau`: pure center-zone distance and radius checks.
 - `CircleSpawns.luau`: pure circle slot and deterministic user-id assignment helpers.
 - `GameStates.luau`: round state names and small helpers.
 - `Remotes.luau`: remote object names used by server/client code.

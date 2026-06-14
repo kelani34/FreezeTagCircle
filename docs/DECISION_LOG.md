@@ -354,3 +354,24 @@ Locking the first valid target keeps the prototype simple and blocks target spam
 Follow-up:
 
 Revisit target-change or cooldown behavior in `FTC-204` after the basic caller UI and run-away phase are playable.
+
+## D-017: Detect Center Reach From Server-Owned Character Pivots
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+The called player reaching the center is the trigger for STOP, but clients should not be trusted to declare that moment. The implementation also needs to survive characters without an expected humanoid root part.
+
+Decision:
+
+Use `src/shared/CenterZone.luau` for pure horizontal distance checks and `ArenaService.getPlayerCenterReach` for Roblox character lookup. `RoundService.checkCalledPlayerAtCenter` only runs during `RunAway`, checks the called player's current character pivot, and advances to `StopFrozen` when the character is within `Tuning.CenterZoneRadius`.
+
+Tradeoffs:
+
+Polling/checking from RoundService is simpler than adding a physical trigger part before arena authoring is settled. It may later be replaced or supplemented by a Studio-authored trigger volume.
+
+Follow-up:
+
+When arena authoring is revisited, decide whether center detection should move to explicit Workspace trigger instances.

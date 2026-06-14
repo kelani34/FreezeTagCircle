@@ -2,6 +2,7 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
+local CenterZone = require(Shared.CenterZone)
 local CircleSpawns = require(Shared.CircleSpawns)
 local Tuning = require(Shared.Tuning)
 
@@ -14,6 +15,13 @@ export type PlayerSpawnPlacement = {
 	y: number,
 	z: number,
 	placed: boolean,
+}
+
+export type CenterReachResult = {
+	userId: number,
+	reached: boolean,
+	distance: number?,
+	reason: "NoPlayer" | "NoCharacter" | "OutsideCenter" | nil,
 }
 
 local ArenaService = {}
@@ -54,6 +62,52 @@ function ArenaService.calculateSpawnSlotsForCount(totalSlots: number): { CircleS
 		Tuning.CircleSpawnRadius,
 		Tuning.CircleSpawnHeight
 	)
+end
+
+function ArenaService.isPositionInCenterZone(position: Vector3): boolean
+	return CenterZone.isWithinRadius(position.X, position.Z, Tuning.CenterZoneRadius)
+end
+
+function ArenaService.getPlayerCenterReach(userId: number, players: { Player }?): CenterReachResult
+	local selectedPlayers = getPlayers(players)
+	local selectedPlayer = nil
+
+	for _, player in selectedPlayers do
+		if player.UserId == userId then
+			selectedPlayer = player
+			break
+		end
+	end
+
+	if selectedPlayer == nil then
+		return {
+			userId = userId,
+			reached = false,
+			distance = nil,
+			reason = "NoPlayer",
+		}
+	end
+
+	local character = selectedPlayer.Character
+
+	if character == nil then
+		return {
+			userId = userId,
+			reached = false,
+			distance = nil,
+			reason = "NoCharacter",
+		}
+	end
+
+	local position = character:GetPivot().Position
+	local distance = CenterZone.getHorizontalDistance(position.X, position.Z)
+
+	return {
+		userId = userId,
+		reached = distance <= Tuning.CenterZoneRadius,
+		distance = distance,
+		reason = if distance <= Tuning.CenterZoneRadius then nil else "OutsideCenter",
+	}
 end
 
 function ArenaService.getSpawnAssignments(players: { Player }?): { CircleSpawns.SpawnAssignment }

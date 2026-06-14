@@ -56,4 +56,4 @@ Update these docs whenever the work changes their domain:
 
 ## Current Next Target
 
-The next gameplay target is `FTC-108`: center zone detection.
+The next gameplay target is `FTC-109`: freeze and unfreeze behavior.

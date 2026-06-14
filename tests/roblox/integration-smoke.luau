@@ -13,6 +13,7 @@ assert(server, "ServerScriptService.Server should exist")
 
 local ArenaService = require(server:WaitForChild("ArenaService", 5))
 local CallerSelection = require(shared:WaitForChild("CallerSelection", 5))
+local CenterZone = require(shared:WaitForChild("CenterZone", 5))
 local CircleSpawns = require(shared:WaitForChild("CircleSpawns", 5))
 local GameStates = require(shared:WaitForChild("GameStates", 5))
 local Remotes = require(shared:WaitForChild("Remotes", 5))
@@ -40,6 +41,8 @@ local assignments = CircleSpawns.assignSlotsToUserIds(
 )
 assertEqual(assignments[1].userId, 100, "Deterministic spawn assignment")
 assertEqual(CallerSelection.selectCallerUserId({ 200, 100 }, 1), 100, "Deterministic caller")
+assertEqual(CenterZone.isWithinRadius(0, 0, Tuning.CenterZoneRadius), true, "Center zone origin")
+assertEqual(ArenaService.isPositionInCenterZone(Vector3.new(0, 0, 0)), true, "Arena center zone")
 
 local targetValidation = TargetSelection.validate({
 	isCallerChoosing = true,

@@ -27,6 +27,13 @@ export type TargetSelectionAttempt = {
 	snapshot: RoundSnapshot,
 }
 
+export type CenterCheckResult = {
+	reached: boolean,
+	reason: "NotRunAway" | "NoCalledPlayer" | "NoPlayer" | "NoCharacter" | "OutsideCenter" | nil,
+	distance: number?,
+	snapshot: RoundSnapshot,
+}
+
 type TransitionOptions = {
 	durationSeconds: number?,
 	activePlayerCount: number?,
@@ -381,6 +388,39 @@ function RoundService.selectTarget(
 	return {
 		accepted = result.accepted,
 		reason = result.reason,
+		snapshot = RoundService.getSnapshot(),
+	}
+end
+
+function RoundService.checkCalledPlayerAtCenter(): CenterCheckResult
+	if currentSnapshot.state ~= GameStates.RoundStates.RunAway then
+		return {
+			reached = false,
+			reason = "NotRunAway",
+			distance = nil,
+			snapshot = RoundService.getSnapshot(),
+		}
+	end
+
+	if currentSnapshot.calledUserId == nil then
+		return {
+			reached = false,
+			reason = "NoCalledPlayer",
+			distance = nil,
+			snapshot = RoundService.getSnapshot(),
+		}
+	end
+
+	local centerReach = ArenaService.getPlayerCenterReach(currentSnapshot.calledUserId)
+
+	if centerReach.reached then
+		RoundService.transitionTo(GameStates.RoundStates.StopFrozen)
+	end
+
+	return {
+		reached = centerReach.reached,
+		reason = centerReach.reason,
+		distance = centerReach.distance,
 		snapshot = RoundService.getSnapshot(),
 	}
 end
