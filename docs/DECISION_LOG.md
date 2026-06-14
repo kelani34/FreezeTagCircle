@@ -502,6 +502,27 @@ Follow-up:
 
 Use FTC-408/FTC-403 to evaluate and add a Roblox service-level runner for multi-client lifecycle scenarios.
 
+## D-025: Inspect Rojo Build Shape For Client Startup
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+Rojo maps `init.client.luau` to a `LocalScript` and nests sibling source modules beneath it in the built place. A source-level require can look correct while failing after the Rojo build if it assumes the wrong parent/child layout.
+
+Decision:
+
+Fix the client entry point to require `script:WaitForChild("RoundHud")` and add `scripts/build-inspect.luau` to assert the built `.rbxlx` contains the expected client `LocalScript`, `RoundHud` child module, and server `Script`.
+
+Tradeoffs:
+
+This is a targeted build-shape check, not a replacement for real client UI automation. It catches the exact class of packaging bug that prevented the HUD from appearing in Studio.
+
+Follow-up:
+
+Add richer client-side Roblox tests once the project adopts a service-level or client-capable Studio test harness.
+
 ## D-024: Add A Conservative Automatic Driver For First Playable
 
 Date: 2026-06-14

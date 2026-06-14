@@ -1,3 +1,3 @@
-local RoundHud = require(script.Parent.RoundHud)
+local RoundHud = require(script:WaitForChild("RoundHud"))
 
 RoundHud.start()
