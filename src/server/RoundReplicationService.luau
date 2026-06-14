@@ -11,6 +11,7 @@ local started = false
 local playerAddedConnection: RBXScriptConnection? = nil
 local snapshotConnection: RBXScriptConnection? = nil
 local remoteFolder: Folder? = nil
+local roundDebugStatus: StringValue? = nil
 local roundStateChanged: RemoteEvent? = nil
 local requestRoundSnapshot: RemoteFunction? = nil
 
@@ -34,6 +35,8 @@ local function ensureRemotes()
 	remoteFolder = getOrCreateChild(ReplicatedStorage, "Folder", Remotes.FolderName) :: Folder
 	roundStateChanged =
 		getOrCreateChild(remoteFolder, "RemoteEvent", Remotes.RoundStateChanged) :: RemoteEvent
+	roundDebugStatus =
+		getOrCreateChild(remoteFolder, "StringValue", Remotes.RoundDebugStatus) :: StringValue
 	requestRoundSnapshot = getOrCreateChild(
 		remoteFolder,
 		"RemoteFunction",
@@ -41,18 +44,33 @@ local function ensureRemotes()
 	) :: RemoteFunction
 end
 
+local function updateDebugStatus(snapshot: RoundService.RoundSnapshot?)
+	ensureRemotes()
+
+	local selectedSnapshot = snapshot or RoundService.getSnapshot()
+	local status = roundDebugStatus :: StringValue
+	status.Value =
+		`Server {selectedSnapshot.state} | players {selectedSnapshot.activePlayerCount}/{selectedSnapshot.minimumPlayers} | round {selectedSnapshot.roundNumber}`
+end
+
 function RoundReplicationService.broadcastSnapshot(snapshot: RoundService.RoundSnapshot?)
 	ensureRemotes()
 
+	local selectedSnapshot = snapshot or RoundService.getSnapshot()
+	updateDebugStatus(selectedSnapshot)
+
 	local stateRemote = roundStateChanged :: RemoteEvent
-	stateRemote:FireAllClients(snapshot or RoundService.getSnapshot())
+	stateRemote:FireAllClients(selectedSnapshot)
 end
 
 function RoundReplicationService.sendSnapshot(player: Player, snapshot: RoundService.RoundSnapshot?)
 	ensureRemotes()
 
+	local selectedSnapshot = snapshot or RoundService.getSnapshot()
+	updateDebugStatus(selectedSnapshot)
+
 	local stateRemote = roundStateChanged :: RemoteEvent
-	stateRemote:FireClient(player, snapshot or RoundService.getSnapshot())
+	stateRemote:FireClient(player, selectedSnapshot)
 end
 
 function RoundReplicationService.start()
@@ -65,7 +83,10 @@ function RoundReplicationService.start()
 
 	local snapshotRemote = requestRoundSnapshot :: RemoteFunction
 	snapshotRemote.OnServerInvoke = function()
-		return RoundService.getSnapshot()
+		local snapshot = RoundService.refreshActivePlayerCount()
+		updateDebugStatus(snapshot)
+
+		return snapshot
 	end
 
 	snapshotConnection = RoundService.onSnapshotChanged(function(snapshot)

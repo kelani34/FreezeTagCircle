@@ -22,4 +22,10 @@ return {
 			end
 		end,
 	},
+	{
+		name = "includes runtime diagnostics value",
+		run = function(expect)
+			expect.equal(Remotes.RoundDebugStatus, "RoundDebugStatus")
+		end,
+	},
 }

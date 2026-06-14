@@ -29,6 +29,10 @@ local checks = {
 		pattern = '<Item class="RemoteFunction"',
 	},
 	{
+		name = "round debug status value is included",
+		pattern = '<string name="Name">RoundDebugStatus</string>',
+	},
+	{
 		name = "server entry is a Script",
 		pattern = '<Item class="Script"',
 	},
