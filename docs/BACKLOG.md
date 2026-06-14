@@ -81,7 +81,7 @@ Foundation governance work is tracked by [#5](https://github.com/kelani34/Freeze
 | FTC-104 | P0 | Done | Implement minimum player waiting state |
 | FTC-105 | P0 | Done | Implement circle spawn placement |
 | FTC-106 | P0 | Done | Implement caller assignment |
-| FTC-107 | P0 | Todo | Implement target selection validation |
+| FTC-107 | P0 | Done | Implement target selection validation |
 | FTC-108 | P0 | Todo | Implement center zone detection |
 | FTC-109 | P0 | Todo | Implement freeze and unfreeze behavior |
 | FTC-110 | P0 | Todo | Implement three-jump tracking |
@@ -132,6 +132,7 @@ As of 2026-06-14:
 - The minimum-player waiting gate is complete.
 - Circle spawn placement is implemented with deterministic spawn math, `ArenaService`, and RoundService setup wiring.
 - Caller assignment is implemented with deterministic round-robin selection over active players.
+- Target selection validation is implemented with server-owned checks before `RunAway`.
 - GitHub issues now exist for every remaining backlog item.
 - The tagged playtest release checklist exists in `docs/production/RELEASE_CHECKLIST.md`.
-- The next implementation target is `FTC-107`: target selection validation.
+- The next implementation target is `FTC-108`: center zone detection.

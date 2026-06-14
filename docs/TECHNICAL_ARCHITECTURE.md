@@ -78,7 +78,9 @@ Initial implementation:
 - When transitioning into `Setup`, `RoundService` asks `ArenaService` to place active players around the circle and stores the resulting spawn placements in the round snapshot.
 - When transitioning into `CallerChoosing`, `RoundService` assigns a caller and exposes `callerUserId` in the round snapshot.
 - If the caller leaves during `CallerChoosing` and enough players remain, `RoundService` reassigns the caller from the remaining active players.
+- `RoundService.selectTarget` validates caller target choices on the server, records `calledUserId` only for accepted selections, and blocks `CallerChoosing -> RunAway` until a valid active target is locked.
 - `src/shared/CallerSelection.luau` defines deterministic round-robin caller selection over sorted active user IDs.
+- `src/server/TargetSelection.luau` defines pure server-side target validation rules.
 - `src/shared/GameStates.luau` defines the canonical round states and order.
 - `src/shared/Tuning.luau` defines early prototype timing and arena measurement constants.
 - `src/shared/CircleSpawns.luau` defines pure spawn-slot math so deterministic placement can be tested headlessly.
@@ -128,6 +130,16 @@ Validates tag attempts:
 - Applies cooldowns.
 - Ignores invalid players.
 - Resolves success or failure.
+
+### TargetSelection
+
+Validates caller target choice before the round can leave `CallerChoosing`:
+
+- Only the current caller can select.
+- The selected target must be an active player.
+- The caller cannot target themselves.
+- A target can only be locked once per `CallerChoosing` phase.
+- If the caller or selected target leaves before `RunAway`, RoundService clears or reassigns state safely.
 
 ### ScoreService
 

@@ -56,4 +56,4 @@ Update these docs whenever the work changes their domain:
 
 ## Current Next Target
 
-The next gameplay target is `FTC-107`: target selection validation.
+The next gameplay target is `FTC-108`: center zone detection.

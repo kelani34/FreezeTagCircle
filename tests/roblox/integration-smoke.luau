@@ -17,6 +17,7 @@ local CircleSpawns = require(shared:WaitForChild("CircleSpawns", 5))
 local GameStates = require(shared:WaitForChild("GameStates", 5))
 local Remotes = require(shared:WaitForChild("Remotes", 5))
 local RoundService = require(server:WaitForChild("RoundService", 5))
+local TargetSelection = require(server:WaitForChild("TargetSelection", 5))
 local Tuning = require(shared:WaitForChild("Tuning", 5))
 
 assertEqual(GameStates.DefaultRoundState, GameStates.RoundStates.WaitingForPlayers, "Default state")
@@ -39,6 +40,16 @@ local assignments = CircleSpawns.assignSlotsToUserIds(
 )
 assertEqual(assignments[1].userId, 100, "Deterministic spawn assignment")
 assertEqual(CallerSelection.selectCallerUserId({ 200, 100 }, 1), 100, "Deterministic caller")
+
+local targetValidation = TargetSelection.validate({
+	isCallerChoosing = true,
+	activeUserIds = { 100, 200 },
+	callerUserId = 100,
+	requestingUserId = 100,
+	targetUserId = 200,
+	currentTargetUserId = nil,
+})
+assertEqual(targetValidation.accepted, true, "Valid target selection")
 
 RoundService.start()
 

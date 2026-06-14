@@ -21,8 +21,8 @@
 - For the first prototype, caller assignment is server-owned round-robin selection over active players.
 - Later playtests should decide whether caller rotation should become random, winner-based, or score-based.
 - Does the caller physically stand somewhere special?
-- Can the caller choose themselves?
-- Can a caller repeatedly target the same player?
+- The caller cannot choose themselves.
+- For the first prototype, the caller can lock one target per `CallerChoosing` phase.
 
 ### Player Identity
 
@@ -66,6 +66,7 @@ These are provisional recommendations for prototype testing:
 - Caller is selected by round logic, not by vote.
 - Initial caller rotation uses deterministic round-robin selection so the behavior is testable and fair enough for early play.
 - Caller chooses from active players through a simple server-validated choice UI.
+- Caller target selection is accepted only when the requester is the current caller, the target is active, and no target has already been locked.
 - STOP triggers automatically when the called player enters the center zone.
 - Frozen players are anchored by server-authoritative movement restriction, with a clear visual freeze effect.
 - The called player has three jump actions and a short time limit.
