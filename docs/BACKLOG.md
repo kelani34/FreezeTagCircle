@@ -79,7 +79,7 @@ Foundation governance work is tracked by [#5](https://github.com/kelani34/Freeze
 | FTC-102 | P0 | Done | Create shared round state constants |
 | FTC-103 | P0 | Done | Implement server round state machine skeleton |
 | FTC-104 | P0 | Done | Implement minimum player waiting state |
-| FTC-105 | P0 | Todo | Implement circle spawn placement |
+| FTC-105 | P0 | Done | Implement circle spawn placement |
 | FTC-106 | P0 | Todo | Implement caller assignment |
 | FTC-107 | P0 | Todo | Implement target selection validation |
 | FTC-108 | P0 | Todo | Implement center zone detection |
@@ -130,6 +130,7 @@ As of 2026-06-14:
 - Headless Luau tests now run in CI for shared contracts.
 - The first Phase 1 implementation slice is complete with shared round contracts and a server-owned `RoundService` skeleton.
 - The minimum-player waiting gate is complete.
+- Circle spawn placement is implemented with deterministic spawn math, `ArenaService`, and RoundService setup wiring.
 - GitHub issues now exist for every remaining backlog item.
 - The tagged playtest release checklist exists in `docs/production/RELEASE_CHECKLIST.md`.
-- The next implementation target is `FTC-105`: circle spawn placement.
+- The next implementation target is `FTC-106`: caller assignment.

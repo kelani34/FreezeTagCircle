@@ -291,3 +291,24 @@ This does not add broad external skill coverage immediately, but it keeps the ag
 Follow-up:
 
 Revisit third-party skills only after source review and relevance checks.
+
+## D-014: Split Pure Spawn Math From Roblox Arena Placement
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+Circle spawn placement needs to be deterministic, testable, and server-authoritative. Roblox character movement requires Roblox services, but the slot calculation itself does not.
+
+Decision:
+
+Use `src/shared/CircleSpawns.luau` for pure circle slot and user-id assignment math, and `src/server/ArenaService.luau` for Roblox-specific character placement. `RoundService` calls `ArenaService` during the `Setup` transition and stores the resulting spawn placement records in the round snapshot.
+
+Tradeoffs:
+
+This adds one shared helper and one server service, but keeps math covered by fast headless tests while isolating Roblox-specific character pivoting to a server-owned boundary.
+
+Follow-up:
+
+When center-zone detection begins, decide whether arenas remain procedural or move to Studio-authored markers for designer control.

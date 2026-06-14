@@ -1,4 +1,5 @@
 local specs = {
+	{ name = "CircleSpawns", load = require("../tests/shared/CircleSpawns.spec") },
 	{ name = "GameStates", load = require("../tests/shared/GameStates.spec") },
 	{ name = "Remotes", load = require("../tests/shared/Remotes.spec") },
 	{ name = "Tuning", load = require("../tests/shared/Tuning.spec") },
@@ -15,6 +16,14 @@ function expect.equal(actual: unknown, expected: unknown, message: string?)
 	end
 end
 
+function expect.near(actual: number, expected: number, epsilon: number?, message: string?)
+	local allowedDelta = epsilon or 0.0001
+
+	if math.abs(actual - expected) > allowedDelta then
+		error(message or `Expected {tostring(actual)} to be near {tostring(expected)}`, 2)
+	end
+end
+
 function expect.truthy(value: unknown, message: string?)
 	if not value then
 		error(message or "Expected value to be truthy", 2)
@@ -24,6 +33,14 @@ end
 function expect.falsy(value: unknown, message: string?)
 	if value then
 		error(message or "Expected value to be falsy", 2)
+	end
+end
+
+function expect.errors(callback: () -> (), message: string?)
+	local ok = pcall(callback)
+
+	if ok then
+		error(message or "Expected callback to error", 2)
 	end
 end
 

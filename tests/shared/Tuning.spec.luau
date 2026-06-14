@@ -22,4 +22,13 @@ return {
 			expect.truthy(Tuning.TagAttemptSeconds > 0)
 		end,
 	},
+	{
+		name = "uses playable arena measurements",
+		run = function(expect)
+			expect.truthy(Tuning.CircleSpawnRadius > 0)
+			expect.truthy(Tuning.CenterZoneRadius > 0)
+			expect.truthy(Tuning.CircleSpawnHeight > 0)
+			expect.truthy(Tuning.CircleSpawnRadius > Tuning.CenterZoneRadius)
+		end,
+	},
 }
