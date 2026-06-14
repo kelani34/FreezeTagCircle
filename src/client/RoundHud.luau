@@ -120,6 +120,13 @@ function RoundHud.start()
 	local player = Players.LocalPlayer
 	local playerGui = player:WaitForChild("PlayerGui") :: PlayerGui
 	local screenGui = getOrCreateHud(playerGui)
+
+	renderPrompt(screenGui, {
+		state = "WaitingForPlayers",
+		activePlayerCount = 1,
+		minimumPlayers = 2,
+	})
+
 	local roundStateChanged, requestRoundSnapshot = getRemotes()
 
 	connection = roundStateChanged.OnClientEvent:Connect(function(snapshot)

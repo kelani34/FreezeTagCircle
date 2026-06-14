@@ -52,6 +52,9 @@ jobs:
           mkdir -p build
           rojo build default.project.json -o build/FreezeTagCircle.rbxlx
 
+      - name: Inspect Rojo build shape
+        run: lune run scripts/build-inspect.luau build/FreezeTagCircle.rbxlx
+
       - name: Upload Rojo build artifact
         uses: actions/upload-artifact@v4
         with:

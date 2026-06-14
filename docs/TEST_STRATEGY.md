@@ -79,6 +79,7 @@ lune run scripts/test.luau
 stylua --check src scripts tests
 selene src scripts tests
 rojo build default.project.json -o build/FreezeTagCircle.rbxlx
+lune run scripts/build-inspect.luau build/FreezeTagCircle.rbxlx
 ```
 
 Local Roblox integration gate when Roblox Studio behavior changed:

@@ -1,0 +1,36 @@
+local fs = require("@lune/fs")
+local process = require("@lune/process")
+
+local buildPath = process.args[1] or "build/FreezeTagCircle.rbxlx"
+
+assert(fs.isFile(buildPath), `Build file does not exist: {buildPath}`)
+
+local contents = fs.readFile(buildPath)
+
+local checks = {
+	{
+		name = "client entry requires child RoundHud module",
+		pattern = 'require(script:WaitForChild("RoundHud"))',
+	},
+	{
+		name = "client entry is a LocalScript",
+		pattern = '<Item class="LocalScript"',
+	},
+	{
+		name = "RoundHud module is included",
+		pattern = '<string name="Name">RoundHud</string>',
+	},
+	{
+		name = "server entry is a Script",
+		pattern = '<Item class="Script"',
+	},
+}
+
+for _, check in checks do
+	assert(
+		string.find(contents, check.pattern, 1, true) ~= nil,
+		`Missing build inspection check: {check.name}`
+	)
+end
+
+print(`Build inspection passed for {buildPath}`)

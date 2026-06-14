@@ -28,6 +28,7 @@ lune run scripts/test.luau
 stylua --check src scripts tests
 selene src scripts tests
 rojo build default.project.json -o build/FreezeTagCircle.rbxlx
+lune run scripts/build-inspect.luau build/FreezeTagCircle.rbxlx
 ```
 
 Run this when Roblox services, remotes, server/client integration, Studio-authored instances, or gameplay systems change and Roblox Studio is available:
