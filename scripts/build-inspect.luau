@@ -41,6 +41,14 @@ local checks = {
 		pattern = '<string name="Name">ArenaVisuals</string>',
 	},
 	{
+		name = "FeedbackTuning shared module is included",
+		pattern = '<string name="Name">FeedbackTuning</string>',
+	},
+	{
+		name = "client STOP pulse effect folder is referenced",
+		pattern = "FreezeTagCircleClientEffects",
+	},
+	{
 		name = "readable arena folder is included",
 		pattern = '<string name="Name">Arena</string>',
 	},

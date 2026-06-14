@@ -104,6 +104,7 @@ Highest priority:
 - Tag validation accepts only active frozen targets inside server-measured tag radius during `TagAttempt`.
 - Post-reset state selection keeps repeated round cycles deterministic.
 - Round prompts cover waiting, caller, run, STOP, jump, and result messaging from snapshots.
+- Feedback tuning keeps STOP/frozen effect names, timing, sound, and RGB values centralized and headless-testable.
 - Spawn placement determinism.
 - Tag validation rules.
 
@@ -118,7 +119,7 @@ Medium priority:
 
 Low priority:
 
-- Cosmetic-only effects.
+- Final cosmetic presentation quality.
 - Non-critical presentation helpers.
 
 ## Current Gaps
@@ -128,6 +129,7 @@ Low priority:
 - Join/leave fallback policy is covered headlessly across every round state.
 - Automatic round driver startup is covered in Roblox Studio smoke tests; richer timed multi-player behavior still needs a service-level harness.
 - Movement freeze lifecycle has smoke loading coverage; richer humanoid lifecycle assertions should be added once Roblox service-level tests exist.
+- STOP/frozen feedback configuration has headless contract tests and Roblox smoke loading checks, but visual quality still requires manual multi-client Studio playtests.
 - Tag validation has headless rule coverage and Studio smoke loading coverage; character-distance success paths need richer multi-character Roblox tests.
 - Full multi-player join/leave/reset simulation still needs a Roblox service-level test harness or controlled Studio test place with fake clients.
 - No performance budget tests yet.

@@ -17,6 +17,7 @@ local ArenaVisuals = require(shared:WaitForChild("ArenaVisuals", 5))
 local CallerSelection = require(shared:WaitForChild("CallerSelection", 5))
 local CenterZone = require(shared:WaitForChild("CenterZone", 5))
 local CircleSpawns = require(shared:WaitForChild("CircleSpawns", 5))
+local FeedbackTuning = require(shared:WaitForChild("FeedbackTuning", 5))
 local GameStates = require(shared:WaitForChild("GameStates", 5))
 local JumpTracker = require(server:WaitForChild("JumpTracker", 5))
 local MovementControlService = require(server:WaitForChild("MovementControlService", 5))
@@ -76,9 +77,11 @@ assertEqual(JumpTracker.getRemainingJumps(1, Tuning.TagJumpLimit), 2, "Remaining
 assertEqual(#MovementControlService.getFrozenUserIds(), 0, "No frozen users at smoke start")
 assertEqual(
 	MovementControlService.FrozenEffectName(),
-	"FreezeTagCircleFrozenEffect",
+	FeedbackTuning.FrozenEffectName,
 	"Frozen visual effect name"
 )
+assertEqual(FeedbackTuning.StopPulseSegmentCount >= 24, true, "STOP pulse density")
+assertEqual(FeedbackTuning.StopSoundId ~= "", true, "STOP sound configured")
 assertEqual(
 	RoundPrompts.getPrompt({ state = GameStates.RoundStates.StopFrozen }, 100).title,
 	"STOP",
