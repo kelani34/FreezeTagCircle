@@ -38,6 +38,41 @@ Decisions or follow-up tasks:
 
 - Track a new first-playable gate as FTC-116 / issue #56: build a readable prototype arena before FTC-201 tuning.
 
+## 2026-06-14 Prototype Arena Readability Pass
+
+Date: 2026-06-14
+Build: feature/readable-prototype-arena
+Players: Pending Studio retest
+Round Count: Pending Studio retest
+
+What players understood quickly:
+
+- Pending manual validation.
+
+What confused players:
+
+- Pending manual validation.
+
+Best moment:
+
+- The map now has source-controlled visual anchors for the circle, center STOP zone, start pads, and run-away area.
+
+Worst moment:
+
+- This is still prototype geometry, not a finished Roblox environment.
+
+Balance notes:
+
+- Use FTC-201 to tune distances after testing the new arena with multiple clients.
+
+Bugs:
+
+- None known from build inspection.
+
+Decisions or follow-up tasks:
+
+- Rebuild/open the place in Studio and verify the new arena is visible from multiple client windows.
+
 ## Template
 
 ```text

@@ -54,6 +54,12 @@ World-owned instances:
 - Boundary markers
 - Optional map hazards later
 
+Initial implementation:
+
+- `default.project.json` owns the prototype arena under `Workspace.Arena` so the Studio playtest build is readable without manual place edits.
+- The arena includes a grass floor, a visible red center STOP pad, a small STOP beacon, circular perimeter markers, eight spawn pads matching the current circle spawn radius, outer run markers, and simple spectator stands.
+- These are prototype readability assets, not final art. They are intentionally built from anchored Parts so Rojo, CI build inspection, and Studio sync stay predictable.
+
 ## Proposed Runtime Systems
 
 ### RoundService

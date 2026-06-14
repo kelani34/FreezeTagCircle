@@ -648,3 +648,24 @@ This delays deeper balance tuning, but tuning radius and timers against an unrea
 Follow-up:
 
 Implement FTC-116 before FTC-201, then tune arena radius, center radius, tag radius, and phase timing using the readable arena.
+
+## D-031: Build The First Arena From Simple Rojo-Managed Parts
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+The first playable needs a visible map immediately, but final art direction and map variants are still premature. Manual Studio-only edits would also weaken source control and CI confidence.
+
+Decision:
+
+Create the first readable prototype arena directly in `default.project.json` using simple anchored Parts: arena floor, center STOP pad, STOP beacon, circle markers, eight start pads, outer run markers, and spectator framing.
+
+Tradeoffs:
+
+The arena is visually functional rather than final-quality. The place file becomes larger, but the geometry remains explicit, source-controlled, and easy to inspect in Rojo builds.
+
+Follow-up:
+
+Use FTC-201 to tune the gameplay measurements in this arena, then replace or augment the prototype geometry with authored art once the loop feels good.

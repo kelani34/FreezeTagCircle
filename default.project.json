@@ -47,9 +47,9 @@
         "$properties": {
           "Anchored": true,
           "Color": [
-            0.38823,
-            0.37254,
-            0.38823
+            0.21176,
+            0.29019,
+            0.23529
           ],
           "Locked": true,
           "Position": [
@@ -66,6 +66,29 @@
       },
       "Arena": {
         "$className": "Folder",
+        "ArenaFloor": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": true,
+            "Color": [
+              0.28627,
+              0.42352,
+              0.33725
+            ],
+            "Material": "Grass",
+            "Position": [
+              0,
+              0.05,
+              0
+            ],
+            "Size": [
+              140,
+              0.1,
+              140
+            ]
+          }
+        },
         "CenterStopPad": {
           "$className": "Part",
           "$properties": {
@@ -79,19 +102,522 @@
             "Material": "Neon",
             "Position": [
               0,
-              1,
+              0.7,
               0
             ],
-            "Shape": "Cylinder",
             "Size": [
+              18,
               1,
-              16,
-              16
+              18
             ],
-            "Transparency": 0.25
+            "Transparency": 0.1
           }
         },
-        "NorthMarker": {
+        "StopBeacon": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              1,
+              0.91764,
+              0
+            ],
+            "Material": "Neon",
+            "Position": [
+              0,
+              7,
+              0
+            ],
+            "Size": [
+              4,
+              12,
+              4
+            ],
+            "Transparency": 0.2
+          }
+        },
+        "BoundaryNorth": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              0,
+              0.45,
+              -64
+            ],
+            "Size": [
+              128,
+              0.8,
+              2
+            ],
+            "Transparency": 0.2
+          }
+        },
+        "BoundaryEast": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              64,
+              0.45,
+              0
+            ],
+            "Size": [
+              2,
+              0.8,
+              128
+            ],
+            "Transparency": 0.2
+          }
+        },
+        "BoundarySouth": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              0,
+              0.45,
+              64
+            ],
+            "Size": [
+              128,
+              0.8,
+              2
+            ],
+            "Transparency": 0.2
+          }
+        },
+        "BoundaryWest": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              -64,
+              0.45,
+              0
+            ],
+            "Size": [
+              2,
+              0.8,
+              128
+            ],
+            "Transparency": 0.2
+          }
+        },
+        "CircleMarkerNorth": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              0,
+              1.5,
+              -64
+            ],
+            "Size": [
+              4,
+              3,
+              4
+            ],
+            "Transparency": 0.05
+          }
+        },
+        "CircleMarkerNorthEastA": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              24,
+              1.5,
+              -59
+            ],
+            "Size": [
+              4,
+              3,
+              4
+            ],
+            "Transparency": 0.05
+          }
+        },
+        "CircleMarkerNorthEast": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              45,
+              1.5,
+              -45
+            ],
+            "Size": [
+              4,
+              3,
+              4
+            ],
+            "Transparency": 0.05
+          }
+        },
+        "CircleMarkerEastNorthA": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              59,
+              1.5,
+              -24
+            ],
+            "Size": [
+              4,
+              3,
+              4
+            ],
+            "Transparency": 0.05
+          }
+        },
+        "CircleMarkerEast": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              64,
+              1.5,
+              0
+            ],
+            "Size": [
+              4,
+              3,
+              4
+            ],
+            "Transparency": 0.05
+          }
+        },
+        "CircleMarkerEastSouthA": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              59,
+              1.5,
+              24
+            ],
+            "Size": [
+              4,
+              3,
+              4
+            ],
+            "Transparency": 0.05
+          }
+        },
+        "CircleMarkerSouthEast": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              45,
+              1.5,
+              45
+            ],
+            "Size": [
+              4,
+              3,
+              4
+            ],
+            "Transparency": 0.05
+          }
+        },
+        "CircleMarkerSouthEastA": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              24,
+              1.5,
+              59
+            ],
+            "Size": [
+              4,
+              3,
+              4
+            ],
+            "Transparency": 0.05
+          }
+        },
+        "CircleMarkerSouth": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              0,
+              1.5,
+              64
+            ],
+            "Size": [
+              4,
+              3,
+              4
+            ],
+            "Transparency": 0.05
+          }
+        },
+        "CircleMarkerSouthWestA": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              -24,
+              1.5,
+              59
+            ],
+            "Size": [
+              4,
+              3,
+              4
+            ],
+            "Transparency": 0.05
+          }
+        },
+        "CircleMarkerSouthWest": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              -45,
+              1.5,
+              45
+            ],
+            "Size": [
+              4,
+              3,
+              4
+            ],
+            "Transparency": 0.05
+          }
+        },
+        "CircleMarkerWestSouthA": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              -59,
+              1.5,
+              24
+            ],
+            "Size": [
+              4,
+              3,
+              4
+            ],
+            "Transparency": 0.05
+          }
+        },
+        "CircleMarkerWest": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              -64,
+              1.5,
+              0
+            ],
+            "Size": [
+              4,
+              3,
+              4
+            ],
+            "Transparency": 0.05
+          }
+        },
+        "CircleMarkerWestNorthA": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              -59,
+              1.5,
+              -24
+            ],
+            "Size": [
+              4,
+              3,
+              4
+            ],
+            "Transparency": 0.05
+          }
+        },
+        "CircleMarkerNorthWest": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              -45,
+              1.5,
+              -45
+            ],
+            "Size": [
+              4,
+              3,
+              4
+            ],
+            "Transparency": 0.05
+          }
+        },
+        "CircleMarkerNorthWestA": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.85,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              -24,
+              1.5,
+              -59
+            ],
+            "Size": [
+              4,
+              3,
+              4
+            ],
+            "Transparency": 0.05
+          }
+        },
+        "StartPadNorth": {
           "$className": "Part",
           "$properties": {
             "Anchored": true,
@@ -104,18 +630,42 @@
             "Material": "Neon",
             "Position": [
               0,
-              1,
+              0.6,
               -48
             ],
             "Size": [
-              8,
-              2,
-              8
+              10,
+              1,
+              10
             ],
             "Transparency": 0.15
           }
         },
-        "EastMarker": {
+        "StartPadNorthEast": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.4,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              34,
+              0.6,
+              -34
+            ],
+            "Size": [
+              10,
+              1,
+              10
+            ],
+            "Transparency": 0.15
+          }
+        },
+        "StartPadEast": {
           "$className": "Part",
           "$properties": {
             "Anchored": true,
@@ -128,18 +678,42 @@
             "Material": "Neon",
             "Position": [
               48,
-              1,
+              0.6,
               0
             ],
             "Size": [
-              8,
-              2,
-              8
+              10,
+              1,
+              10
             ],
             "Transparency": 0.15
           }
         },
-        "SouthMarker": {
+        "StartPadSouthEast": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.4,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              34,
+              0.6,
+              34
+            ],
+            "Size": [
+              10,
+              1,
+              10
+            ],
+            "Transparency": 0.15
+          }
+        },
+        "StartPadSouth": {
           "$className": "Part",
           "$properties": {
             "Anchored": true,
@@ -152,18 +726,42 @@
             "Material": "Neon",
             "Position": [
               0,
-              1,
+              0.6,
               48
             ],
             "Size": [
-              8,
-              2,
-              8
+              10,
+              1,
+              10
             ],
             "Transparency": 0.15
           }
         },
-        "WestMarker": {
+        "StartPadSouthWest": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.4,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              -34,
+              0.6,
+              34
+            ],
+            "Size": [
+              10,
+              1,
+              10
+            ],
+            "Transparency": 0.15
+          }
+        },
+        "StartPadWest": {
           "$className": "Part",
           "$properties": {
             "Anchored": true,
@@ -176,15 +774,228 @@
             "Material": "Neon",
             "Position": [
               -48,
+              0.6,
+              0
+            ],
+            "Size": [
+              10,
               1,
+              10
+            ],
+            "Transparency": 0.15
+          }
+        },
+        "StartPadNorthWest": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              0,
+              0.4,
+              1
+            ],
+            "Material": "Neon",
+            "Position": [
+              -34,
+              0.6,
+              -34
+            ],
+            "Size": [
+              10,
+              1,
+              10
+            ],
+            "Transparency": 0.15
+          }
+        },
+        "RunMarkerNorth": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              1,
+              0.75686,
+              0
+            ],
+            "Material": "Neon",
+            "Position": [
+              0,
+              0.55,
+              -82
+            ],
+            "Size": [
+              14,
+              0.8,
+              6
+            ],
+            "Transparency": 0.25
+          }
+        },
+        "RunMarkerEast": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              1,
+              0.75686,
+              0
+            ],
+            "Material": "Neon",
+            "Position": [
+              82,
+              0.55,
+              0
+            ],
+            "Size": [
+              6,
+              0.8,
+              14
+            ],
+            "Transparency": 0.25
+          }
+        },
+        "RunMarkerSouth": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              1,
+              0.75686,
+              0
+            ],
+            "Material": "Neon",
+            "Position": [
+              0,
+              0.55,
+              82
+            ],
+            "Size": [
+              14,
+              0.8,
+              6
+            ],
+            "Transparency": 0.25
+          }
+        },
+        "RunMarkerWest": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": false,
+            "Color": [
+              1,
+              0.75686,
+              0
+            ],
+            "Material": "Neon",
+            "Position": [
+              -82,
+              0.55,
+              0
+            ],
+            "Size": [
+              6,
+              0.8,
+              14
+            ],
+            "Transparency": 0.25
+          }
+        },
+        "SpectatorStandNorth": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": true,
+            "Color": [
+              0.15686,
+              0.16078,
+              0.16862
+            ],
+            "Material": "Concrete",
+            "Position": [
+              0,
+              2,
+              -104
+            ],
+            "Size": [
+              96,
+              4,
+              8
+            ]
+          }
+        },
+        "SpectatorStandSouth": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": true,
+            "Color": [
+              0.15686,
+              0.16078,
+              0.16862
+            ],
+            "Material": "Concrete",
+            "Position": [
+              0,
+              2,
+              104
+            ],
+            "Size": [
+              96,
+              4,
+              8
+            ]
+          }
+        },
+        "SpectatorStandEast": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": true,
+            "Color": [
+              0.15686,
+              0.16078,
+              0.16862
+            ],
+            "Material": "Concrete",
+            "Position": [
+              104,
+              2,
               0
             ],
             "Size": [
               8,
-              2,
-              8
+              4,
+              96
+            ]
+          }
+        },
+        "SpectatorStandWest": {
+          "$className": "Part",
+          "$properties": {
+            "Anchored": true,
+            "CanCollide": true,
+            "Color": [
+              0.15686,
+              0.16078,
+              0.16862
             ],
-            "Transparency": 0.15
+            "Material": "Concrete",
+            "Position": [
+              -104,
+              2,
+              0
+            ],
+            "Size": [
+              8,
+              4,
+              96
+            ],
+            "Transparency": 0
           }
         }
       }

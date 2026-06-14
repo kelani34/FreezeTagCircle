@@ -92,7 +92,7 @@ Foundation governance work is tracked by [#5](https://github.com/kelani34/Freeze
 | FTC-113 | P0 | Done | Add basic client UI prompts |
 | FTC-114 | P0 | Done | Test join/leave/reset during every round state |
 | FTC-115 | P0 | Done | Add first-playable automatic round driver |
-| FTC-116 | P0 | Todo | Build readable prototype arena for first playable testing |
+| FTC-116 | P0 | Done | Build readable prototype arena for first playable testing |
 
 ## Phase 2: Fun and Fairness
 
@@ -147,6 +147,5 @@ As of 2026-06-14:
 - A first-playable automatic round driver is implemented so Studio sessions can advance through setup, target selection, run-away, STOP, tag attempt, resolve, and reset without manual server console transitions.
 - GitHub issues now exist for every remaining backlog item.
 - The tagged playtest release checklist exists in `docs/production/RELEASE_CHECKLIST.md`.
-- Phase 1 core systems are implemented, but the first-playable experience is not yet readable in Studio because the arena is still mostly an empty baseplate.
-- The next implementation target is `FTC-116`: build a readable prototype arena for first playable testing.
-- After FTC-116, continue with `FTC-201`: tune arena radius, center radius, and tag radius against real playtest observations.
+- Phase 1 core systems are implemented and the first-playable arena now has a visible floor, center STOP pad, circular boundary markers, spawn pads, outer run markers, and simple spectator framing.
+- The next implementation target is `FTC-201`: tune arena radius, center radius, and tag radius against real playtest observations.
