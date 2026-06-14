@@ -459,3 +459,24 @@ The helper is conservative and does not reset from arbitrary mid-round states. M
 Follow-up:
 
 FTC-114 should add broader join/leave/reset scenario coverage once richer Roblox service-level tests are introduced.
+
+## D-022: Drive First UI Prompts From Server Snapshots
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+Players need immediate guidance, but client UI should not duplicate authoritative gameplay rules or decide what phase the game is in.
+
+Decision:
+
+Add `RoundReplicationService` to publish `RoundService` snapshots and answer late-join snapshot requests. Add `RoundPrompts` as a shared snapshot-to-copy mapper and `RoundHud` as the first client presentation layer.
+
+Tradeoffs:
+
+The first HUD is intentionally simple and uses user IDs instead of richer display-name formatting. This keeps the prototype understandable while leaving polish, target selection UI, and onboarding copy for later UI work.
+
+Follow-up:
+
+Add richer player labels, target selection controls, and visual STOP/frozen effects after the core playable loop is stable.

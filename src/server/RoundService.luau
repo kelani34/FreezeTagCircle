@@ -78,6 +78,7 @@ type TransitionOptions = {
 }
 
 local RoundService = {}
+local snapshotChangedEvent = Instance.new("BindableEvent")
 
 local allowedTransitions: { [GameStates.RoundState]: { [GameStates.RoundState]: boolean } } = {
 	WaitingForPlayers = {
@@ -194,6 +195,10 @@ local function copySnapshot(snapshot: RoundSnapshot): RoundSnapshot
 	return copiedSnapshot
 end
 
+local function publishSnapshotChanged()
+	snapshotChangedEvent:Fire(copySnapshot(currentSnapshot))
+end
+
 local function makeSnapshot(
 	state: GameStates.RoundState,
 	options: TransitionOptions?
@@ -262,6 +267,7 @@ local function updateActivePlayerCount(activePlayerCount: number)
 	currentSnapshot.activePlayerCount = activePlayerCount
 	currentSnapshot.minimumPlayers = Tuning.MinimumPlayers
 	currentSnapshot.hasMinimumPlayers = hasMinimumPlayers(activePlayerCount)
+	publishSnapshotChanged()
 end
 
 local function updateCallerForActivePlayers(activePlayers: { Player })
@@ -292,6 +298,7 @@ local function moveToWaitingForPlayers(activePlayerCount: number)
 		activePlayerCount = activePlayerCount,
 		clearActors = true,
 	})
+	publishSnapshotChanged()
 end
 
 local function refreshActivePlayerCount(): number
@@ -356,6 +363,7 @@ function RoundService.stop()
 		activePlayerCount = getActivePlayerCount(),
 		clearActors = true,
 	})
+	publishSnapshotChanged()
 end
 
 function RoundService.isStarted(): boolean
@@ -364,6 +372,10 @@ end
 
 function RoundService.getSnapshot(): RoundSnapshot
 	return copySnapshot(currentSnapshot)
+end
+
+function RoundService.onSnapshotChanged(callback: (RoundSnapshot) -> ()): RBXScriptConnection
+	return snapshotChangedEvent.Event:Connect(callback)
 end
 
 function RoundService.hasMinimumPlayers(): boolean
@@ -464,6 +476,7 @@ function RoundService.transitionTo(
 	end
 
 	currentSnapshot = makeSnapshot(nextState, options)
+	publishSnapshotChanged()
 
 	return RoundService.getSnapshot()
 end
@@ -490,6 +503,7 @@ function RoundService.selectTarget(
 
 	if result.accepted then
 		currentSnapshot.calledUserId = result.targetUserId
+		publishSnapshotChanged()
 	end
 
 	return {
@@ -511,6 +525,7 @@ function RoundService.recordCalledPlayerJump(requestingUserId: unknown): JumpAtt
 		currentSnapshot = makeSnapshot(currentSnapshot.state, {
 			jumpsUsed = result.jumpsUsed,
 		})
+		publishSnapshotChanged()
 	end
 
 	return {
@@ -553,6 +568,7 @@ function RoundService.attemptTag(requestingUserId: unknown, targetUserId: unknow
 			tagSucceeded = true,
 			tagDistance = result.distance,
 		})
+		publishSnapshotChanged()
 	end
 
 	return {

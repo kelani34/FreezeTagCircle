@@ -19,6 +19,8 @@ local GameStates = require(shared:WaitForChild("GameStates", 5))
 local JumpTracker = require(server:WaitForChild("JumpTracker", 5))
 local MovementControlService = require(server:WaitForChild("MovementControlService", 5))
 local Remotes = require(shared:WaitForChild("Remotes", 5))
+local RoundPrompts = require(shared:WaitForChild("RoundPrompts", 5))
+local RoundReplicationService = require(server:WaitForChild("RoundReplicationService", 5))
 local RoundService = require(server:WaitForChild("RoundService", 5))
 local TagService = require(server:WaitForChild("TagService", 5))
 local TargetSelection = require(server:WaitForChild("TargetSelection", 5))
@@ -26,6 +28,7 @@ local Tuning = require(shared:WaitForChild("Tuning", 5))
 
 assertEqual(GameStates.DefaultRoundState, GameStates.RoundStates.WaitingForPlayers, "Default state")
 assertEqual(Remotes.FolderName, "FreezeTagCircleRemotes", "Remote folder name")
+assertEqual(Remotes.RequestRoundSnapshot, "RequestRoundSnapshot", "Round snapshot request remote")
 assertEqual(Tuning.TagJumpLimit, 3, "Jump limit")
 assertEqual(Tuning.TagRadius > 0, true, "Tag radius")
 assertEqual(
@@ -49,6 +52,11 @@ assertEqual(CenterZone.isWithinRadius(0, 0, Tuning.CenterZoneRadius), true, "Cen
 assertEqual(ArenaService.isPositionInCenterZone(Vector3.new(0, 0, 0)), true, "Arena center zone")
 assertEqual(JumpTracker.getRemainingJumps(1, Tuning.TagJumpLimit), 2, "Remaining jumps")
 assertEqual(#MovementControlService.getFrozenUserIds(), 0, "No frozen users at smoke start")
+assertEqual(
+	RoundPrompts.getPrompt({ state = GameStates.RoundStates.StopFrozen }, 100).title,
+	"STOP",
+	"STOP prompt"
+)
 
 local tagValidation = TagService.validate({
 	isTagAttempt = true,
@@ -74,10 +82,15 @@ local targetValidation = TargetSelection.validate({
 assertEqual(targetValidation.accepted, true, "Valid target selection")
 
 RoundService.start()
+RoundReplicationService.start()
 
 local snapshot = RoundService.getSnapshot()
+local remoteFolder = ReplicatedStorage:WaitForChild(Remotes.FolderName, 5)
 
 assertEqual(snapshot.state, GameStates.RoundStates.WaitingForPlayers, "RoundService start state")
+assert(remoteFolder, "Remote folder should exist")
+assert(remoteFolder:WaitForChild(Remotes.RoundStateChanged, 5), "Round state event should exist")
+assert(remoteFolder:WaitForChild(Remotes.RequestRoundSnapshot, 5), "Snapshot function should exist")
 assertEqual(snapshot.minimumPlayers, Tuning.MinimumPlayers, "Snapshot minimum player count")
 assertEqual(snapshot.hasMinimumPlayers, false, "Empty Studio test place should not meet minimum")
 assertEqual(#snapshot.spawnPlacements, 0, "Waiting state has no spawn placements")
@@ -90,5 +103,6 @@ assertEqual(resetResult.accepted, false, "Waiting state cannot reset as complete
 assertEqual(resetResult.reason, "NotResolve", "Waiting reset rejection reason")
 
 RoundService.stop()
+RoundReplicationService.stop()
 
 print("Roblox integration smoke test passed")
