@@ -39,6 +39,7 @@ Foundation governance work is tracked by [#5](https://github.com/kelani34/Freeze
 | FTC-203 | [#21](https://github.com/kelani34/FreezeTagCircle/issues/21) |
 | FTC-204 | [#22](https://github.com/kelani34/FreezeTagCircle/issues/22) |
 | FTC-205 | [#23](https://github.com/kelani34/FreezeTagCircle/issues/23) |
+| FTC-206 | [#66](https://github.com/kelani34/FreezeTagCircle/issues/66) |
 | FTC-301 | [#24](https://github.com/kelani34/FreezeTagCircle/issues/24) |
 | FTC-302 | [#25](https://github.com/kelani34/FreezeTagCircle/issues/25) |
 | FTC-303 | [#26](https://github.com/kelani34/FreezeTagCircle/issues/26) |
@@ -107,6 +108,7 @@ Foundation governance work is tracked by [#5](https://github.com/kelani34/Freeze
 | FTC-203 | P1 | Todo | Add tag attempt timer |
 | FTC-204 | P1 | Todo | Prevent caller target spam or repeated targeting abuse |
 | FTC-205 | P1 | Done | Add visible frozen state effect |
+| FTC-206 | P1 | Done | Add self-contained Roblox-native audio and VFX polish |
 
 ## Phase 3: Public Server Readiness
 
@@ -154,6 +156,6 @@ As of 2026-06-14:
 - Phase 1 core systems are implemented and the first-playable arena now has a visible floor, center STOP pad, generated circular boundary, generated player slot pads, and generated run-away markers.
 - The first playable tuning pass uses a 40-stud start circle, 10-stud center zone, and 8-stud tag radius.
 - Players now have a physical lobby outside the playground; waiting/late-join characters are placed there and setup moves eligible players into circle slots.
-- STOP feedback now uses a server-triggered remote event with a client overlay and audio cue.
-- Frozen players now receive a temporary server-owned ice highlight/shell effect that cleans up on unfreeze/reset.
+- STOP feedback now uses a server-triggered remote event with a client overlay, audio cue, and local world shockwave.
+- Frozen players now receive a temporary server-owned ice highlight/shell/shard effect that cleans up on unfreeze/reset.
 - The next implementation target is `FTC-203`: add tag attempt timer.

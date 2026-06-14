@@ -32,6 +32,7 @@ Shared modules and remotes:
 - Round state constants
 - Remote event names
 - Shared tuning values
+- Feedback tuning values
 - UI-facing state snapshots
 - Server-triggered STOP feedback event
 
@@ -193,8 +194,11 @@ Generates source-controlled prototype visuals at runtime:
 
 - Shows a short full-screen STOP pulse.
 - Plays a short audio cue.
+- Creates a local neon world shockwave around the arena center.
 - Cleans up the effect locally after the pulse.
 - Does not infer STOP from late snapshot requests, which prevents stale feedback for late joiners.
+
+`src/shared/FeedbackTuning.luau` centralizes temporary feedback asset names, timing, color, pulse, and sound settings so the first playable can be tuned without spreading magic values through UI and server code.
 
 ### MovementControlService
 
@@ -208,7 +212,7 @@ Initial implementation:
 
 - `src/server/MovementControlService.luau` snapshots humanoid `WalkSpeed`, `JumpPower`, `JumpHeight`, and `AutoRotate`.
 - Frozen players are set to zero movement and rotation disabled.
-- Frozen players receive a non-destructive `FreezeTagCircleFrozenEffect` folder with a highlight, translucent ice shell, and particles parented to their character.
+- Frozen players receive a non-destructive `FreezeTagCircleFrozenEffect` folder with a highlight, translucent ice shell, ice shards, light, and particles parented to their character.
 - The called player is excluded from runner freeze so they remain controllable for the tag attempt path.
 - Movement and visual effects are restored on reset, waiting fallback, or service shutdown.
 
@@ -299,6 +303,7 @@ src/
 │   ├── CallerSelect.client.lua
 │   └── Feedback.client.lua
 ├── shared/
+│   ├── FeedbackTuning.lua
 │   ├── GameStates.lua
 │   ├── Remotes.lua
 │   └── Tuning.lua

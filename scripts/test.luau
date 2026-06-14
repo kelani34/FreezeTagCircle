@@ -3,6 +3,7 @@ local specs = {
 	{ name = "CallerSelection", load = require("../tests/shared/CallerSelection.spec") },
 	{ name = "CenterZone", load = require("../tests/shared/CenterZone.spec") },
 	{ name = "CircleSpawns", load = require("../tests/shared/CircleSpawns.spec") },
+	{ name = "FeedbackTuning", load = require("../tests/shared/FeedbackTuning.spec") },
 	{ name = "GameStates", load = require("../tests/shared/GameStates.spec") },
 	{ name = "JumpTracker", load = require("../tests/server/JumpTracker.spec") },
 	{ name = "Remotes", load = require("../tests/shared/Remotes.spec") },

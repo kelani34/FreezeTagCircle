@@ -4,6 +4,7 @@ local SoundService = game:GetService("SoundService")
 local TweenService = game:GetService("TweenService")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
+local FeedbackTuning = require(Shared.FeedbackTuning)
 local Remotes = require(Shared.Remotes)
 local RoundPrompts = require(Shared.RoundPrompts)
 
@@ -13,6 +14,10 @@ local started = false
 local debugConnection: RBXScriptConnection? = nil
 local connection: RBXScriptConnection? = nil
 local stopFeedbackConnection: RBXScriptConnection? = nil
+
+local function colorFromRgb(rgb: { number }): Color3
+	return Color3.fromRGB(rgb[1], rgb[2], rgb[3])
+end
 
 local function createLabel(parent: Instance, name: string, textSize: number): TextLabel
 	local label = Instance.new("TextLabel")
@@ -161,13 +166,35 @@ local function getOrCreateStopOverlay(screenGui: ScreenGui): Frame
 	stopText.Position = UDim2.fromScale(0.5, 0.42)
 	stopText.Size = UDim2.fromScale(0.9, 0.28)
 	stopText.Text = "STOP!"
-	stopText.TextColor3 = Color3.fromRGB(255, 244, 82)
+	stopText.TextColor3 = colorFromRgb(FeedbackTuning.StopTextColorRgb)
 	stopText.TextScaled = true
 	stopText.TextStrokeColor3 = Color3.fromRGB(32, 0, 0)
 	stopText.TextStrokeTransparency = 0.05
 	stopText.Visible = false
 	stopText.ZIndex = 21
 	stopText.Parent = overlay
+
+	local ring = Instance.new("Frame")
+	ring.Name = "StopRing"
+	ring.AnchorPoint = Vector2.new(0.5, 0.5)
+	ring.BackgroundTransparency = 1
+	ring.Position = UDim2.fromScale(0.5, 0.43)
+	ring.Size = UDim2.fromScale(0.14, 0.14)
+	ring.Visible = false
+	ring.ZIndex = 20
+	ring.Parent = overlay
+
+	local ringCorner = Instance.new("UICorner")
+	ringCorner.CornerRadius = UDim.new(1, 0)
+	ringCorner.Parent = ring
+
+	local ringStroke = Instance.new("UIStroke")
+	ringStroke.Name = "Stroke"
+	ringStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	ringStroke.Color = colorFromRgb(FeedbackTuning.StopTextColorRgb)
+	ringStroke.Thickness = 8
+	ringStroke.Transparency = 1
+	ringStroke.Parent = ring
 
 	local instruction = Instance.new("TextLabel")
 	instruction.Name = "Instruction"
@@ -189,11 +216,15 @@ local function getOrCreateStopOverlay(screenGui: ScreenGui): Frame
 end
 
 local function playStopSound()
+	if FeedbackTuning.StopSoundId == "" then
+		return
+	end
+
 	local sound = Instance.new("Sound")
 	sound.Name = "FreezeTagCircleStopCue"
-	sound.SoundId = "rbxassetid://9118823101"
-	sound.Volume = 0.35
-	sound.PlaybackSpeed = 0.92
+	sound.SoundId = FeedbackTuning.StopSoundId
+	sound.Volume = FeedbackTuning.StopSoundVolume
+	sound.PlaybackSpeed = FeedbackTuning.StopSoundPlaybackSpeed
 	sound.Parent = SoundService
 
 	sound.Ended:Connect(function()
@@ -209,24 +240,93 @@ local function playStopSound()
 	end)
 end
 
+local function getOrCreateClientEffectsFolder(): Folder
+	local existing = workspace:FindFirstChild(FeedbackTuning.ClientEffectsFolderName)
+
+	if existing then
+		return existing :: Folder
+	end
+
+	local folder = Instance.new("Folder")
+	folder.Name = FeedbackTuning.ClientEffectsFolderName
+	folder.Parent = workspace
+
+	return folder
+end
+
+local function createStopPulseSegment(parent: Instance, index: number, total: number)
+	local angle = ((index - 1) / total) * math.pi * 2
+	local direction = Vector3.new(math.sin(angle), 0, math.cos(angle))
+	local startPosition = direction * FeedbackTuning.StopPulseStartRadius
+	local endPosition = direction * FeedbackTuning.StopPulseEndRadius
+	local segment = Instance.new("Part")
+
+	segment.Name = `StopPulseSegment{index}`
+	segment.Anchored = true
+	segment.CanCollide = false
+	segment.CastShadow = false
+	segment.Color = colorFromRgb(FeedbackTuning.StopPulseColorRgb)
+	segment.Material = Enum.Material.Neon
+	segment.Size = Vector3.new(2.3, FeedbackTuning.StopPulseHeight, 0.65)
+	segment.Transparency = 0.18
+	segment.CFrame = CFrame.lookAt(startPosition + Vector3.new(0, 0.38, 0), Vector3.new(0, 0.38, 0))
+	segment.Parent = parent
+
+	TweenService:Create(
+		segment,
+		TweenInfo.new(
+			FeedbackTuning.StopPulseSeconds,
+			Enum.EasingStyle.Quad,
+			Enum.EasingDirection.Out
+		),
+		{
+			CFrame = CFrame.lookAt(endPosition + Vector3.new(0, 0.38, 0), Vector3.new(0, 0.38, 0)),
+			Size = Vector3.new(5, FeedbackTuning.StopPulseHeight, 1.1),
+			Transparency = 1,
+		}
+	):Play()
+end
+
+local function playStopWorldPulse()
+	local folder = Instance.new("Folder")
+	folder.Name = "StopPulse"
+	folder.Parent = getOrCreateClientEffectsFolder()
+
+	for index = 1, FeedbackTuning.StopPulseSegmentCount do
+		createStopPulseSegment(folder, index, FeedbackTuning.StopPulseSegmentCount)
+	end
+
+	task.delay(FeedbackTuning.StopPulseSeconds + 0.1, function()
+		if folder.Parent then
+			folder:Destroy()
+		end
+	end)
+end
+
 local function playStopFeedback(screenGui: ScreenGui)
 	local overlay = getOrCreateStopOverlay(screenGui)
 	local stopText = overlay:WaitForChild("StopText") :: TextLabel
+	local stopRing = overlay:WaitForChild("StopRing") :: Frame
+	local stopRingStroke = stopRing:WaitForChild("Stroke") :: UIStroke
 	local instruction = overlay:WaitForChild("Instruction") :: TextLabel
 
 	overlay.Visible = true
 	stopText.Visible = true
+	stopRing.Visible = true
 	instruction.Visible = true
 	overlay.BackgroundTransparency = 1
 	stopText.TextTransparency = 1
+	stopRing.Size = UDim2.fromScale(0.14, 0.14)
+	stopRingStroke.Transparency = 0.05
 	instruction.TextTransparency = 1
 
 	playStopSound()
+	playStopWorldPulse()
 
 	TweenService:Create(
 		overlay,
 		TweenInfo.new(0.08, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-		{ BackgroundTransparency = 0.34 }
+		{ BackgroundTransparency = FeedbackTuning.StopOverlayFlashTransparency }
 	):Play()
 	TweenService:Create(
 		stopText,
@@ -234,19 +334,33 @@ local function playStopFeedback(screenGui: ScreenGui)
 		{ TextTransparency = 0 }
 	):Play()
 	TweenService:Create(
+		stopRing,
+		TweenInfo.new(0.46, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+		{ Size = UDim2.fromScale(1.08, 1.08) }
+	):Play()
+	TweenService:Create(
+		stopRingStroke,
+		TweenInfo.new(0.46, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+		{ Transparency = 1 }
+	):Play()
+	TweenService:Create(
 		instruction,
 		TweenInfo.new(0.12, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
 		{ TextTransparency = 0 }
 	):Play()
 
-	task.delay(0.9, function()
+	task.delay(FeedbackTuning.StopOverlayHoldSeconds, function()
 		if not overlay.Parent then
 			return
 		end
 
 		TweenService:Create(
 			overlay,
-			TweenInfo.new(0.45, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
+			TweenInfo.new(
+				FeedbackTuning.StopOverlayFadeSeconds,
+				Enum.EasingStyle.Quad,
+				Enum.EasingDirection.In
+			),
 			{ BackgroundTransparency = 1 }
 		):Play()
 		TweenService:Create(
@@ -261,13 +375,17 @@ local function playStopFeedback(screenGui: ScreenGui)
 		):Play()
 	end)
 
-	task.delay(1.45, function()
-		if overlay.Parent then
-			overlay.Visible = false
-			stopText.Visible = false
-			instruction.Visible = false
+	task.delay(
+		FeedbackTuning.StopOverlayHoldSeconds + FeedbackTuning.StopOverlayFadeSeconds + 0.1,
+		function()
+			if overlay.Parent then
+				overlay.Visible = false
+				stopText.Visible = false
+				stopRing.Visible = false
+				instruction.Visible = false
+			end
 		end
-	end)
+	)
 end
 
 function RoundHud.start()

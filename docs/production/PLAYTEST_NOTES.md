@@ -256,6 +256,43 @@ Decisions or follow-up tasks:
 - Verify it disappears on reset/waiting fallback and after players leave.
 - Continue with FTC-203 for the tag attempt timer.
 
+## 2026-06-14 Audio And VFX Polish Pass
+
+Date: 2026-06-14
+Build: feature/audio-vfx-polish
+Players: Automated checks only
+Round Count: Automated checks only
+
+What players understood quickly:
+
+- Pending manual Studio validation.
+
+What confused players:
+
+- Pending manual Studio validation.
+
+Best moment:
+
+- STOP now has a local world shockwave in addition to the HUD/audio cue, and frozen targets have more readable ice shards, glow, and particles without any manual asset import.
+
+Worst moment:
+
+- The pass is still procedural prototype polish. It should be judged in 2+ client Studio playtests before treating it as final presentation.
+
+Balance notes:
+
+- The effects do not change timing, tag radius, movement, or round authority. They only improve readability.
+
+Bugs:
+
+- None known from automated validation.
+
+Decisions or follow-up tasks:
+
+- Verify every active client sees the STOP shockwave when the called player reaches center.
+- Verify frozen visuals do not block tag readability or hide player identity too aggressively.
+- Continue with FTC-203 for the tag attempt timer.
+
 ## Template
 
 ```text

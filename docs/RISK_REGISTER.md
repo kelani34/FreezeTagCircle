@@ -17,3 +17,4 @@
 | R-013 | Late joiners are mistaken for active round participants | High | Medium | Keep late joiners in the lobby and use setup placements as the current participant set | Mitigated |
 | R-014 | STOP happens silently and players miss the freeze moment | High | Medium | Fire a server-owned STOP feedback event with client overlay and audio cue | Mitigated |
 | R-015 | Frozen players are not visually distinguishable during tag attempts | High | Medium | Add a temporary server-owned ice highlight/shell effect and remove it on unfreeze | Mitigated |
+| R-016 | Prototype polish depends on manual marketplace asset imports | Medium | Medium | Use source-controlled Roblox-native procedural feedback first, then replace with curated asset IDs only after validation | Mitigated |

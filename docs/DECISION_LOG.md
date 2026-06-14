@@ -774,3 +774,24 @@ The prototype ice shell is visually broad and may need tuning after Studio playt
 Follow-up:
 
 Validate visibility and cleanup with 2+ Studio clients, then add the tag attempt timer.
+
+## D-037: Prefer Self-Contained Procedural Feedback Before Marketplace Assets
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+The first playable needs stronger sound and visual feedback, but relying on manually imported or random Creator Store assets would make Rojo sync, permissions, and repeatable builds less predictable.
+
+Decision:
+
+Centralize feedback configuration in `FeedbackTuning` and implement first-pass STOP/frozen feedback with Roblox-native instances created from code. STOP uses a client overlay, audio cue, and local world shockwave. Frozen players use server-owned highlight, shell, shard, light, and particle instances that are removed on unfreeze/reset.
+
+Tradeoffs:
+
+Procedural effects are not final art direction and may still need visual tuning. They are immediately testable in Studio, source-controlled, and safe to replace with curated asset IDs later.
+
+Follow-up:
+
+Use Studio playtests to tune intensity, timing, and readability before introducing curated Creator Store or custom-authored assets.
