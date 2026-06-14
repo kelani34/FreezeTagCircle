@@ -69,4 +69,26 @@ return {
 			end)
 		end,
 	},
+	{
+		name = "falls back to waiting from every active state below minimum players",
+		run = function(expect)
+			for _, state in GameStates.OrderedRoundStates do
+				local shouldFallback = GameStates.shouldFallbackToWaiting(state, 1, 2)
+
+				if state == GameStates.RoundStates.WaitingForPlayers then
+					expect.falsy(shouldFallback)
+				else
+					expect.truthy(shouldFallback)
+				end
+			end
+		end,
+	},
+	{
+		name = "does not fall back when enough players remain",
+		run = function(expect)
+			for _, state in GameStates.OrderedRoundStates do
+				expect.falsy(GameStates.shouldFallbackToWaiting(state, 2, 2))
+			end
+		end,
+	},
 }

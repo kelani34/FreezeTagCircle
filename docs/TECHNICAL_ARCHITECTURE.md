@@ -75,6 +75,7 @@ Initial implementation:
 - `src/server/RoundService.luau` owns the current round snapshot.
 - `RoundService` tracks active Roblox player count and prevents `WaitingForPlayers -> Setup` until `Tuning.MinimumPlayers` is met.
 - If the active player count drops below the minimum during a later state, `RoundService` fails safely back to `WaitingForPlayers` and clears round actors.
+- `GameStates.shouldFallbackToWaiting` defines the join/leave safety rule used by `RoundService`.
 - When transitioning into `Setup`, `RoundService` asks `ArenaService` to place active players around the circle and stores the resulting spawn placements in the round snapshot.
 - When transitioning into `CallerChoosing`, `RoundService` assigns a caller and exposes `callerUserId` in the round snapshot.
 - If the caller leaves during `CallerChoosing` and enough players remain, `RoundService` reassigns the caller from the remaining active players.
@@ -93,6 +94,7 @@ Initial implementation:
 - `src/server/TargetSelection.luau` defines pure server-side target validation rules.
 - `src/shared/GameStates.luau` defines the canonical round states and order.
 - `GameStates.getPostResetState` defines the repeated-round decision after cleanup.
+- `GameStates.shouldFallbackToWaiting` defines the minimum-player fallback decision for disruptive player lifecycle events.
 - `src/shared/RoundPrompts.luau` maps round snapshots to client-facing prompt text.
 - `src/shared/Tuning.luau` defines early prototype timing and arena measurement constants.
 - `src/shared/CircleSpawns.luau` defines pure spawn-slot math so deterministic placement can be tested headlessly.

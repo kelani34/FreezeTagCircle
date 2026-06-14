@@ -56,4 +56,4 @@ Update these docs whenever the work changes their domain:
 
 ## Current Next Target
 
-The next gameplay target is `FTC-114`: join/leave/reset tests across round states.
+The next gameplay target is `FTC-201`: tune arena radius, center radius, and tag radius.

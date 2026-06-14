@@ -61,4 +61,16 @@ function GameStates.getPostResetState(activePlayerCount: number, minimumPlayers:
 		else RoundStates.WaitingForPlayers
 end
 
+function GameStates.shouldFallbackToWaiting(
+	state: RoundState,
+	activePlayerCount: number,
+	minimumPlayers: number
+): boolean
+	assert(GameStates.isRoundState(state), `Unknown round state: {tostring(state)}`)
+	assert(activePlayerCount >= 0, "activePlayerCount must be non-negative")
+	assert(minimumPlayers >= 1, "minimumPlayers must be positive")
+
+	return state ~= RoundStates.WaitingForPlayers and activePlayerCount < minimumPlayers
+end
+
 return table.freeze(GameStates)
