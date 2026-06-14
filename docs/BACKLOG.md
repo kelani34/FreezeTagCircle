@@ -32,6 +32,8 @@ Foundation governance work is tracked by [#5](https://github.com/kelani34/Freeze
 | FTC-114 | [#18](https://github.com/kelani34/FreezeTagCircle/issues/18) |
 | FTC-115 | [#44](https://github.com/kelani34/FreezeTagCircle/issues/44) |
 | FTC-116 | [#56](https://github.com/kelani34/FreezeTagCircle/issues/56) |
+| FTC-117 | [#60](https://github.com/kelani34/FreezeTagCircle/issues/60) |
+| FTC-118 | [#61](https://github.com/kelani34/FreezeTagCircle/issues/61) |
 | FTC-201 | [#19](https://github.com/kelani34/FreezeTagCircle/issues/19) |
 | FTC-202 | [#20](https://github.com/kelani34/FreezeTagCircle/issues/20) |
 | FTC-203 | [#21](https://github.com/kelani34/FreezeTagCircle/issues/21) |
@@ -93,6 +95,8 @@ Foundation governance work is tracked by [#5](https://github.com/kelani34/Freeze
 | FTC-114 | P0 | Done | Test join/leave/reset during every round state |
 | FTC-115 | P0 | Done | Add first-playable automatic round driver |
 | FTC-116 | P0 | Done | Build readable prototype arena for first playable testing |
+| FTC-117 | P0 | Done | Replace square prototype framing with true circular playground arena |
+| FTC-118 | P0 | Todo | Add physical waiting room and round entry flow |
 
 ## Phase 2: Fun and Fairness
 
@@ -147,6 +151,6 @@ As of 2026-06-14:
 - A first-playable automatic round driver is implemented so Studio sessions can advance through setup, target selection, run-away, STOP, tag attempt, resolve, and reset without manual server console transitions.
 - GitHub issues now exist for every remaining backlog item.
 - The tagged playtest release checklist exists in `docs/production/RELEASE_CHECKLIST.md`.
-- Phase 1 core systems are implemented and the first-playable arena now has a visible floor, center STOP pad, circular boundary markers, spawn pads, outer run markers, and simple spectator framing.
+- Phase 1 core systems are implemented and the first-playable arena now has a visible floor, center STOP pad, generated circular boundary, generated player slot pads, and generated run-away markers.
 - The first playable tuning pass uses a 40-stud start circle, 10-stud center zone, and 8-stud tag radius.
-- The next implementation target is `FTC-202`: add clear STOP feedback.
+- The next implementation target is `FTC-118`: add physical waiting room and round entry flow.

@@ -57,8 +57,9 @@ World-owned instances:
 Initial implementation:
 
 - `default.project.json` owns the prototype arena under `Workspace.Arena` so the Studio playtest build is readable without manual place edits.
-- The arena includes a grass floor, a visible red center STOP pad, a small STOP beacon, circular perimeter markers, eight spawn pads matching the current circle spawn radius, outer run markers, and simple spectator stands.
-- These are prototype readability assets, not final art. They are intentionally built from anchored Parts so Rojo, CI build inspection, and Studio sync stay predictable.
+- The static arena includes a grass floor, a visible red center STOP pad, and a small STOP beacon.
+- `src/server/ArenaVisualService.luau` generates the circular boundary, preview/player slot pads, and outer run-away markers at runtime from shared tuning and spawn math.
+- These are prototype readability assets, not final art. They are intentionally built from anchored Parts so Rojo, CI build inspection, and Studio runtime smoke checks stay predictable.
 
 ## Proposed Runtime Systems
 
@@ -159,6 +160,16 @@ Initial implementation:
 - Missing characters still receive spawn placement records, but are marked as not placed so later lifecycle work can decide how to recover.
 - Center-zone detection uses character pivots rather than trusting client-reported position or requiring a specific humanoid root part.
 - First-playable tuning uses `Tuning.CircleSpawnRadius = 40`, `Tuning.CenterZoneRadius = 10`, and `Tuning.TagRadius = 8`; visible start pads and center geometry are kept aligned with those values in `default.project.json`.
+- `src/shared/ArenaVisuals.luau` defines the generated circular boundary, preview slot count, and run-away marker layout so visible arena math can be tested headlessly.
+
+### ArenaVisualService
+
+Generates source-controlled prototype visuals at runtime:
+
+- Builds a dense circular boundary around the playground.
+- Builds preview slots for the waiting/playtest view.
+- Rebuilds player slot pads from `RoundService` spawn placements when a round enters setup.
+- Keeps visual slots aligned with `CircleSpawns` instead of hand-authored square markers.
 
 ### MovementControlService
 

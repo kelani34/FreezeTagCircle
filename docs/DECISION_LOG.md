@@ -690,3 +690,24 @@ This makes early rounds more compact and forgiving, which may make tags too easy
 Follow-up:
 
 Use manual 2-player and 4-player Studio playtests to record average round length and tag success rate, then retune alongside STOP feedback and visible frozen effects.
+
+## D-033: Generate The Playground Ring From Shared Circle Math
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+The first readable arena still looked too much like a square/boxed playfield. The actual childhood-game fantasy requires a clear circle with player positions divided around the ring.
+
+Decision:
+
+Move the visual circle boundary, run-away markers, and player slot pads into `ArenaVisualService`, backed by `ArenaVisuals` and `CircleSpawns`. Keep static arena objects limited to broad floor and center STOP elements, then generate the circular ring and slots at runtime.
+
+Tradeoffs:
+
+Runtime-generated visuals require Roblox smoke coverage because the generated parts do not exist as concrete children in the raw Rojo build. In exchange, the arena stays aligned with shared tuning and active-player spawn placements.
+
+Follow-up:
+
+Add the physical waiting room and lobby-to-circle flow next so players begin outside the playground before being moved into circle slots.

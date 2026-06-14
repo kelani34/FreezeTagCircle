@@ -110,6 +110,41 @@ Decisions or follow-up tasks:
 - Test 2-player and 4-player Studio sessions and record average round length plus rough tag success rate.
 - Continue with FTC-202 for stronger STOP feedback before deeper balance changes.
 
+## 2026-06-14 Circular Playground Correction
+
+Date: 2026-06-14
+Build: feature/circular-playground-arena
+Players: Automated checks only
+Round Count: Automated checks only
+
+What players understood quickly:
+
+- Pending manual Studio validation.
+
+What confused players:
+
+- Pending manual Studio validation.
+
+Best moment:
+
+- The arena is now represented as a generated circular playground with slot pads derived from the same spawn math that places players.
+
+Worst moment:
+
+- A physical waiting room still needs to be added so players do not enter directly into the playground space.
+
+Balance notes:
+
+- The generated ring preserves the 40-stud active player circle and 56-stud visible boundary.
+
+Bugs:
+
+- None known from automated validation.
+
+Decisions or follow-up tasks:
+
+- Continue with FTC-118 for the waiting room and lobby-to-circle flow.
+
 ## Template
 
 ```text

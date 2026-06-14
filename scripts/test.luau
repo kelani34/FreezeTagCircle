@@ -1,4 +1,5 @@
 local specs = {
+	{ name = "ArenaVisuals", load = require("../tests/shared/ArenaVisuals.spec") },
 	{ name = "CallerSelection", load = require("../tests/shared/CallerSelection.spec") },
 	{ name = "CenterZone", load = require("../tests/shared/CenterZone.spec") },
 	{ name = "CircleSpawns", load = require("../tests/shared/CircleSpawns.spec") },

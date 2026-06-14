@@ -3,6 +3,7 @@
 ## Currently Understood Rules
 
 - Players begin positioned around a large circle.
+- The circle is divided into evenly spaced player slots based on the active round player count.
 - Each player has an identity. The original playground version often used country names.
 - One player is the caller.
 - The caller selects another player.
@@ -88,6 +89,7 @@ Rationale:
 - A 40-stud circle keeps the center run short enough that runners get distance without leaving the action space.
 - A 10-stud center gives the called player a forgiving STOP trigger while still requiring them to commit to the middle.
 - An 8-stud tag radius gives server-side validation enough tolerance for early playtests and Roblox character/network variance.
+- Visible circle/slot markers are generated from shared tuning and spawn math so the playground ring matches server-owned placement.
 - The values are intentionally easy to change in `src/shared/Tuning.luau` after Studio playtests.
 
 ## Prototype Success Criteria

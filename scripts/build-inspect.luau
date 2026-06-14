@@ -33,6 +33,10 @@ local checks = {
 		pattern = '<string name="Name">RoundDebugStatus</string>',
 	},
 	{
+		name = "ArenaVisuals shared module is included",
+		pattern = '<string name="Name">ArenaVisuals</string>',
+	},
+	{
 		name = "readable arena folder is included",
 		pattern = '<string name="Name">Arena</string>',
 	},
@@ -45,24 +49,32 @@ local checks = {
 		pattern = '<string name="Name">CenterStopPad</string>',
 	},
 	{
-		name = "circle boundary is included",
-		pattern = '<string name="Name">BoundaryNorth</string>',
+		name = "generated circular arena folder is included",
+		pattern = '<string name="Name">GeneratedCircleArena</string>',
 	},
 	{
-		name = "circle marker ring is included",
-		pattern = '<string name="Name">CircleMarkerNorthEast</string>',
+		name = "generated circle boundary folder is included",
+		pattern = '<string name="Name">CircleBoundary</string>',
 	},
 	{
-		name = "spawn start pads are included",
-		pattern = '<string name="Name">StartPadNorthEast</string>',
+		name = "generated player slots folder is included",
+		pattern = '<string name="Name">PlayerCircleSlots</string>',
 	},
 	{
-		name = "outer run markers are included",
-		pattern = '<string name="Name">RunMarkerNorth</string>',
+		name = "generated run-away markers folder is included",
+		pattern = '<string name="Name">RunAwayMarkers</string>',
 	},
 	{
 		name = "server entry is a Script",
 		pattern = '<Item class="Script"',
+	},
+	{
+		name = "ArenaVisualService module is included",
+		pattern = '<string name="Name">ArenaVisualService</string>',
+	},
+	{
+		name = "server entry starts arena visuals",
+		pattern = "ArenaVisualService.start()",
 	},
 	{
 		name = "server entry requires child RoundService module",
