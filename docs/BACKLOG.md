@@ -106,7 +106,7 @@ Foundation governance work is tracked by [#5](https://github.com/kelani34/Freeze
 | FTC-202 | P1 | Done | Add clear STOP feedback |
 | FTC-203 | P1 | Todo | Add tag attempt timer |
 | FTC-204 | P1 | Todo | Prevent caller target spam or repeated targeting abuse |
-| FTC-205 | P1 | Todo | Add visible frozen state effect |
+| FTC-205 | P1 | Done | Add visible frozen state effect |
 
 ## Phase 3: Public Server Readiness
 
@@ -155,4 +155,5 @@ As of 2026-06-14:
 - The first playable tuning pass uses a 40-stud start circle, 10-stud center zone, and 8-stud tag radius.
 - Players now have a physical lobby outside the playground; waiting/late-join characters are placed there and setup moves eligible players into circle slots.
 - STOP feedback now uses a server-triggered remote event with a client overlay and audio cue.
-- The next implementation target is `FTC-205`: add visible frozen state effect.
+- Frozen players now receive a temporary server-owned ice highlight/shell effect that cleans up on unfreeze/reset.
+- The next implementation target is `FTC-203`: add tag attempt timer.

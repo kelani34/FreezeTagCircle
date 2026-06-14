@@ -753,3 +753,24 @@ This adds one more remote, but it keeps transient feedback separate from durable
 Follow-up:
 
 Playtest the timing and intensity in Studio, then add visible frozen character effects in FTC-205.
+
+## D-036: Use Non-Destructive Server-Owned Frozen Visuals
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+STOP feedback made the freeze moment obvious, but frozen players still needed to remain readable as targets during the tag attempt. The effect must not permanently alter player avatars.
+
+Decision:
+
+Have `MovementControlService` add a temporary `FreezeTagCircleFrozenEffect` folder to each frozen character. The effect uses a Roblox `Highlight`, translucent ice shell, and particles. Restore/unfreeze removes the folder and restores movement values from the server snapshot.
+
+Tradeoffs:
+
+The prototype ice shell is visually broad and may need tuning after Studio playtests. Keeping the effect as separate child instances avoids editing avatar parts/materials directly.
+
+Follow-up:
+
+Validate visibility and cleanup with 2+ Studio clients, then add the tag attempt timer.

@@ -6,11 +6,13 @@ export type FrozenPlayerRecord = {
 	jumpPower: number,
 	jumpHeight: number,
 	autoRotate: boolean,
+	effectFolder: Folder?,
 }
 
 local MovementControlService = {}
 
 local frozenRecords: { [number]: FrozenPlayerRecord } = {}
+local FROZEN_EFFECT_NAME = "FreezeTagCircleFrozenEffect"
 
 local function getPlayers(players: { Player }?): { Player }
 	return players or Players:GetPlayers()
@@ -24,6 +26,67 @@ local function getHumanoid(player: Player): Humanoid?
 	end
 
 	return character:FindFirstChildOfClass("Humanoid")
+end
+
+local function removeFrozenEffect(character: Model?)
+	if character == nil then
+		return
+	end
+
+	local existingEffect = character:FindFirstChild(FROZEN_EFFECT_NAME)
+
+	if existingEffect then
+		existingEffect:Destroy()
+	end
+end
+
+local function addFrozenEffect(player: Player): Folder?
+	local character = player.Character
+
+	if character == nil then
+		return nil
+	end
+
+	removeFrozenEffect(character)
+
+	local effectFolder = Instance.new("Folder")
+	effectFolder.Name = FROZEN_EFFECT_NAME
+
+	local highlight = Instance.new("Highlight")
+	highlight.Name = "IceHighlight"
+	highlight.Adornee = character
+	highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+	highlight.FillColor = Color3.fromRGB(127, 225, 255)
+	highlight.FillTransparency = 0.45
+	highlight.OutlineColor = Color3.fromRGB(235, 252, 255)
+	highlight.OutlineTransparency = 0.05
+	highlight.Parent = effectFolder
+
+	local pivot = character:GetPivot()
+	local iceShell = Instance.new("Part")
+	iceShell.Name = "IceShell"
+	iceShell.Anchored = true
+	iceShell.CanCollide = false
+	iceShell.CFrame = pivot
+	iceShell.Color = Color3.fromRGB(145, 226, 255)
+	iceShell.Material = Enum.Material.Ice
+	iceShell.Size = Vector3.new(4.8, 6.8, 4.8)
+	iceShell.Transparency = 0.55
+	iceShell.Parent = effectFolder
+
+	local sparkle = Instance.new("ParticleEmitter")
+	sparkle.Name = "IceSparkles"
+	sparkle.Color = ColorSequence.new(Color3.fromRGB(220, 250, 255))
+	sparkle.LightEmission = 0.6
+	sparkle.Rate = 16
+	sparkle.Lifetime = NumberRange.new(0.55, 1)
+	sparkle.Speed = NumberRange.new(0.2, 0.8)
+	sparkle.SpreadAngle = Vector2.new(25, 25)
+	sparkle.Parent = iceShell
+
+	effectFolder.Parent = character
+
+	return effectFolder
 end
 
 local function freezePlayer(player: Player): boolean
@@ -40,7 +103,10 @@ local function freezePlayer(player: Player): boolean
 			jumpPower = humanoid.JumpPower,
 			jumpHeight = humanoid.JumpHeight,
 			autoRotate = humanoid.AutoRotate,
+			effectFolder = addFrozenEffect(player),
 		}
+	else
+		frozenRecords[player.UserId].effectFolder = addFrozenEffect(player)
 	end
 
 	humanoid.WalkSpeed = 0
@@ -66,6 +132,12 @@ local function restorePlayer(player: Player)
 		humanoid.JumpHeight = record.jumpHeight
 		humanoid.AutoRotate = record.autoRotate
 	end
+
+	if record.effectFolder then
+		record.effectFolder:Destroy()
+	end
+
+	removeFrozenEffect(player.Character)
 
 	frozenRecords[player.UserId] = nil
 end
@@ -112,6 +184,10 @@ function MovementControlService.getFrozenUserIds(): { number }
 	table.sort(userIds)
 
 	return userIds
+end
+
+function MovementControlService.FrozenEffectName(): string
+	return FROZEN_EFFECT_NAME
 end
 
 return table.freeze(MovementControlService)
