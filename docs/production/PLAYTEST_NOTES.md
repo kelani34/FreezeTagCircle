@@ -219,6 +219,43 @@ Decisions or follow-up tasks:
 - Verify late joiners do not see stale STOP effects from snapshot requests.
 - Continue with FTC-205 for visible frozen state effects on player characters.
 
+## 2026-06-14 Frozen State Visual Pass
+
+Date: 2026-06-14
+Build: feature/frozen-state-effect
+Players: Automated checks only
+Round Count: Automated checks only
+
+What players understood quickly:
+
+- Pending manual Studio validation.
+
+What confused players:
+
+- Pending manual Studio validation.
+
+Best moment:
+
+- Frozen players now get a visible ice highlight/shell effect that is separate from avatar parts and owned by the server.
+
+Worst moment:
+
+- The effect needs a real 2+ client Studio pass to judge visibility and whether the ice shell blocks too much of the avatar.
+
+Balance notes:
+
+- The frozen effect should make tag targets easier to read without changing tag validation or movement rules.
+
+Bugs:
+
+- None known from automated validation.
+
+Decisions or follow-up tasks:
+
+- Verify the effect appears on frozen players for all clients.
+- Verify it disappears on reset/waiting fallback and after players leave.
+- Continue with FTC-203 for the tag attempt timer.
+
 ## Template
 
 ```text

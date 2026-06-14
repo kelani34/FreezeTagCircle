@@ -202,13 +202,15 @@ Applies server-approved movement restrictions:
 
 - Freeze movement.
 - Restore movement.
+- Apply and remove temporary frozen character visuals.
 
 Initial implementation:
 
 - `src/server/MovementControlService.luau` snapshots humanoid `WalkSpeed`, `JumpPower`, `JumpHeight`, and `AutoRotate`.
 - Frozen players are set to zero movement and rotation disabled.
+- Frozen players receive a non-destructive `FreezeTagCircleFrozenEffect` folder with a highlight, translucent ice shell, and particles parented to their character.
 - The called player is excluded from runner freeze so they remain controllable for the tag attempt path.
-- Movement is restored on reset, waiting fallback, or service shutdown.
+- Movement and visual effects are restored on reset, waiting fallback, or service shutdown.
 
 ### JumpTracker
 

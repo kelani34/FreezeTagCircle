@@ -75,6 +75,11 @@ assertEqual(
 assertEqual(JumpTracker.getRemainingJumps(1, Tuning.TagJumpLimit), 2, "Remaining jumps")
 assertEqual(#MovementControlService.getFrozenUserIds(), 0, "No frozen users at smoke start")
 assertEqual(
+	MovementControlService.FrozenEffectName(),
+	"FreezeTagCircleFrozenEffect",
+	"Frozen visual effect name"
+)
+assertEqual(
 	RoundPrompts.getPrompt({ state = GameStates.RoundStates.StopFrozen }, 100).title,
 	"STOP",
 	"STOP prompt"
