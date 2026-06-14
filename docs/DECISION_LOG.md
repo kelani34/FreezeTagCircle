@@ -544,6 +544,27 @@ Follow-up:
 
 Add a multi-client Studio test harness so local-server join timing is covered automatically rather than only through smoke tests and manual playtests.
 
+## D-027: Make Local Server Runtime State Observable
+
+Date: 2026-06-14
+Status: Accepted
+
+Context:
+
+Local Roblox Studio server tests can still fail in ways that are not visible from a client screenshot. If the server stops broadcasting or remotes fail to initialize, the client fallback can look like legitimate waiting state.
+
+Decision:
+
+Add the remotes to the Rojo place tree as static instances, pulse authoritative snapshots from the server while replication is running, protect driver ticks with `pcall`, and make the client render an unknown-state prompt if remotes are unavailable.
+
+Tradeoffs:
+
+Periodic snapshot pulses are slightly redundant with event-based replication, but they make local-server startup much more forgiving during prototype development.
+
+Follow-up:
+
+Replace the pulse with stronger integration tests once multi-client Roblox test automation exists.
+
 ## D-024: Add A Conservative Automatic Driver For First Playable
 
 Date: 2026-06-14

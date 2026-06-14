@@ -91,7 +91,8 @@ local function getOrCreateHud(playerGui: PlayerGui): ScreenGui
 end
 
 local function getRemotes(): (RemoteEvent, RemoteFunction)
-	local remoteFolder = ReplicatedStorage:WaitForChild(Remotes.FolderName)
+	local remoteFolder = ReplicatedStorage:WaitForChild(Remotes.FolderName, 10)
+	assert(remoteFolder ~= nil, "FreezeTagCircle remotes did not load")
 
 	return remoteFolder:WaitForChild(Remotes.RoundStateChanged) :: RemoteEvent,
 		remoteFolder:WaitForChild(Remotes.RequestRoundSnapshot) :: RemoteFunction
@@ -127,7 +128,15 @@ function RoundHud.start()
 		minimumPlayers = 2,
 	})
 
-	local roundStateChanged, requestRoundSnapshot = getRemotes()
+	local ok, roundStateChanged, requestRoundSnapshot = pcall(getRemotes)
+
+	if not ok then
+		renderPrompt(screenGui, {
+			state = "Unknown",
+		})
+		warn(roundStateChanged)
+		return
+	end
 
 	connection = roundStateChanged.OnClientEvent:Connect(function(snapshot)
 		renderPrompt(screenGui, snapshot)
@@ -139,11 +148,11 @@ function RoundHud.start()
 				return
 			end
 
-			local ok, snapshot = pcall(function()
+			local snapshotOk, snapshot = pcall(function()
 				return requestRoundSnapshot:InvokeServer()
 			end)
 
-			if ok and snapshot ~= nil then
+			if snapshotOk and snapshot ~= nil then
 				renderPrompt(screenGui, snapshot)
 
 				if snapshot.state ~= "WaitingForPlayers" then

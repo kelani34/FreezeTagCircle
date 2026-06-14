@@ -84,6 +84,16 @@ function RoundReplicationService.start()
 	for _, player in Players:GetPlayers() do
 		RoundReplicationService.sendSnapshot(player, snapshot)
 	end
+
+	task.spawn(function()
+		while started do
+			task.wait(1)
+
+			if started then
+				RoundReplicationService.broadcastSnapshot(RoundService.refreshActivePlayerCount())
+			end
+		end
+	end)
 end
 
 function RoundReplicationService.stop()
