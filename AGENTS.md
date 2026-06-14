@@ -56,4 +56,4 @@ Update these docs whenever the work changes their domain:
 
 ## Current Next Target
 
-The next gameplay target is `FTC-110`: three-jump tracking.
+The next gameplay target is `FTC-111`: server-side tag validation.

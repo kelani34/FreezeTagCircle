@@ -16,6 +16,7 @@ local CallerSelection = require(shared:WaitForChild("CallerSelection", 5))
 local CenterZone = require(shared:WaitForChild("CenterZone", 5))
 local CircleSpawns = require(shared:WaitForChild("CircleSpawns", 5))
 local GameStates = require(shared:WaitForChild("GameStates", 5))
+local JumpTracker = require(server:WaitForChild("JumpTracker", 5))
 local MovementControlService = require(server:WaitForChild("MovementControlService", 5))
 local Remotes = require(shared:WaitForChild("Remotes", 5))
 local RoundService = require(server:WaitForChild("RoundService", 5))
@@ -44,6 +45,7 @@ assertEqual(assignments[1].userId, 100, "Deterministic spawn assignment")
 assertEqual(CallerSelection.selectCallerUserId({ 200, 100 }, 1), 100, "Deterministic caller")
 assertEqual(CenterZone.isWithinRadius(0, 0, Tuning.CenterZoneRadius), true, "Center zone origin")
 assertEqual(ArenaService.isPositionInCenterZone(Vector3.new(0, 0, 0)), true, "Arena center zone")
+assertEqual(JumpTracker.getRemainingJumps(1, Tuning.TagJumpLimit), 2, "Remaining jumps")
 assertEqual(#MovementControlService.getFrozenUserIds(), 0, "No frozen users at smoke start")
 
 local targetValidation = TargetSelection.validate({
@@ -65,6 +67,7 @@ assertEqual(snapshot.minimumPlayers, Tuning.MinimumPlayers, "Snapshot minimum pl
 assertEqual(snapshot.hasMinimumPlayers, false, "Empty Studio test place should not meet minimum")
 assertEqual(#snapshot.spawnPlacements, 0, "Waiting state has no spawn placements")
 assertEqual(#snapshot.frozenUserIds, 0, "Waiting state has no frozen users")
+assertEqual(snapshot.jumpsRemaining, Tuning.TagJumpLimit, "Waiting state has full jump budget")
 assertEqual(RoundService.canTransitionTo(GameStates.RoundStates.Setup), false, "Setup gate")
 
 RoundService.stop()

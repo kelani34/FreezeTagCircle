@@ -5,6 +5,7 @@ local Shared = ReplicatedStorage:WaitForChild("Shared")
 local ArenaService = require(script.Parent.ArenaService)
 local CallerSelection = require(Shared.CallerSelection)
 local GameStates = require(Shared.GameStates)
+local JumpTracker = require(script.Parent.JumpTracker)
 local MovementControlService = require(script.Parent.MovementControlService)
 local TargetSelection = require(script.Parent.TargetSelection)
 local Tuning = require(Shared.Tuning)
@@ -21,6 +22,9 @@ export type RoundSnapshot = {
 	calledUserId: number?,
 	spawnPlacements: { ArenaService.PlayerSpawnPlacement },
 	frozenUserIds: { number },
+	jumpLimit: number,
+	jumpsUsed: number,
+	jumpsRemaining: number,
 }
 
 export type TargetSelectionAttempt = {
@@ -36,6 +40,12 @@ export type CenterCheckResult = {
 	snapshot: RoundSnapshot,
 }
 
+export type JumpAttempt = {
+	accepted: boolean,
+	reason: JumpTracker.FailureReason?,
+	snapshot: RoundSnapshot,
+}
+
 type TransitionOptions = {
 	durationSeconds: number?,
 	activePlayerCount: number?,
@@ -43,6 +53,7 @@ type TransitionOptions = {
 	calledUserId: number?,
 	spawnPlacements: { ArenaService.PlayerSpawnPlacement }?,
 	frozenUserIds: { number }?,
+	jumpsUsed: number?,
 	clearActors: boolean?,
 }
 
@@ -94,6 +105,9 @@ local currentSnapshot: RoundSnapshot = {
 	calledUserId = nil,
 	spawnPlacements = {},
 	frozenUserIds = {},
+	jumpLimit = Tuning.TagJumpLimit,
+	jumpsUsed = 0,
+	jumpsRemaining = Tuning.TagJumpLimit,
 }
 
 local started = false
@@ -167,6 +181,10 @@ local function makeSnapshot(
 	local activePlayerCount = if options and options.activePlayerCount ~= nil
 		then options.activePlayerCount
 		else currentSnapshot.activePlayerCount
+	local jumpsUsed = if shouldClearActors
+		then 0
+		elseif options and options.jumpsUsed ~= nil then options.jumpsUsed
+		else currentSnapshot.jumpsUsed
 
 	return {
 		state = state,
@@ -196,6 +214,9 @@ local function makeSnapshot(
 				options.frozenUserIds
 			)
 			else copyUserIds(currentSnapshot.frozenUserIds),
+		jumpLimit = Tuning.TagJumpLimit,
+		jumpsUsed = jumpsUsed,
+		jumpsRemaining = JumpTracker.getRemainingJumps(jumpsUsed, Tuning.TagJumpLimit),
 	}
 end
 
@@ -382,6 +403,9 @@ function RoundService.transitionTo(
 		options.activePlayerCount = #activePlayers
 		options.frozenUserIds =
 			MovementControlService.freezePlayersExcept(currentSnapshot.calledUserId, activePlayers)
+	elseif nextState == GameStates.RoundStates.TagAttempt then
+		options = table.clone(options or {})
+		options.jumpsUsed = 0
 	elseif
 		nextState == GameStates.RoundStates.Reset
 		or nextState == GameStates.RoundStates.WaitingForPlayers
@@ -389,6 +413,7 @@ function RoundService.transitionTo(
 		MovementControlService.restoreAll()
 		options = table.clone(options or {})
 		options.frozenUserIds = {}
+		options.jumpsUsed = 0
 	end
 
 	currentSnapshot = makeSnapshot(nextState, options)
@@ -418,6 +443,27 @@ function RoundService.selectTarget(
 
 	if result.accepted then
 		currentSnapshot.calledUserId = result.targetUserId
+	end
+
+	return {
+		accepted = result.accepted,
+		reason = result.reason,
+		snapshot = RoundService.getSnapshot(),
+	}
+end
+
+function RoundService.recordCalledPlayerJump(requestingUserId: unknown): JumpAttempt
+	local result = JumpTracker.recordJump({
+		calledUserId = currentSnapshot.calledUserId,
+		jumpsUsed = currentSnapshot.jumpsUsed,
+		jumpLimit = Tuning.TagJumpLimit,
+		isTagAttempt = currentSnapshot.state == GameStates.RoundStates.TagAttempt,
+	}, requestingUserId)
+
+	if result.accepted then
+		currentSnapshot = makeSnapshot(currentSnapshot.state, {
+			jumpsUsed = result.jumpsUsed,
+		})
 	end
 
 	return {

@@ -84,7 +84,7 @@ Foundation governance work is tracked by [#5](https://github.com/kelani34/Freeze
 | FTC-107 | P0 | Done | Implement target selection validation |
 | FTC-108 | P0 | Done | Implement center zone detection |
 | FTC-109 | P0 | Done | Implement freeze and unfreeze behavior |
-| FTC-110 | P0 | Todo | Implement three-jump tracking |
+| FTC-110 | P0 | Done | Implement three-jump tracking |
 | FTC-111 | P0 | Todo | Implement server-side tag validation |
 | FTC-112 | P0 | Todo | Implement round reset |
 | FTC-113 | P0 | Todo | Add basic client UI prompts |
@@ -135,6 +135,7 @@ As of 2026-06-14:
 - Target selection validation is implemented with server-owned checks before `RunAway`.
 - Center zone detection is implemented with shared distance math, ArenaService character checks, and a server-owned StopFrozen transition trigger.
 - Freeze/unfreeze behavior is implemented with server-owned humanoid movement snapshots and cleanup.
+- Three-jump tracking is implemented with a server-owned jump counter and snapshot jump budget.
 - GitHub issues now exist for every remaining backlog item.
 - The tagged playtest release checklist exists in `docs/production/RELEASE_CHECKLIST.md`.
-- The next implementation target is `FTC-110`: three-jump tracking.
+- The next implementation target is `FTC-111`: server-side tag validation.
